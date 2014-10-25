@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.0.1"
 
     defaultConfig {
-        applicationId "picama.rainbowbreeze.it.library"
+        applicationId "it.rainbowbreeze.picama.library"
         minSdkVersion 15
         targetSdkVersion 20
         versionCode 1
