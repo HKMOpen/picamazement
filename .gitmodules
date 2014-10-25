@@ -1,0 +1,3 @@
+[submodule "PicAmazement/rainbowlibs"]
+	path = PicAmazement/rainbowlibs
+	url = https://github.com/rainbowbreeze/rainbowlibs.git

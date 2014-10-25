@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.logic;
+package it.rainbowbreeze.picama.logic.twitter;
 
 import android.test.AndroidTestCase;
 
@@ -7,6 +7,8 @@ import junit.framework.Assert;
 import java.util.List;
 
 import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  * Created by alfredomorresi on 19/10/14.
@@ -27,6 +29,13 @@ public class TwitterScraperTest extends AndroidTestCase {
 
     public void testGetPictures() {
         List<AmazingPicture> pictures = mTwitterScraper.getNewPictures();
-        Assert.assertEquals(null, pictures);
+        assertNotNull(pictures);
+        assertEquals(0, pictures.size());
+    }
+
+    public void testTwitter() {
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
+
     }
 }
