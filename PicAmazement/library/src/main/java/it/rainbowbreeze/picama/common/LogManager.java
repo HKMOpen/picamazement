@@ -2,6 +2,9 @@ package it.rainbowbreeze.picama.common;
 
 import android.util.Log;
 
+import it.rainbowbreeze.libs.common.IRainbowLogFacility;
+import it.rainbowbreeze.libs.common.RainbowLogFacility;
+
 /**
  * This file is part of KeepMoving. KeepMoving is free software: you can
  * redistribute it and/or modify it under the terms of the GNU General Public
@@ -24,34 +27,12 @@ import android.util.Log;
 /**
  * Manages logging
  */
-public class LogManager implements ILogManager {
-    private final String mAppName;
-
-    public LogManager(String appName) {
-        mAppName = appName;
+public class LogManager extends RainbowLogFacility {
+    public LogManager() {
+        this(Bag.APP_NAME_LOG);
     }
 
-    @Override
-    public void e(String tag, String message) {
-        Log.e(mAppName, buildMessage(tag, message));
-    }
-
-    @Override
-    public void w(String tag, String message) {
-        Log.w(mAppName, buildMessage(tag, message));
-    }
-
-    @Override
-    public void i(String tag, String message) {
-        Log.i(mAppName, buildMessage(tag, message));
-    }
-
-    @Override
-    public void d(String tag, String message) {
-        Log.d(mAppName, buildMessage(tag, message));
-    }
-
-    private String buildMessage(String logTag, String message) {
-        return String.format("[%s] %s", logTag, message);
+    private LogManager(String tag) {
+        super(tag);
     }
 }

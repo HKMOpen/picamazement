@@ -34,7 +34,6 @@ import it.rainbowbreeze.picama.shared.BuildConfig;
  * - http://www.joshlong.com/jl/blogPost/dependency_injection_with_dagger_on_android.html
  */
 public class MyApp extends Application {
-    public static final String APP_NAME_FOR_LOG = "PicAmazement";
 
     @Override
     public void onCreate() {
@@ -73,10 +72,10 @@ public class MyApp extends Application {
     }
     */
 
-    private static ILogManager mLogManager;
-    public static ILogManager getLogManager() {
+    private static LogManager mLogManager;
+    public static LogManager getLogManager() {
         if (null == mLogManager) {
-            mLogManager = new LogManager(APP_NAME_FOR_LOG);
+            mLogManager = new LogManager();
         }
         return mLogManager;
     }
