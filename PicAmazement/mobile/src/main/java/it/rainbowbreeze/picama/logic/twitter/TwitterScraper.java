@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.rainbowbreeze.picama.common.SecretBag;
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.IPictureScraper;
 import it.rainbowbreeze.picama.shared.BuildConfig;
@@ -36,8 +36,8 @@ public class TwitterScraper implements IPictureScraper {
         ConfigurationBuilder cb = new ConfigurationBuilder()
                 .setDebugEnabled(BuildConfig.DEBUG)
                 .setApplicationOnlyAuthEnabled(true)
-                .setOAuthConsumerKey(SecretBag.CONSUMER_KEY)
-                .setOAuthConsumerSecret(SecretBag.CONSUMER_SECRET);
+                .setOAuthConsumerKey(Bag.TWITTER_CONSUMER_KEY)
+                .setOAuthConsumerSecret(Bag.TWITTER_CONSUMER_SECRET);
         mTwitter = new TwitterFactory(cb.build()).getInstance();
 
         //mUserName = "_Paisajes_";

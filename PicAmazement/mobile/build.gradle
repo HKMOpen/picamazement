@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
+//def TWITTER_CONSUMER_SECRET = System.properties['PicAmazementTwitterConsumerSecretProp'] ?: '"Define Twitter Consumer secret"';
 def TWITTER_CONSUMER_KEY = '"' + PicAmazementTwitterConsumerKeyProp + '"' ?: '"Define Twitter Consumer key"';
-//def TWITTER_CONSUMER_SECRET = Env.properties['PicAmazementTwitterConsumerSecretProp'] ?: '"Define Twitter Consumer secret"';
 def TWITTER_CONSUMER_SECRET = '"' + PicAmazementTwitterConsumerSecretProp + '"'  ?: '"Define Twitter Consumer secret"';
 
 android {

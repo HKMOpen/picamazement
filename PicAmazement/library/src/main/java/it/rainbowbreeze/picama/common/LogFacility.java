@@ -26,6 +26,6 @@ import it.rainbowbreeze.libs.common.RainbowLogFacility;
  */
 public class LogFacility extends RainbowLogFacility {
     public LogFacility() {
-        super(Bag.APP_NAME_LOG);
+        super(SharedBag.APP_NAME_LOG);
     }
 }

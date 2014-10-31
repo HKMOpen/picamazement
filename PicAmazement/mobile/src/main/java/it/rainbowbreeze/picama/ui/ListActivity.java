@@ -27,7 +27,7 @@ public class ListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).inject(this);
-        mLogFacility.v("AAAAAA", "it works!");
+        mLogFacility.logStartOfActivity(ListActivity.class, savedInstanceState);
 
         setContentView(R.layout.act_list);
 
