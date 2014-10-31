@@ -205,6 +205,9 @@ public class RainbowLogFacility implements IRainbowLogFacility {
                     Log.v(mTag, msgToLog);
                 }
                 break;
+            default:
+                Log.v(mTag, msgToLog);
+                break;
         }
     }
 

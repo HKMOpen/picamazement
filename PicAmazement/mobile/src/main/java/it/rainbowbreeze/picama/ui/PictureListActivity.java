@@ -19,12 +19,17 @@ import android.support.v4.widget.DrawerLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import it.rainbowbreeze.picama.R;
+import it.rainbowbreeze.picama.common.LogFacility;
+import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 
 
 public class PictureListActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+    @Inject LogFacility mLogFacility;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -39,7 +44,10 @@ public class PictureListActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MyApp) getApplication()).inject(this);
+
         setContentView(R.layout.act_picturelist);
+        mLogFacility.v("AAAAAA", "it works!");
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);

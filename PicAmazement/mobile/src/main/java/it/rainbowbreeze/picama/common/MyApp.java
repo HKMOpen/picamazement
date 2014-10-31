@@ -7,6 +7,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Arrays;
 import java.util.List;
 
+import dagger.ObjectGraph;
 import it.rainbowbreeze.picama.shared.BuildConfig;
 
 /**
@@ -34,20 +35,15 @@ import it.rainbowbreeze.picama.shared.BuildConfig;
  * - http://www.joshlong.com/jl/blogPost/dependency_injection_with_dagger_on_android.html
  */
 public class MyApp extends Application {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Picasso.with(getApplicationContext()).setIndicatorsEnabled(true);
-        Picasso.with(getApplicationContext()).setLoggingEnabled(BuildConfig.DEBUG);
-    }
-
-    /*
     private ObjectGraph mObjectGraph;
 
     @Override
     public void onCreate() {
+
         super.onCreate();
+        Picasso.with(getApplicationContext()).setIndicatorsEnabled(true);
+        Picasso.with(getApplicationContext()).setLoggingEnabled(BuildConfig.DEBUG);
+
         mObjectGraph = ObjectGraph.create(getModules().toArray());
     }
 
@@ -55,10 +51,10 @@ public class MyApp extends Application {
      * Cloud be overridden in tests, passing a different list of modules
      * @return
      */
-    /*
-    protected List<Object> getModules() {
-        return Arrays.<Object>asList(
-                new DaggerModule()
+    private List<Object> getModules() {
+        return Arrays.asList(
+                new AndroidModule(this),
+                new MobileModule()
         );
     }
 
@@ -66,17 +62,8 @@ public class MyApp extends Application {
      * Used by activities to inject themselves with the required dependencies
      * @param object
      */
-    /*
     public void inject(Object object) {
         mObjectGraph.inject(object);
     }
-    */
 
-    private static LogManager mLogManager;
-    public static LogManager getLogManager() {
-        if (null == mLogManager) {
-            mLogManager = new LogManager();
-        }
-        return mLogManager;
-    }
 }

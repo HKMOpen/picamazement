@@ -1,8 +1,5 @@
 package it.rainbowbreeze.picama.common;
 
-import android.util.Log;
-
-import it.rainbowbreeze.libs.common.IRainbowLogFacility;
 import it.rainbowbreeze.libs.common.RainbowLogFacility;
 
 /**
@@ -27,12 +24,8 @@ import it.rainbowbreeze.libs.common.RainbowLogFacility;
 /**
  * Manages logging
  */
-public class LogManager extends RainbowLogFacility {
-    public LogManager() {
-        this(Bag.APP_NAME_LOG);
-    }
-
-    private LogManager(String tag) {
-        super(tag);
+public class LogFacility extends RainbowLogFacility {
+    public LogFacility() {
+        super(Bag.APP_NAME_LOG);
     }
 }

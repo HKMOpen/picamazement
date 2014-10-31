@@ -11,16 +11,24 @@ import android.widget.ListView;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
+import it.rainbowbreeze.libs.common.IRainbowLogFacility;
 import it.rainbowbreeze.picama.R;
+import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.picture.PictureContentValues;
 import it.rainbowbreeze.picama.data.picture.PictureSelection;
 
 public class ListActivity extends Activity {
+    @Inject IRainbowLogFacility mLogFacility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MyApp) getApplication()).inject(this);
+        mLogFacility.v("AAAAAA", "it works!");
+
         setContentView(R.layout.act_list);
 
         ListView lst = (ListView) findViewById(R.id.list_lstItems);
