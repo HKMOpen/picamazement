@@ -17,9 +17,7 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField "boolean", "REPORT_CRASHES", "true"
-            buildConfigField "String", "TWITTER_CONSUMER_KEY", TWITTER_CONSUMER_KEY
-            buildConfigField "String", "TWITTER_CONSUMER_SECRET", TWITTER_CONSUMER_SECRET
+            //buildConfigField "boolean", "REPORT_CRASHES", "true"
         }
         release {
             runProguard false
@@ -42,4 +40,9 @@ dependencies {
 
     compile 'com.squareup.dagger:dagger:1.2.+'
     provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+}
+
+android.buildTypes.each { type ->
+    type.buildConfigField 'String', 'TWITTER_CONSUMER_KEY', TWITTER_CONSUMER_KEY
+    type.buildConfigField 'String', 'TWITTER_CONSUMER_SECRET', TWITTER_CONSUMER_SECRET
 }
