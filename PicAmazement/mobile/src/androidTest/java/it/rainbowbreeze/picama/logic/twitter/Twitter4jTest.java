@@ -4,7 +4,7 @@ import android.test.AndroidTestCase;
 
 import java.util.Map;
 
-import it.rainbowbreeze.picama.common.SecretBag;
+import it.rainbowbreeze.picama.common.Bag;
 import twitter4j.RateLimitStatus;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -31,7 +31,7 @@ public class Twitter4jTest extends AndroidTestCase {
 
     public void xxtestAuthWithBuildingConf2() throws Exception {
         // setup
-        builder.setOAuthConsumerKey(SecretBag.CONSUMER_KEY).setOAuthConsumerSecret(SecretBag.CONSUMER_SECRET);
+        builder.setOAuthConsumerKey(Bag.TWITTER_CONSUMER_KEY).setOAuthConsumerSecret(Bag.TWITTER_CONSUMER_SECRET);
         Twitter twitter = new TwitterFactory(builder.build()).getInstance();
 
         // exercise & verify
