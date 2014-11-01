@@ -13,21 +13,25 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import it.rainbowbreeze.libs.common.IRainbowLogFacility;
 import it.rainbowbreeze.picama.R;
+import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.picture.PictureContentValues;
 import it.rainbowbreeze.picama.data.picture.PictureSelection;
+import it.rainbowbreeze.picama.logic.PictureScraperManager;
 
 public class ListActivity extends Activity {
-    @Inject IRainbowLogFacility mLogFacility;
+    @Inject ILogFacility mLogFacility;
+    @Inject PictureScraperManager mPictureScraperManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).inject(this);
         mLogFacility.logStartOfActivity(ListActivity.class, savedInstanceState);
+
+        mPictureScraperManager.searchForNewImage();
 
         setContentView(R.layout.act_list);
 

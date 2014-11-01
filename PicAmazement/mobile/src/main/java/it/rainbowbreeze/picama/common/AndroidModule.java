@@ -16,8 +16,17 @@ import it.rainbowbreeze.picama.ui.ListActivity;
  * Created by alfredomorresi on 31/10/14.
  */
 @Module (
-        library = true
-        //complete = false
+        injects = ListActivity.class,
+        //injects = { ListActivity.class, PictureScraperManager.class },
+        includes = MobileModule.class,
+        // True because it declares @Provides not used inside the class, but outside.
+        // Once the code is finished, it should be possible to remove to set to false and have
+        //  all the consuming classes in the injects statement
+        library = true,
+        // Forces validates modules and injections at compile time.
+        // If true, includes also additional modules that will complete the dependency graph
+        //  using the includes statement for the class included in the injects statement
+        complete = true
 )
 public class AndroidModule {
     private final MyApp mApp;

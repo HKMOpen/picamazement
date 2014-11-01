@@ -48,13 +48,19 @@ public class MyApp extends Application {
     }
 
     /**
-     * Cloud be overridden in tests, passing a different list of modules
+     * Could be overridden in tests, passing a different list of modules
      * @return
      */
     private List<Object> getModules() {
+        // If you define all the dependencies directly in the module class annotation,
+        // you don't need to list all the modules here. Otherwise, this is the right
+        // place to define all modules
+//        return Arrays.asList(
+//                new AndroidModule(this),
+//                new MobileModule()
+//        );
         return Arrays.asList(
-                new AndroidModule(this),
-                new MobileModule()
+                (Object) new AndroidModule(this)
         );
     }
 

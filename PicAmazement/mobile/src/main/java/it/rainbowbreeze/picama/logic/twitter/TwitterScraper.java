@@ -5,7 +5,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import it.rainbowbreeze.picama.common.Bag;
+import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.IPictureScraper;
 import it.rainbowbreeze.picama.shared.BuildConfig;
@@ -27,21 +30,35 @@ import twitter4j.conf.ConfigurationBuilder;
  *
  * Created by alfredomorresi on 19/10/14.
  */
-public class TwitterScraper implements IPictureScraper {
+public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
+    private static final String LOG_TAG = TwitterScraper.class.getSimpleName();
+
+    private final ILogFacility mLogFacility;
     private final Twitter mTwitter;
     private OAuth2Token mTwitterToken;
-    private final String mUserName;
+    private String mUserName;
 
-    public TwitterScraper () {
+    @Inject
+    public TwitterScraper (ILogFacility logFacility, TwitterScraperConfig config) {
+        mLogFacility = logFacility;
+
+        //TODO: move to DI
         ConfigurationBuilder cb = new ConfigurationBuilder()
                 .setDebugEnabled(BuildConfig.DEBUG)
                 .setApplicationOnlyAuthEnabled(true)
                 .setOAuthConsumerKey(Bag.TWITTER_CONSUMER_KEY)
                 .setOAuthConsumerSecret(Bag.TWITTER_CONSUMER_SECRET);
         mTwitter = new TwitterFactory(cb.build()).getInstance();
+    }
 
-        //mUserName = "_Paisajes_";
-        mUserName = "rainbowbreeze";
+    @Override
+    public String getName() {
+        return LOG_TAG;
+    }
+
+    @Override
+    public void initialize(TwitterScraperConfig config) {
+        mUserName = config.getUserName();
     }
 
     @Override

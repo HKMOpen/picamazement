@@ -24,7 +24,7 @@ import it.rainbowbreeze.libs.common.RainbowLogFacility;
 /**
  * Manages logging
  */
-public class LogFacility extends RainbowLogFacility {
+public class LogFacility extends RainbowLogFacility implements ILogFacility {
     public LogFacility() {
         super(SharedBag.APP_NAME_LOG);
     }
