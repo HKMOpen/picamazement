@@ -42,6 +42,8 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
     public TwitterScraper (ILogFacility logFacility, TwitterScraperConfig config) {
         mLogFacility = logFacility;
 
+        mLogFacility.v(LOG_TAG, "Initializing...");
+
         //TODO: move to DI
         ConfigurationBuilder cb = new ConfigurationBuilder()
                 .setDebugEnabled(BuildConfig.DEBUG)
@@ -49,16 +51,13 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
                 .setOAuthConsumerKey(Bag.TWITTER_CONSUMER_KEY)
                 .setOAuthConsumerSecret(Bag.TWITTER_CONSUMER_SECRET);
         mTwitter = new TwitterFactory(cb.build()).getInstance();
+
+        mUserName = config.getUserName();
     }
 
     @Override
     public String getName() {
         return LOG_TAG;
-    }
-
-    @Override
-    public void initialize(TwitterScraperConfig config) {
-        mUserName = config.getUserName();
     }
 
     @Override

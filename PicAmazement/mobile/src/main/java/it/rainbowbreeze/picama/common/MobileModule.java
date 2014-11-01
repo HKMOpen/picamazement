@@ -1,16 +1,13 @@
 package it.rainbowbreeze.picama.common;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import it.rainbowbreeze.libs.common.IRainbowLogFacility;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
 import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
 import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
-import it.rainbowbreeze.picama.ui.ListActivity;
 
 /**
  * Dagger modules for classes that don't need an Application context

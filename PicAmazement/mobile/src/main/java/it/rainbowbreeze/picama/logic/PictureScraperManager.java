@@ -20,12 +20,7 @@ public class PictureScraperManager {
     public PictureScraperManager(ILogFacility logFacility, PictureScraperManagerConfig config) {
         mLogFacility = logFacility;
         mConfig = config;
-        mPictureScrapers = config.getPictureScrapers();
-    }
-
-    public PictureScraperManager addPictureScraper(IPictureScraper newScraper) {
-        mPictureScrapers.add(newScraper);
-        return this;
+        mPictureScrapers = mConfig.getPictureScrapers();
     }
 
     /**
