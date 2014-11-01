@@ -188,10 +188,11 @@ public class RainbowLogFacility implements IRainbowLogFacility {
 
 
     //---------- Private methods
-    protected void log(int level, String msg) {
+    protected void log(final int level, String msg) {
         String msgToLog = TextUtils.isEmpty(msg) ? "Empty message to log" : msg;
 
-        switch (level){
+        //TODO: fix it?!?!?!?
+        switch (level) {
             case Log.ERROR:
                 Log.e(mTag, msgToLog);
                 break;
@@ -205,6 +206,7 @@ public class RainbowLogFacility implements IRainbowLogFacility {
                     Log.v(mTag, msgToLog);
                 }
                 break;
+            //TODO: remove
             default:
                 Log.v(mTag, msgToLog);
                 break;
