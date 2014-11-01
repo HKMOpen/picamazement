@@ -8,5 +8,5 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="picture_max_width">600dp</dimen>
     <dimen name="picture_max_height">200dp</dimen>
-    <dimen name="picture_min_height">30dp</dimen>
+    <dimen name="picture_min_height">100dp</dimen>
 </resources>

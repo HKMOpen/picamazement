@@ -27,6 +27,8 @@ public class PictureScraperManager {
      * TODO: add a callback and make it async
      */
     public void searchForNewImage() {
+        mLogFacility.v(LOG_TAG, "Starting pictures update");
+
         for (IPictureScraper scraper : mPictureScrapers) {
             mLogFacility.v(LOG_TAG, scraper.getName());
         }

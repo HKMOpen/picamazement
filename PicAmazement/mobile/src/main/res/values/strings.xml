@@ -12,4 +12,10 @@
     <string name="title_activity_list">List Activity</string>
     <string name="hello_world">Hello world!</string>
 
+    <string name="common_app_name">Pic Amazement</string>
+
+    <string name="picList_mnuRefresh">Refresh</string>
+    <string name="picList_mnuSettings">Settings</string>
+
+
 </resources>

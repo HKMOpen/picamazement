@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import it.rainbowbreeze.picama.ui.ListActivity;
+import it.rainbowbreeze.picama.ui.PictureListActivity;
 
 /**
  * A Dagger module for Android-specific dependencies which require a {@link Context} or
@@ -16,7 +16,7 @@ import it.rainbowbreeze.picama.ui.ListActivity;
  * Created by alfredomorresi on 31/10/14.
  */
 @Module (
-        injects = ListActivity.class,
+        injects = PictureListActivity.class,
         //injects = { ListActivity.class, PictureScraperManager.class },
         includes = MobileModule.class,
         // True because it declares @Provides not used inside the class, but outside.

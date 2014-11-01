@@ -1,79 +1,65 @@
 package it.rainbowbreeze.picama.ui;
 
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import it.rainbowbreeze.picama.R;
-import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.data.picture.PictureCursor;
 
 /**
- * Created by alfredomorresi on 19/10/14.
+ * Created by alfredomorresi on 26/10/14.
  */
-public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHolder> {
-    private List<AmazingPicture> mDataset;
+public class PicturesAdapter extends CursorAdapter {
+    private final LayoutInflater mInflater;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        // each data item is just a string in this case
-        public TextView txtViewTitle;
-        public ImageView imgViewIcon;
+    public PicturesAdapter(Context context, Cursor c, boolean autoRequery) {
+        super(context, c, autoRequery);
+        mInflater = LayoutInflater.from(context);
+    }
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-            txtViewTitle = (TextView) itemView.findViewById(R.id.item_title);
-            imgViewIcon = (ImageView) itemView.findViewById(R.id.item_icon);
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        View newView = mInflater.inflate(R.layout.vw_picture_card, null);
+        TextView lblTitle = (TextView) newView.findViewById(R.id.picList_lblTitle);
+        ImageView imgPhoto = (ImageView) newView.findViewById(R.id.picList_imgPicture);
+        ViewHolder holder = new ViewHolder(lblTitle, imgPhoto);
+        newView.setTag(holder);
+        Log.d("ALFREDO", "Creating view");
+
+        return newView;
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        ViewHolder holder = (ViewHolder) view.getTag();
+        PictureCursor pictureCursor = new PictureCursor(cursor);
+        holder.lblTitle.setText(pictureCursor.getTitle());
+        Log.d("ALFREDO", "Binding view");
+
+        Picasso.with(holder.imgPicture.getContext())
+                .load(pictureCursor.getUrl())
+                .into(holder.imgPicture);
+    }
+
+    /**
+     * Holder class
+     */
+    private static class ViewHolder {
+        public final TextView lblTitle;
+        public final ImageView imgPicture;
+
+        private ViewHolder(TextView lblTitle, ImageView imgPicture) {
+            this.lblTitle = lblTitle;
+            this.imgPicture = imgPicture;
         }
-
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(view.getContext(), "position = " + getPosition(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public PicturesAdapter(List<AmazingPicture> myDataset) {
-        mDataset = myDataset;
-    }
-
-    // Create new views (invoked by the layout manager)
-    @Override
-    public PicturesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
-        // create a new view
-        View views = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.vw_picture_card, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-        return new ViewHolder(views);
-    }
-
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.txtViewTitle.setText(mDataset.get(position).getUrl());
-
-        //Picasso.with(holder.imgViewIcon.getContext()).cancelRequest(holder.imgViewIcon);
-        Picasso.with(holder.imgViewIcon.getContext())
-                .load(mDataset.get(position).getUrl())
-                .into(holder.imgViewIcon);
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return mDataset.size();
     }
 }
