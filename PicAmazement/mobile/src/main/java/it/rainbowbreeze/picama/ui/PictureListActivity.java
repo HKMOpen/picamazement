@@ -8,11 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -22,13 +19,11 @@ import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
-import it.rainbowbreeze.picama.data.provider.picture.PictureContentValues;
-import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
-import it.rainbowbreeze.picama.data.provider.picture.PictureSource;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 
 public class PictureListActivity extends Activity {
+    private static final String LOG_TAG = PictureListActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject PictureScraperManager mPictureScraperManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
@@ -37,7 +32,7 @@ public class PictureListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).inject(this);
-        mLogFacility.logStartOfActivity(PictureListActivity.class, savedInstanceState);
+        mLogFacility.logStartOfActivity(LOG_TAG, PictureListActivity.class, savedInstanceState);
 
         setContentView(R.layout.act_list);
 
