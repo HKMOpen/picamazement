@@ -7,5 +7,6 @@ public abstract class SharedBag {
     public final static String APP_NAME_LOG = "PicAmazement";
 
 
-    public final static String DATAMAP_AMAZING_PICTURE = "/AmazingPicture";
+    public final static String WEAR_DATAMAP_AMAZINGPICTURE = "/AmazingPicture";
+    public final static String WEAR_MESSAGE_SIMPLE = "/SimpleMessage";
 }

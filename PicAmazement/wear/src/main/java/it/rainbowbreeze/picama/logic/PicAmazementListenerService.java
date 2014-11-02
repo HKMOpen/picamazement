@@ -1,7 +1,6 @@
 package it.rainbowbreeze.picama.logic;
 
 import android.content.Intent;
-import android.graphics.Picture;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -11,6 +10,7 @@ import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -72,8 +72,14 @@ public class PicAmazementListenerService extends WearableListenerService {
     }
 
     @Override
+    public void onMessageReceived(MessageEvent messageEvent) {
+        if (messageEvent.getPath().equals(Bag.WEAR_MESSAGE_SIMPLE)) {
+            mLogFacility.v(LOG_TAG, "Received simple message");
+        }
+    }
+
+    @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        super.onDataChanged(dataEvents);
         mLogFacility.v(LOG_TAG, "onDataChanged: " + dataEvents);
 
         final List<DataEvent> events = FreezableUtils.freezeIterable(dataEvents);
@@ -92,7 +98,7 @@ public class PicAmazementListenerService extends WearableListenerService {
         for (DataEvent event : events) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 String path = event.getDataItem().getUri().getPath();
-                if (Bag.DATAMAP_AMAZING_PICTURE.equals(path)) {
+                if (Bag.WEAR_DATAMAP_AMAZINGPICTURE.equals(path)) {
                     // Get the data out of the event
                     DataMapItem dataMapItem =
                             DataMapItem.fromDataItem(event.getDataItem());
