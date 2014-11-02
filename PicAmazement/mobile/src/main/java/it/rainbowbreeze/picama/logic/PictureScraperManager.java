@@ -5,9 +5,6 @@ import android.text.TextUtils;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
@@ -55,8 +52,8 @@ public class PictureScraperManager {
             if (TextUtils.isEmpty(picture.getUrl())) {
                 mLogFacility.i(LOG_TAG, "No URL for picture " + picture.getTitle());
             }
-            if (!mAmazingPictureDao.pictureExists(appContext, picture.getUrl())) {
-                mAmazingPictureDao.insert(appContext, picture);
+            if (!mAmazingPictureDao.pictureExists(picture.getUrl())) {
+                mAmazingPictureDao.insert(picture);
                 mLogFacility.v(LOG_TAG, "Added new picture in the DB at url " + picture.getUrl());
             } else {
                 mLogFacility.v(LOG_TAG, "Skipped picture with url " + picture.getUrl());

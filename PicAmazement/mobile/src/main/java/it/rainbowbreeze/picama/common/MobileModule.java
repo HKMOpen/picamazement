@@ -23,6 +23,12 @@ public class MobileModule {
         return new LogFacility();
     }
 
+    /**
+     * There is a provide method because the class have to be configure
+     * before working. Otherwise a simple Inject the requiring class
+     * could have been used.
+     * @return
+     */
     @Provides @Singleton public PictureScraperManagerConfig providePictureScraperManagerConfig (
             ILogFacility logFacility) {
         // Creates Twitter Scraper
@@ -34,29 +40,5 @@ public class MobileModule {
         );
 
         return config;
-    }
-
-    /**
-     * Just a test class that need application context to be initialized
-     * @return
-     */
-    @Provides @Singleton
-    AmazingPictureDao provideAmazingPictureDao(
-            ILogFacility logFacility) {
-        return new AmazingPictureDao(logFacility);
-    }
-
-    /**
-     * There is a provide method because the class have to be configure
-     * before working. Otherwise a simple Inject the requiring class
-     * could have been used.
-     * @return
-     */
-    @Provides @Singleton public PictureScraperManager providePictureScrapeManager (
-            ILogFacility logFacility,
-            PictureScraperManagerConfig pictureScraperManagerConfig,
-            AmazingPictureDao amazingPictureDao) {
-        //creates config for the scraper
-        return new PictureScraperManager(logFacility, pictureScraperManagerConfig, amazingPictureDao);
     }
 }

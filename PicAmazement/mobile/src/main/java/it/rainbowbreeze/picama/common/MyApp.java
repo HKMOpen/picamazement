@@ -52,9 +52,9 @@ public class MyApp extends Application {
      * @return
      */
     private List<Object> getModules() {
-        // If you define all the dependencies directly in the module class annotation,
-        // you don't need to list all the modules here. Otherwise, this is the right
-        // place to define all modules
+        // If you define all the dependencies directly in the module class annotation
+        // using includes, you don't need to list all the modules here. Otherwise,
+        // this is the right place to define all modules
 //        return Arrays.asList(
 //                new AndroidModule(this),
 //                new MobileModule()

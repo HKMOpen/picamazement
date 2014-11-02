@@ -16,6 +16,11 @@
         app:showAsAction="never"
     />
     <item
+        android:id="@+id/picList_mnuSendToWatch"
+        android:title="@string/picList_mnuSendToWatch"
+        app:showAsAction="never"
+        />
+    <item
         android:id="@+id/picList_mnuSettings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

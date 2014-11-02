@@ -20,13 +20,16 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
+import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
+import it.rainbowbreeze.picama.logic.WearManager;
 
 public class PictureListActivity extends Activity {
     private static final String LOG_TAG = PictureListActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject PictureScraperManager mPictureScraperManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
+    @Inject WearManager mWearManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +102,24 @@ public class PictureListActivity extends Activity {
                     }
                 }).start();
                 break;
+            case R.id.picList_mnuSendToWatch:
+                sendToWatch();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void sendToWatch() {
+        // Finds the first element
+        AmazingPicture picture = mAmazingPictureDao.getFirstPicture();
+        if (null == picture) {
+            Toast.makeText(this, "No picture available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Prepares to send the element to the Wear
+
     }
 }

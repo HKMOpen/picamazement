@@ -9,6 +9,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.logic.PictureScraperManager;
+import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
+import it.rainbowbreeze.picama.logic.WearManager;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
 import it.rainbowbreeze.picama.ui.PictureListActivity;
 
@@ -22,7 +25,7 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
         injects = { PictureListActivity.class, FullscreenPictureActivity.class },
         includes = MobileModule.class,
         // True because it declares @Provides not used inside the class, but outside.
-        // Once the code is finished, it should be possible to remove to set to false and have
+        // Once the code is finished, it should be possible to set to false and have
         //  all the consuming classes in the injects statement
         library = true,
         // Forces validates modules and injections at compile time.
@@ -32,7 +35,6 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
 )
 public class AndroidModule {
     private final MyApp mApp;
-    @Inject ILogFacility mLogFacility;
 
     public AndroidModule(MyApp app) {
         mApp = app;
@@ -47,11 +49,42 @@ public class AndroidModule {
     }
 
     /**
-     * Just a test class that need application context to be initialized
+     * The application context can be read from the local app or passing it a parameters
+     * TODO: remove this class
      * @return
      */
     @Provides @Singleton
     LocationManager provideLocationManager() {
         return (LocationManager) mApp.getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    /**
+     * It works because {@link it.rainbowbreeze.picama.common.ILogFacility} is provided
+     * by another modules, included by this one
+     * @param logFacility
+     * @param appContext
+     * @return
+     */
+    @Provides @Singleton WearManager provideWearManager(
+            ILogFacility logFacility,
+            @ForApplication Context appContext) {
+        return new WearManager(logFacility, appContext);
+    }
+
+    /**
+     * @return
+     */
+    @Provides @Singleton AmazingPictureDao provideAmazingPictureDao(
+            ILogFacility logFacility,
+            @ForApplication Context appContext) {
+        return new AmazingPictureDao(logFacility, appContext);
+    }
+
+
+    @Provides @Singleton public PictureScraperManager providePictureScrapeManager (
+            ILogFacility logFacility,
+            PictureScraperManagerConfig pictureScraperManagerConfig,
+            AmazingPictureDao amazingPictureDao) {
+        return new PictureScraperManager(logFacility, pictureScraperManagerConfig, amazingPictureDao);
     }
 }

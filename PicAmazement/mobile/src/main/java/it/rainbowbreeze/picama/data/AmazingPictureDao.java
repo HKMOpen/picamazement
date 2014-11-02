@@ -1,6 +1,7 @@
 package it.rainbowbreeze.picama.data;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import java.util.Date;
 
@@ -19,19 +20,20 @@ public class AmazingPictureDao {
     private static final String LOG_TAG = AmazingPictureDao.class.getSimpleName();
 
     private final ILogFacility mLogFacility;
+    private final Context mAppContext;
 
-    public AmazingPictureDao(ILogFacility logFacility) {
+    public AmazingPictureDao(ILogFacility logFacility, Context appContext) {
         mLogFacility = logFacility;
-        mLogFacility.v(LOG_TAG, "Test");
+        mAppContext = appContext;
     }
 
-    public void insert(Context appContext, AmazingPicture picture) {
+    public void insert(AmazingPicture picture) {
         PictureContentValues values = new PictureContentValues()
                 .putTitle(picture.getTitle())
                 .putUrl(picture.getUrl())
                 .putSource(PictureSource.Twitter)
                 .putDate(picture.getDate());
-        appContext.getContentResolver().insert(PictureColumns.CONTENT_URI, values.values());
+        mAppContext.getContentResolver().insert(PictureColumns.CONTENT_URI, values.values());
     }
 
     /**
@@ -41,11 +43,11 @@ public class AmazingPictureDao {
      * @param uniqueId
      * @return
      */
-    public boolean pictureExists(Context appContext, String uniqueId) {
+    public boolean pictureExists(String uniqueId) {
         PictureSelection pictureSelection = new PictureSelection();
         pictureSelection.url(uniqueId);
         String projection[] = {PictureColumns._ID, PictureColumns.URL };
-        PictureCursor c = pictureSelection.query(appContext.getContentResolver(), projection);
+        PictureCursor c = pictureSelection.query(mAppContext.getContentResolver(), projection);
         boolean found = false;
         while (c.moveToNext()) {
             found = true;
@@ -54,4 +56,28 @@ public class AmazingPictureDao {
         c.close();
         return found;
     }
+
+    /**
+     * Get the latest picture available
+     *
+     * @return
+     */
+    public AmazingPicture getFirstPicture() {
+        PictureSelection pictureSelection = new PictureSelection();
+        pictureSelection.visible(true);
+        PictureCursor c = pictureSelection.query(mAppContext.getContentResolver(),
+                pictureSelection.args(),
+                PictureColumns.DATE + " DESC");
+        AmazingPicture picture = null;
+        while (c.moveToNext()) {
+            picture = new AmazingPicture()
+                .setUrl(c.getUrl())
+                .setDate(c.getDate())
+                .setTitle(c.getTitle());
+            break;
+        }
+        c.close();
+        return picture;
+    }
+
 }
