@@ -128,4 +128,9 @@ public class PictureSelection extends AbstractSelection<PictureSelection> {
         addLessThanOrEquals(PictureColumns.DATE, value);
         return this;
     }
+
+    public PictureSelection visible(boolean value) {
+        addEquals(PictureColumns.VISIBLE, toObjectArray(value));
+        return this;
+    }
 }

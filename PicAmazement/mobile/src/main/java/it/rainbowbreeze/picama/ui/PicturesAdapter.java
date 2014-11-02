@@ -2,7 +2,6 @@ package it.rainbowbreeze.picama.ui;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ public class PicturesAdapter extends CursorAdapter {
         ImageView imgPhoto = (ImageView) newView.findViewById(R.id.picList_imgPicture);
         ViewHolder holder = new ViewHolder(lblTitle, imgPhoto);
         newView.setTag(holder);
-        Log.d("ALFREDO", "Creating view");
+        //Log.d("ALFREDO", "Creating view");
 
         return newView;
     }
@@ -43,7 +42,7 @@ public class PicturesAdapter extends CursorAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         PictureCursor pictureCursor = new PictureCursor(cursor);
         holder.lblTitle.setText(pictureCursor.getTitle());
-        Log.d("ALFREDO", "Binding view");
+        //Log.d("ALFREDO", "Binding view");
 
         Picasso.with(holder.imgPicture.getContext())
                 .load(pictureCursor.getUrl())

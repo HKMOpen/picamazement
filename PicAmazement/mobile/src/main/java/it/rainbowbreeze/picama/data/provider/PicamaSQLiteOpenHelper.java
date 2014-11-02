@@ -29,7 +29,8 @@ public class PicamaSQLiteOpenHelper extends SQLiteOpenHelper {
             + PictureColumns.URL + " TEXT NOT NULL, "
             + PictureColumns.TITLE + " TEXT, "
             + PictureColumns.SOURCE + " INTEGER NOT NULL, "
-            + PictureColumns.DATE + " INTEGER NOT NULL "
+            + PictureColumns.DATE + " INTEGER NOT NULL, "
+            + PictureColumns.VISIBLE + " INTEGER NOT NULL DEFAULT '1' "
             + " );";
 
     // @formatter:on

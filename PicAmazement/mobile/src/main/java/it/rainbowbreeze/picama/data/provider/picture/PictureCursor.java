@@ -49,4 +49,11 @@ public class PictureCursor extends AbstractCursor {
     public Date getDate() {
         return getDate(PictureColumns.DATE);
     }
+
+    /**
+     * Get the {@code visible} value.
+     */
+    public boolean getVisible() {
+        return getBoolean(PictureColumns.VISIBLE);
+    }
 }

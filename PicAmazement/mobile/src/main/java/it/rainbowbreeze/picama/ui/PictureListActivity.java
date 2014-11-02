@@ -5,8 +5,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -39,9 +42,17 @@ public class PictureListActivity extends Activity {
         ListView lst = (ListView) findViewById(R.id.list_lstItems);
 
         PictureSelection where = new PictureSelection();
+        where.visible(true);
         Cursor c = getApplicationContext().getContentResolver().query(PictureColumns.CONTENT_URI, null,
                 where.sel(), where.args(), PictureColumns.DATE + " DESC");
         lst.setAdapter(new PicturesAdapter(getApplicationContext(), c, true));
+
+        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "Clicked on id " + id, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         /**
         Button btnAddItem = (Button) findViewById(R.id.list_btnAddItem);

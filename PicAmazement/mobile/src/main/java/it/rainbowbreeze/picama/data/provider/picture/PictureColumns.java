@@ -17,6 +17,7 @@ public class PictureColumns implements BaseColumns {
     public static final String TITLE = new String("title");
     public static final String SOURCE = new String("source");
     public static final String DATE = new String("date");
+    public static final String VISIBLE = new String("visible");
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
     
@@ -26,7 +27,8 @@ public class PictureColumns implements BaseColumns {
             URL,
             TITLE,
             SOURCE,
-            DATE
+            DATE,
+            VISIBLE
     };
     // @formatter:on
 
@@ -38,6 +40,7 @@ public class PictureColumns implements BaseColumns {
             if (c == TITLE) return true;
             if (c == SOURCE) return true;
             if (c == DATE) return true;
+            if (c == VISIBLE) return true;
         }
         return false;
     }
@@ -48,6 +51,7 @@ public class PictureColumns implements BaseColumns {
         if (columnName == TITLE) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
         if (columnName == SOURCE) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
         if (columnName == DATE) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
+        if (columnName == VISIBLE) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
         return null;
     }
 
@@ -56,6 +60,7 @@ public class PictureColumns implements BaseColumns {
         if (columnName == TITLE) return TABLE_NAME + "__" + columnName;
         if (columnName == SOURCE) return TABLE_NAME + "__" + columnName;
         if (columnName == DATE) return TABLE_NAME + "__" + columnName;
+        if (columnName == VISIBLE) return TABLE_NAME + "__" + columnName;
         return null;
     }
 }

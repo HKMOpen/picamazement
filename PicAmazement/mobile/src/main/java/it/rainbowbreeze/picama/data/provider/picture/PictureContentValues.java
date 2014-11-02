@@ -65,4 +65,11 @@ public class PictureContentValues extends AbstractContentValues {
         return this;
     }
 
+
+    public PictureContentValues putVisible(boolean value) {
+        mContentValues.put(PictureColumns.VISIBLE, value);
+        return this;
+    }
+
+
 }
