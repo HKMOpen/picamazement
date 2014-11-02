@@ -66,7 +66,7 @@ public class AmazingPictureDao {
         PictureSelection pictureSelection = new PictureSelection();
         pictureSelection.visible(true);
         PictureCursor c = pictureSelection.query(mAppContext.getContentResolver(),
-                pictureSelection.args(),
+                null,
                 PictureColumns.DATE + " DESC");
         AmazingPicture picture = null;
         while (c.moveToNext()) {

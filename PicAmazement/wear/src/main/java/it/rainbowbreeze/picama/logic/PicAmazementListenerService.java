@@ -2,6 +2,7 @@ package it.rainbowbreeze.picama.logic;
 
 import android.content.Intent;
 import android.graphics.Picture;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,19 +32,43 @@ import it.rainbowbreeze.picama.ui.PictureActivity;
 public class PicAmazementListenerService extends WearableListenerService {
     private static final String LOG_TAG = PicAmazementListenerService.class.getSimpleName();
 
-    @Inject
-    private ILogFacility mLogFacility;
+    @Inject ILogFacility mLogFacility;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
     public void onCreate() {
         super.onCreate();
         ((MyApp) getApplication()).inject(this);
+        mLogFacility.v(LOG_TAG, "onCreated");
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle connectionHint) {
+                        mLogFacility.v(LOG_TAG, "onConnected: " + connectionHint);
+                        // Now you can use the data layer API
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int cause) {
+                        mLogFacility.v(LOG_TAG, "onConnectionSuspended: " + cause);
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+                        mLogFacility.v(LOG_TAG, "onConnectionFailed: " + result);
+                    }
+                })
                 .addApi(Wearable.API)
                 .build();
         mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onDestroy() {
+        mGoogleApiClient.disconnect();
+        super.onDestroy();
     }
 
     @Override

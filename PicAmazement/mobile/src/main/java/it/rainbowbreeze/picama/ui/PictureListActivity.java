@@ -57,6 +57,8 @@ public class PictureListActivity extends Activity {
             }
         });
 
+        mWearManager.init();
+
         /**
         Button btnAddItem = (Button) findViewById(R.id.list_btnAddItem);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +76,17 @@ public class PictureListActivity extends Activity {
         */
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mWearManager.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mWearManager.onStop();
+        super.onStop();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

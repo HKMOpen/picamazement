@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
@@ -48,37 +49,48 @@ public class WearManager {
     }
 
     public void init() {
-        synchronized (mSync) {
-            mGoogleAppClient = new GoogleApiClient.Builder(mAppContext)
-                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                        @Override
-                        public void onConnected(Bundle connectionHint) {
-                            mLogFacility.v(LOG_TAG, "onConnected: " + connectionHint);
-                            // Now you can use the data layer API
-                        }
-                        @Override
-                        public void onConnectionSuspended(int cause) {
-                            mLogFacility.v(LOG_TAG, "onConnectionSuspended: " + cause);
-                        }
-                    })
-                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                        @Override
-                        public void onConnectionFailed(ConnectionResult result) {
-                            mLogFacility.v(LOG_TAG, "onConnectionFailed: " + result);
-                        }
-                    })
-                    .addApi(Wearable.API)
-                    .build();
-        }
+        mGoogleAppClient = new GoogleApiClient.Builder(mAppContext)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle connectionHint) {
+                        mLogFacility.v(LOG_TAG, "onConnected: " + connectionHint);
+                        // Now you can use the data layer API
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int cause) {
+                        mLogFacility.v(LOG_TAG, "onConnectionSuspended: " + cause);
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+                        mLogFacility.v(LOG_TAG, "onConnectionFailed: " + result);
+                    }
+                })
+                .addApi(Wearable.API)
+                .build();
     }
 
+    public void onStart() {
+        mGoogleAppClient.connect();
+    }
+
+    public void onStop() {
+        mGoogleAppClient.disconnect();
+    }
+
+
     public void transferAmazingPicture(AmazingPicture picture) {
+        mLogFacility.v(LOG_TAG, "Transferring to Wear picture " + picture.getTitle());
         PutDataMapRequest dataMap = PutDataMapRequest.create(Bag.DATAMAP_AMAZING_PICTURE);
         dataMap.getDataMap().putString(AmazingPicture.FIELD_TITLE, picture.getTitle());
         dataMap.getDataMap().putString(AmazingPicture.FIELD_URL, picture.getUrl());
         PutDataRequest request = dataMap.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
                 mGoogleAppClient, request);
+        pendingResult.await();
+        mLogFacility.v(LOG_TAG, "Transferred to Wear");
     }
 
 }
