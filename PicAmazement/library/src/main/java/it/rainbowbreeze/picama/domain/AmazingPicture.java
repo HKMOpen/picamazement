@@ -1,29 +1,39 @@
 package it.rainbowbreeze.picama.domain;
 
+import java.util.Date;
+
 /**
  * Created by alfredomorresi on 19/10/14.
  */
-public class AmazingPicture implements it.rainbowbreeze.libs.data.RainbowSettableId {
-    private final String mUrl;
-    private long mId;
+public class AmazingPicture {
+    private String mUrl;
+    private String mTitle;
+    private Date mDate;
 
-    public AmazingPicture(long id, String url) {
-        mId = id;
-        mUrl = url;
+    public AmazingPicture() {
     }
 
     public String getUrl() {
         return mUrl;
-
+    }
+    public AmazingPicture setUrl(String newValue) {
+        mUrl = newValue;
+        return this;
     }
 
-    @Override
-    public void setId(long newValue) {
-        mId = newValue;
+    public String getTitle() {
+        return mTitle;
+    }
+    public AmazingPicture setTitle(String newValue) {
+        mTitle = newValue;
+        return this;
     }
 
-    public long getId() {
-        return mId;
+    public Date getDate() {
+        return mDate;
     }
-
+    public AmazingPicture setDate(Date newValue) {
+        mDate = newValue;
+        return this;
+    }
 }

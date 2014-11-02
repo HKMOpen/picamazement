@@ -1,13 +1,18 @@
 package it.rainbowbreeze.picama.logic.twitter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.rainbowbreeze.picama.logic.IPictureScraperConfig;
 
 /**
  * Created by alfredomorresi on 01/11/14.
  */
 public class TwitterScraperConfig extends IPictureScraperConfig {
-    public String getUserName() {
-        return "rainbowbreeze";
-        //"_Paisajes_";
+    public List<String> getUserNames() {
+        List<String> usernames = new ArrayList<String>();
+        usernames.add("EarthBeauties");
+        usernames.add("_Paisajes_");
+        return usernames;
     }
 }

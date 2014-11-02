@@ -1,5 +1,7 @@
 package it.rainbowbreeze.picama.data.provider.picture;
 
+import java.util.Date;
+
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -78,6 +80,52 @@ public class PictureSelection extends AbstractSelection<PictureSelection> {
 
     public PictureSelection titleLike(String... value) {
         addLike(PictureColumns.TITLE, value);
+        return this;
+    }
+
+    public PictureSelection source(PictureSource... value) {
+        addEquals(PictureColumns.SOURCE, value);
+        return this;
+    }
+
+    public PictureSelection sourceNot(PictureSource... value) {
+        addNotEquals(PictureColumns.SOURCE, value);
+        return this;
+    }
+
+
+    public PictureSelection date(Date... value) {
+        addEquals(PictureColumns.DATE, value);
+        return this;
+    }
+
+    public PictureSelection dateNot(Date... value) {
+        addNotEquals(PictureColumns.DATE, value);
+        return this;
+    }
+
+    public PictureSelection date(long... value) {
+        addEquals(PictureColumns.DATE, toObjectArray(value));
+        return this;
+    }
+
+    public PictureSelection dateAfter(Date value) {
+        addGreaterThan(PictureColumns.DATE, value);
+        return this;
+    }
+
+    public PictureSelection dateAfterEq(Date value) {
+        addGreaterThanOrEquals(PictureColumns.DATE, value);
+        return this;
+    }
+
+    public PictureSelection dateBefore(Date value) {
+        addLessThan(PictureColumns.DATE, value);
+        return this;
+    }
+
+    public PictureSelection dateBeforeEq(Date value) {
+        addLessThanOrEquals(PictureColumns.DATE, value);
         return this;
     }
 }

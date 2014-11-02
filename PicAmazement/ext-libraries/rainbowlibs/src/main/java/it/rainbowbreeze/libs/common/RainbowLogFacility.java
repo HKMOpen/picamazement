@@ -190,26 +190,17 @@ public class RainbowLogFacility implements IRainbowLogFacility {
     //---------- Private methods
     protected void log(final int level, String msg) {
         String msgToLog = TextUtils.isEmpty(msg) ? "Empty message to log" : msg;
-
-        //TODO: fix it?!?!?!?
-        switch (level) {
-            case Log.ERROR:
-                Log.e(mTag, msgToLog);
-                break;
-            case Log.INFO:
-                if (BuildConfig.DEBUG) {
-                    Log.i(mTag, msgToLog);
-                }
-                break;
-            case Log.VERBOSE:
-                if (BuildConfig.DEBUG) {
-                    Log.v(mTag, msgToLog);
-                }
-                break;
-            //TODO: remove
-            default:
-                Log.v(mTag, msgToLog);
-                break;
+        if (Log.ERROR == level) {
+            Log.e(mTag, msgToLog);
+            return;
+        }
+        if (BuildConfig.DEBUG) return;
+        if (Log.VERBOSE == level) {
+            Log.v(mTag, msgToLog);
+        } else if (Log.DEBUG == level) {
+            Log.d(mTag, msgToLog);
+        } else if (Log.INFO == level) {
+            Log.i(mTag, msgToLog);
         }
     }
 

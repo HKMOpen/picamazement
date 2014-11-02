@@ -162,11 +162,11 @@ public class PictureListActivityFull extends Activity
 
             // specify an adapter (see also next example)
             List<AmazingPicture> pictures = new ArrayList<AmazingPicture>();
-            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/400/"));
-            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/250/sports"));
-            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/200/sports/Dummy-Text"));
-            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/500/nature"));
-            pictures.add(new AmazingPicture(0, "http://lorempixel.com/500/200/food"));
+//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/400/"));
+//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/250/sports"));
+//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/200/sports/Dummy-Text"));
+//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/500/nature"));
+//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/500/200/food"));
             mAdapter = new PicturesRecyclerAdapter(pictures);
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setOnClickListener(new View.OnClickListener() {

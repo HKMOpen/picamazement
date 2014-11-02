@@ -1,5 +1,7 @@
 package it.rainbowbreeze.picama.data.provider.picture;
 
+import java.util.Date;
+
 import android.content.ContentResolver;
 import android.net.Uri;
 
@@ -25,14 +27,11 @@ public class PictureContentValues extends AbstractContentValues {
     }
 
     public PictureContentValues putUrl(String value) {
+        if (value == null) throw new IllegalArgumentException("value for url must not be null");
         mContentValues.put(PictureColumns.URL, value);
         return this;
     }
 
-    public PictureContentValues putUrlNull() {
-        mContentValues.putNull(PictureColumns.URL);
-        return this;
-    }
 
 
     public PictureContentValues putTitle(String value) {
@@ -42,6 +41,27 @@ public class PictureContentValues extends AbstractContentValues {
 
     public PictureContentValues putTitleNull() {
         mContentValues.putNull(PictureColumns.TITLE);
+        return this;
+    }
+
+
+    public PictureContentValues putSource(PictureSource value) {
+        if (value == null) throw new IllegalArgumentException("value for source must not be null");
+        mContentValues.put(PictureColumns.SOURCE, value.ordinal());
+        return this;
+    }
+
+
+
+    public PictureContentValues putDate(Date value) {
+        if (value == null) throw new IllegalArgumentException("value for date must not be null");
+        mContentValues.put(PictureColumns.DATE, value.getTime());
+        return this;
+    }
+
+
+    public PictureContentValues putDate(long value) {
+        mContentValues.put(PictureColumns.DATE, value);
         return this;
     }
 

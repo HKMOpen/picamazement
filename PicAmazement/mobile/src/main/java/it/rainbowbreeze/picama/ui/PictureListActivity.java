@@ -16,14 +16,18 @@ import javax.inject.Inject;
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureContentValues;
+import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
+import it.rainbowbreeze.picama.data.provider.picture.PictureSource;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 
 public class PictureListActivity extends Activity {
     @Inject ILogFacility mLogFacility;
     @Inject PictureScraperManager mPictureScraperManager;
+    @Inject AmazingPictureDao mAmazingPictureDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class PictureListActivity extends Activity {
 
         PictureSelection where = new PictureSelection();
         Cursor c = getApplicationContext().getContentResolver().query(PictureColumns.CONTENT_URI, null,
-                where.sel(), where.args(), PictureColumns.TITLE + " DESC");
+                where.sel(), where.args(), PictureColumns.DATE + " DESC");
         lst.setAdapter(new PicturesAdapter(getApplicationContext(), c, true));
 
         Button btnAddItem = (Button) findViewById(R.id.list_btnAddItem);
@@ -48,6 +52,8 @@ public class PictureListActivity extends Activity {
                 PictureContentValues values = new PictureContentValues();
                 values.putTitle("Title " + timestamp);
                 values.putUrl("http://lorempixel.com/600/400/");
+                values.putDate(new Date());
+                values.putSource(PictureSource.Twitter);
                 getApplicationContext().getContentResolver().insert(PictureColumns.CONTENT_URI, values.values());
             }
         });
@@ -79,7 +85,12 @@ public class PictureListActivity extends Activity {
         int id = item.getItemId();
 
         if (id == R.id.picList_mnuRefresh) {
-            mPictureScraperManager.searchForNewImage();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mPictureScraperManager.searchForNewImage(getApplicationContext());
+                }
+            }).start();
             return true;
         }
 

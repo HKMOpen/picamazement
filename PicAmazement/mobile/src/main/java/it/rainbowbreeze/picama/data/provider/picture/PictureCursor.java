@@ -1,5 +1,7 @@
 package it.rainbowbreeze.picama.data.provider.picture;
 
+import java.util.Date;
+
 import android.database.Cursor;
 
 import it.rainbowbreeze.picama.data.provider.base.AbstractCursor;
@@ -14,7 +16,7 @@ public class PictureCursor extends AbstractCursor {
 
     /**
      * Get the {@code url} value.
-     * Can be {@code null}.
+     * Cannot be {@code null}.
      */
     public String getUrl() {
         Integer index = getCachedColumnIndexOrThrow(PictureColumns.URL);
@@ -28,5 +30,23 @@ public class PictureCursor extends AbstractCursor {
     public String getTitle() {
         Integer index = getCachedColumnIndexOrThrow(PictureColumns.TITLE);
         return getString(index);
+    }
+
+    /**
+     * Get the {@code source} value.
+     * Cannot be {@code null}.
+     */
+    public PictureSource getSource() {
+        Integer intValue = getIntegerOrNull(PictureColumns.SOURCE);
+        if (intValue == null) return null;
+        return PictureSource.values()[intValue];
+    }
+
+    /**
+     * Get the {@code date} value.
+     * Cannot be {@code null}.
+     */
+    public Date getDate() {
+        return getDate(PictureColumns.DATE);
     }
 }

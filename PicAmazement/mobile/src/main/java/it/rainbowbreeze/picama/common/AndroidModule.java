@@ -3,10 +3,12 @@ package it.rainbowbreeze.picama.common;
 import android.content.Context;
 import android.location.LocationManager;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.ui.PictureListActivity;
 
 /**
@@ -30,6 +32,7 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
 )
 public class AndroidModule {
     private final MyApp mApp;
+    @Inject ILogFacility mLogFacility;
 
     public AndroidModule(MyApp app) {
         mApp = app;

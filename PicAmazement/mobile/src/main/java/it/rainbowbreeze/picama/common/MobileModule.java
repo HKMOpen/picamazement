@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
 import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
@@ -35,6 +36,15 @@ public class MobileModule {
         return config;
     }
 
+    /**
+     * Just a test class that need application context to be initialized
+     * @return
+     */
+    @Provides @Singleton
+    AmazingPictureDao provideAmazingPictureDao(
+            ILogFacility logFacility) {
+        return new AmazingPictureDao(logFacility);
+    }
 
     /**
      * There is a provide method because the class have to be configure
@@ -44,9 +54,9 @@ public class MobileModule {
      */
     @Provides @Singleton public PictureScraperManager providePictureScrapeManager (
             ILogFacility logFacility,
-            PictureScraperManagerConfig pictureScraperManagerConfig) {
+            PictureScraperManagerConfig pictureScraperManagerConfig,
+            AmazingPictureDao amazingPictureDao) {
         //creates config for the scraper
-        return new PictureScraperManager(logFacility, pictureScraperManagerConfig);
+        return new PictureScraperManager(logFacility, pictureScraperManagerConfig, amazingPictureDao);
     }
-
 }

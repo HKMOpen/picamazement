@@ -36,7 +36,7 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
     private final ILogFacility mLogFacility;
     private final Twitter mTwitter;
     private OAuth2Token mTwitterToken;
-    private String mUserName;
+    private List<String> mUserNames;
 
     @Inject
     public TwitterScraper (ILogFacility logFacility, TwitterScraperConfig config) {
@@ -52,40 +52,42 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
                 .setOAuthConsumerSecret(Bag.TWITTER_CONSUMER_SECRET);
         mTwitter = new TwitterFactory(cb.build()).getInstance();
 
-        mUserName = config.getUserName();
+        mUserNames = config.getUserNames();
     }
 
     @Override
     public String getName() {
-        return LOG_TAG;
+        return "Twitter - " + mUserNames.toString();
     }
 
     @Override
     public List<AmazingPicture> getNewPictures() {
         ArrayList<AmazingPicture> pictures = new ArrayList<AmazingPicture>();
 
-        try {
             List<Status> statuses;
             initToken();
-            statuses = mTwitter.getUserTimeline(mUserName);
-            for (Status status : statuses) {
-                Log.d("TWITTER", status.getText());
-                for (MediaEntity mediaEntity : status.getMediaEntities()) {
-                    Log.d("TWITTER", " MEDIA -> " + mediaEntity.getDisplayURL() + " / " + mediaEntity.getMediaURL() + " / " + mediaEntity.getType());
-                    // There is a photo attached to the tweet
-                    if (!"photo".equals(mediaEntity.getType())) continue;
 
-                    AmazingPicture pic = new AmazingPicture(
-                            0,
-                            mediaEntity.getMediaURL());
-                    pictures.add(pic);
+            for (String userName : mUserNames) {
+                mLogFacility.v(LOG_TAG, "Analyzing Twitter account " + userName);
+            try {
+                statuses = mTwitter.getUserTimeline(userName);
+                for (Status status : statuses) {
+                    for (MediaEntity mediaEntity : status.getMediaEntities()) {
+                        mLogFacility.v(LOG_TAG, " MEDIA -> " + mediaEntity.getDisplayURL() + " / " + mediaEntity.getMediaURL() + " / " + mediaEntity.getType());
+                        // There is a photo attached to the tweet
+                        if (!"photo".equals(mediaEntity.getType())) continue;
+
+                        AmazingPicture pic = new AmazingPicture()
+                                .setUrl(mediaEntity.getMediaURL())
+                                .setDate(status.getCreatedAt())
+                                .setTitle(status.getText());
+                        pictures.add(pic);
+                    }
                 }
-
+            } catch (TwitterException te) {
+                te.printStackTrace();
+                mLogFacility.e(LOG_TAG, te);
             }
-
-        } catch (TwitterException te) {
-            te.printStackTrace();
-            //TODO
         }
 
         return pictures;

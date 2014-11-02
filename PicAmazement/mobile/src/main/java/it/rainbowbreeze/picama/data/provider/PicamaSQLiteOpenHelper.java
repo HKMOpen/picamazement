@@ -26,8 +26,10 @@ public class PicamaSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE_PICTURE = "CREATE TABLE IF NOT EXISTS "
             + PictureColumns.TABLE_NAME + " ( "
             + PictureColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + PictureColumns.URL + " TEXT, "
-            + PictureColumns.TITLE + " TEXT "
+            + PictureColumns.URL + " TEXT NOT NULL, "
+            + PictureColumns.TITLE + " TEXT, "
+            + PictureColumns.SOURCE + " INTEGER NOT NULL, "
+            + PictureColumns.DATE + " INTEGER NOT NULL "
             + " );";
 
     // @formatter:on
