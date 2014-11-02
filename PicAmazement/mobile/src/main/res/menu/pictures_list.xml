@@ -11,6 +11,11 @@
         app:showAsAction="withText|ifRoom"
         />
     <item
+        android:id="@+id/picList_mnuDeleteAll"
+        android:title="@string/picList_mnuDeleteAll"
+        app:showAsAction="never"
+    />
+    <item
         android:id="@+id/picList_mnuSettings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

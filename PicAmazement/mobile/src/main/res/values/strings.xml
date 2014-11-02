@@ -14,6 +14,7 @@
 
     <string name="common_app_name">Pic Amazement</string>
 
+    <string name="picList_mnuDeleteAll">Delete All</string>
     <string name="picList_mnuRefresh">Refresh</string>
     <string name="picList_mnuSettings">Settings</string>
 

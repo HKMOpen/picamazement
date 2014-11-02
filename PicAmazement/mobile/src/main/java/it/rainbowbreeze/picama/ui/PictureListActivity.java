@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -44,6 +43,7 @@ public class PictureListActivity extends Activity {
                 where.sel(), where.args(), PictureColumns.DATE + " DESC");
         lst.setAdapter(new PicturesAdapter(getApplicationContext(), c, true));
 
+        /**
         Button btnAddItem = (Button) findViewById(R.id.list_btnAddItem);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,16 +57,7 @@ public class PictureListActivity extends Activity {
                 getApplicationContext().getContentResolver().insert(PictureColumns.CONTENT_URI, values.values());
             }
         });
-
-        Button btnClearAll = (Button) findViewById(R.id.list_btnClear);
-        btnClearAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PictureSelection where = new PictureSelection();
-                getApplicationContext().getContentResolver().delete(PictureColumns.CONTENT_URI, where.sel(), where.args());
-            }
-        });
-
+        */
     }
 
 
@@ -84,16 +75,22 @@ public class PictureListActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.picList_mnuRefresh) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    mPictureScraperManager.searchForNewImage(getApplicationContext());
-                }
-            }).start();
-            return true;
+        switch (id) {
+            case R.id.picList_mnuDeleteAll:
+                PictureSelection where = new PictureSelection();
+                getApplicationContext().getContentResolver().delete(PictureColumns.CONTENT_URI, where.sel(), where.args());
+                break;
+            case R.id.picList_mnuRefresh:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPictureScraperManager.searchForNewImage(getApplicationContext());
+                    }
+                }).start();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }
