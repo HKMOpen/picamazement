@@ -10,6 +10,9 @@ public class AmazingPicture {
     private String mTitle;
     private Date mDate;
 
+    public static final String FIELD_URL = "Url";
+    public static final String FIELD_TITLE = "Title";
+
     public AmazingPicture() {
     }
 

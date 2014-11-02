@@ -103,7 +103,12 @@ public class PictureListActivity extends Activity {
                 }).start();
                 break;
             case R.id.picList_mnuSendToWatch:
-                sendToWatch();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendToWatch();
+                    }
+                }).start();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -120,6 +125,6 @@ public class PictureListActivity extends Activity {
         }
 
         // Prepares to send the element to the Wear
-
+        mWearManager.transferAmazingPicture(picture);
     }
 }

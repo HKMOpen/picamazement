@@ -1,14 +1,17 @@
 package it.rainbowbreeze.picama.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import it.rainbowbreeze.picama.R;
 
 public class PictureActivity extends Activity {
 
+    public static final String INTENT_EXTRA_TITLE = "Title";
     private TextView mTextView;
 
     @Override
@@ -20,6 +23,9 @@ public class PictureActivity extends Activity {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 mTextView = (TextView) stub.findViewById(R.id.text);
+                Intent intent = getIntent();
+                String title = intent.getStringExtra(INTENT_EXTRA_TITLE);
+                mTextView.setText(TextUtils.isEmpty(title) ? "Nothing arrived" : title);
             }
         });
     }
