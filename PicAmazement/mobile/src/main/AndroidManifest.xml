@@ -26,11 +26,13 @@
 
         <activity
             android:name="it.rainbowbreeze.picama.ui.FullscreenPictureActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_fullscreen_picture"
-            android:theme="@style/FullscreenTheme"
+            android:theme="@style/AppFullscreenTheme"
         >
         </activity>
+        <!--
+            android:configChanges="orientation|keyboardHidden|screenSize"
+        -->
 
         <provider
             android:name="it.rainbowbreeze.picama.data.provider.PictureProvider"

@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -73,6 +75,7 @@ public class FullscreenPictureActivity extends Activity {
 
         final View contentView = findViewById(R.id.fullscreen_imgPicture);
 
+        /**
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
         mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
@@ -101,6 +104,7 @@ public class FullscreenPictureActivity extends Activity {
                 }
             }
         });
+        */
 
         long pictureId = getIntent().getLongExtra(Bag.PICTURE_ID, -1);
         if (-1 == pictureId) {
@@ -124,6 +128,7 @@ public class FullscreenPictureActivity extends Activity {
                 .into(imageView);
     }
 
+    /**
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -133,6 +138,7 @@ public class FullscreenPictureActivity extends Activity {
         // are available.
         delayedHide(100);
     }
+    **/
 
 
     /**
