@@ -1,11 +1,9 @@
-package it.rainbowbreeze.picama.data.picture;
-
-import java.util.Date;
+package it.rainbowbreeze.picama.data.provider.picture;
 
 import android.content.ContentResolver;
 import android.net.Uri;
 
-import it.rainbowbreeze.picama.data.base.AbstractContentValues;
+import it.rainbowbreeze.picama.data.provider.base.AbstractContentValues;
 
 /**
  * Content values wrapper for the {@code picture} table.

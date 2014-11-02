@@ -1,12 +1,10 @@
-package it.rainbowbreeze.picama.data.picture;
-
-import java.util.Date;
+package it.rainbowbreeze.picama.data.provider.picture;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 
-import it.rainbowbreeze.picama.data.base.AbstractSelection;
+import it.rainbowbreeze.picama.data.provider.base.AbstractSelection;
 
 /**
  * Selection for the {@code picture} table.

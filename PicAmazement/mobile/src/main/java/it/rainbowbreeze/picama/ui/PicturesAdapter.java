@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import it.rainbowbreeze.picama.R;
-import it.rainbowbreeze.picama.data.picture.PictureCursor;
+import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 
 /**
  * Created by alfredomorresi on 26/10/14.

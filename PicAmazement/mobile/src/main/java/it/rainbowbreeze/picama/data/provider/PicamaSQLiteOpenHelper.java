@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.data;
+package it.rainbowbreeze.picama.data.provider;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.os.Build;
 import android.util.Log;
 
 import it.rainbowbreeze.picama.BuildConfig;
-import it.rainbowbreeze.picama.data.picture.PictureColumns;
+import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 
 public class PicamaSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = PicamaSQLiteOpenHelper.class.getSimpleName();

@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.data.base;
+package it.rainbowbreeze.picama.data.provider.base;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;

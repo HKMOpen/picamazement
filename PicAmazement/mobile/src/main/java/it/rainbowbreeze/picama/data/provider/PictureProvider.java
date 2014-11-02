@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.data;
+package it.rainbowbreeze.picama.data.provider;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import it.rainbowbreeze.picama.BuildConfig;
-import it.rainbowbreeze.picama.data.base.AliasCursor;
-import it.rainbowbreeze.picama.data.picture.PictureColumns;
+import it.rainbowbreeze.picama.data.provider.base.AliasCursor;
+import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 
 public class PictureProvider extends ContentProvider {
     private static final String TAG = PictureProvider.class.getSimpleName();

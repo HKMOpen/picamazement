@@ -1,9 +1,9 @@
-package it.rainbowbreeze.picama.data.base;
+package it.rainbowbreeze.picama.data.provider.base;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import it.rainbowbreeze.picama.data.picture.PictureColumns;
+import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 
 public class AliasCursor extends CursorWrapper {
     public AliasCursor(Cursor cursor) {

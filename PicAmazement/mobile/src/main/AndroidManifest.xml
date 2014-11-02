@@ -25,7 +25,7 @@
         </activity>
 
         <provider
-            android:name="it.rainbowbreeze.picama.data.PictureProvider"
+            android:name=".data.provider.PictureProvider"
             android:authorities="it.rainbowbreeze.picama.provider"
             android:exported="false"
         />

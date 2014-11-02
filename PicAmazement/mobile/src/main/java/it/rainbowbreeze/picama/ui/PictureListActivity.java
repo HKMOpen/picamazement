@@ -16,9 +16,9 @@ import javax.inject.Inject;
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.data.picture.PictureColumns;
-import it.rainbowbreeze.picama.data.picture.PictureContentValues;
-import it.rainbowbreeze.picama.data.picture.PictureSelection;
+import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
+import it.rainbowbreeze.picama.data.provider.picture.PictureContentValues;
+import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 
 public class PictureListActivity extends Activity {

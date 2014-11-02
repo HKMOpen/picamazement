@@ -1,10 +1,8 @@
-package it.rainbowbreeze.picama.data.picture;
-
-import java.util.Date;
+package it.rainbowbreeze.picama.data.provider.picture;
 
 import android.database.Cursor;
 
-import it.rainbowbreeze.picama.data.base.AbstractCursor;
+import it.rainbowbreeze.picama.data.provider.base.AbstractCursor;
 
 /**
  * Cursor wrapper for the {@code picture} table.

@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.data.base;
+package it.rainbowbreeze.picama.data.provider.base;
 
 import java.util.Date;
 import java.util.IdentityHashMap;

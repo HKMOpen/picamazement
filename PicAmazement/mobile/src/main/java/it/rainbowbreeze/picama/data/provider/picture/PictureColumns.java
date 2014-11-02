@@ -1,9 +1,9 @@
-package it.rainbowbreeze.picama.data.picture;
+package it.rainbowbreeze.picama.data.provider.picture;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import it.rainbowbreeze.picama.data.PictureProvider;
+import it.rainbowbreeze.picama.data.provider.PictureProvider;
 
 /**
  * Columns for the {@code picture} table.
