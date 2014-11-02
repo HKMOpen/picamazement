@@ -11,12 +11,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_list">List Activity</string>
     <string name="hello_world">Hello world!</string>
-
     <string name="common_app_name">Pic Amazement</string>
-
     <string name="picList_mnuDeleteAll">Delete All</string>
     <string name="picList_mnuRefresh">Refresh</string>
     <string name="picList_mnuSettings">Settings</string>
-
+    <string name="title_activity_fullscreen_picture">Fullscreen picture</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
 import it.rainbowbreeze.picama.ui.PictureListActivity;
 
 /**
@@ -18,8 +19,7 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
  * Created by alfredomorresi on 31/10/14.
  */
 @Module (
-        injects = PictureListActivity.class,
-        //injects = { ListActivity.class, PictureScraperManager.class },
+        injects = { PictureListActivity.class, FullscreenPictureActivity.class },
         includes = MobileModule.class,
         // True because it declares @Provides not used inside the class, but outside.
         // Once the code is finished, it should be possible to remove to set to false and have

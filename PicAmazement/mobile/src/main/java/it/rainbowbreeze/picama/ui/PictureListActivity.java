@@ -1,6 +1,7 @@
 package it.rainbowbreeze.picama.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
@@ -51,6 +53,9 @@ public class PictureListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getApplicationContext(), "Clicked on id " + id, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), FullscreenPictureActivity.class);
+                intent.putExtra(Bag.PICTURE_ID, id);
+                startActivity(intent);
             }
         });
 
