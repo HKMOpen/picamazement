@@ -125,6 +125,8 @@ public class FullscreenPictureActivity extends Activity {
         ImageView imageView = (ImageView) findViewById(R.id.fullscreen_imgPicture);
         Picasso.with(getApplicationContext())
                 .load(url)
+                .fit()
+                .centerCrop()
                 .into(imageView);
     }
 

@@ -138,6 +138,6 @@ public class PictureListActivity extends Activity {
         }
 
         // Prepares to send the element to the Wear
-        mWearManager.transferAmazingPicture(picture);
+        mWearManager.transferAmazingPicture(this, picture);
     }
 }

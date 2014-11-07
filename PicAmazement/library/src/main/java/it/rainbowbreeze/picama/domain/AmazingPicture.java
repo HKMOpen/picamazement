@@ -10,8 +10,9 @@ public class AmazingPicture {
     private String mTitle;
     private Date mDate;
 
-    public static final String FIELD_URL = "Url";
+    public static final String FIELD_IMAGE = "Image";
     public static final String FIELD_TITLE = "Title";
+    public static final String FIELD_TIMESTAMP = "Timestamp"; // Avoids caching
 
     public AmazingPicture() {
     }
