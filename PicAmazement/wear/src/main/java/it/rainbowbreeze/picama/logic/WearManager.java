@@ -2,36 +2,26 @@ package it.rainbowbreeze.picama.logic;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.wearable.Asset;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ForApplication;
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.domain.AmazingPicture;
 
 /**
  * Created by alfredomorresi on 02/11/14.
@@ -54,11 +44,13 @@ public class WearManager {
      */
 
     private static final String LOG_TAG = WearManager.class.getSimpleName();
+    public static final int GCLIENT_TIMEOUT = 30;
     private final ILogFacility mLogFacility;
     private final Context mAppContext;
     private Object mSync;
     private GoogleApiClient mGoogleApiClient;
 
+    @Inject
     public WearManager(ILogFacility logFacility, @ForApplication Context appContext) {
         mLogFacility = logFacility;
         mAppContext = appContext;
@@ -88,7 +80,18 @@ public class WearManager {
                 .build();
     }
 
+    /**
+     * Connect to the client.
+     * Do not use in the UI thread
+     */
     public void onStart() {
+        obtainWorkingClient();
+    }
+
+    /**
+     * Connect to the client
+     */
+    public void onStartASync() {
         mGoogleApiClient.connect();
     }
 
@@ -96,6 +99,24 @@ public class WearManager {
         mGoogleApiClient.disconnect();
     }
 
+
+    /**
+     * Returns a working Google API Client.
+     * Cannot run in the UI thread
+     * @return
+     */
+    public int obtainWorkingClient() {
+        //TODO: manages isConnecting
+        if (!mGoogleApiClient.isConnected()) {
+            ConnectionResult connectionResult = mGoogleApiClient
+                    .blockingConnect(GCLIENT_TIMEOUT, TimeUnit.SECONDS);
+            if (!connectionResult.isSuccess()) {
+                mLogFacility.e(LOG_TAG, "Service failed to connect to GoogleApiClient.");
+                return connectionResult.getErrorCode();
+            }
+        }
+        return ConnectionResult.SUCCESS;
+    }
 
     /**
      * Search for different nodes
@@ -114,62 +135,6 @@ public class WearManager {
     }
 
     /**
-     * Prepares and send a picture to Android Wear, async
-     *
-     * @param context
-     * @param picture
-     */
-    public void transferAmazingPicture(Context context, final AmazingPicture picture) {
-        mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getTitle());
-        Collection<String> nodes = getNodes();
-        if (nodes.isEmpty()) {
-            mLogFacility.v(LOG_TAG, "Unfortunately, no nodes were found");
-            return;
-        }
-
-        // Test
-        for(String node:nodes) {
-            mLogFacility.v(LOG_TAG, "Sending data to node " + node);
-            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                    mGoogleApiClient, node, Bag.WEAR_MESSAGE_SIMPLE, null).await();
-            if (!result.getStatus().isSuccess()) {
-                mLogFacility.e(LOG_TAG, "ERROR: failed to send Message: " + result.getStatus());
-            }
-        }
-
-        // Launches Picasso to retrieve the image
-        Bitmap image = null;
-        try {
-            image = Picasso.with(mAppContext)
-                    .load(picture.getUrl())
-                    .resize(640, 400) // Allows parallax scrolling
-                    .get();
-        } catch (IOException e) {
-            mLogFacility.e(LOG_TAG, e);
-        }
-
-        if (null == image) {
-            mLogFacility.v(LOG_TAG, "No image to transfer to Wear, aborting");
-            return;
-        }
-        mLogFacility.v(LOG_TAG, "Valid bitmap, Wear DataRequest creation");
-        // Prepares the DataMapRequest
-        PutDataMapRequest dataMap = PutDataMapRequest.create(Bag.WEAR_DATAMAP_AMAZINGPICTURE);
-        dataMap.getDataMap().putString(AmazingPicture.FIELD_TITLE, picture.getTitle());
-        dataMap.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
-        dataMap.getDataMap().putLong(AmazingPicture.FIELD_TIMESTAMP, (new Date()).getTime());
-        PutDataRequest request = dataMap.asPutDataRequest();
-        PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
-                mGoogleApiClient, request);
-        pendingResult.await();
-        mLogFacility.v(LOG_TAG, "Transferred to Wear");
-    }
-
-    public boolean isPlayServiceAvailable() {
-        return ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(mAppContext);
-    }
-
-    /**
      * Transform a {@link android.graphics.Bitmap} into an {@link com.google.android.gms.wearable.Asset}
      *
      * @param bitmap
@@ -179,6 +144,23 @@ public class WearManager {
         final ByteArrayOutputStream bs = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bs);
         return Asset.createFromBytes(bs.toByteArray());
+    }
+
+    public Bitmap loadBitmapFromAsset(Asset asset) {
+        if (asset == null) {
+            throw new IllegalArgumentException("Asset must be non-null");
+        }
+
+        // convert asset into a file descriptor and block until it's ready
+        InputStream assetInputStream = Wearable.DataApi.getFdForAsset(
+                mGoogleApiClient, asset).await().getInputStream();
+
+        if (assetInputStream == null) {
+            mLogFacility.i(LOG_TAG, "Requested an unknown Asset.");
+            return null;
+        }
+        // decode the stream into a bitmap
+        return BitmapFactory.decodeStream(assetInputStream);
     }
 
 }

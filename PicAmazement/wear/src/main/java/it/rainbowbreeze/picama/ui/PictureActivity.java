@@ -12,6 +12,7 @@ import it.rainbowbreeze.picama.R;
 public class PictureActivity extends Activity {
 
     public static final String INTENT_EXTRA_TITLE = "Title";
+    public static final String INTENT_EXTRA_IMAGEASSET = "ImageAsset";
     private TextView mTextView;
 
     @Override

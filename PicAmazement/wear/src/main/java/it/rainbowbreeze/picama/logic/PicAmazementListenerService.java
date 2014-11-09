@@ -1,5 +1,8 @@
 package it.rainbowbreeze.picama.logic;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -7,6 +10,7 @@ import android.text.TextUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.data.FreezableUtils;
+import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMapItem;
@@ -19,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
@@ -32,8 +37,12 @@ import it.rainbowbreeze.picama.ui.PictureActivity;
 public class PicAmazementListenerService extends WearableListenerService {
     private static final String LOG_TAG = PicAmazementListenerService.class.getSimpleName();
 
+    /**
+     * Another way to use Dagger: @Inject the object directly as a field.
+     * Default null constructor is called and the field is injected
+     */
     @Inject ILogFacility mLogFacility;
-    private GoogleApiClient mGoogleApiClient;
+    @Inject WearManager mWearManager;
 
     @Override
     public void onCreate() {
@@ -41,33 +50,14 @@ public class PicAmazementListenerService extends WearableListenerService {
         ((MyApp) getApplication()).inject(this);
         mLogFacility.v(LOG_TAG, "onCreated");
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(Bundle connectionHint) {
-                        mLogFacility.v(LOG_TAG, "onConnected: " + connectionHint);
-                        // Now you can use the data layer API
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int cause) {
-                        mLogFacility.v(LOG_TAG, "onConnectionSuspended: " + cause);
-                    }
-                })
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(ConnectionResult result) {
-                        mLogFacility.v(LOG_TAG, "onConnectionFailed: " + result);
-                    }
-                })
-                .addApi(Wearable.API)
-                .build();
-        mGoogleApiClient.connect();
+        mWearManager.init();
+        mWearManager.onStartASync();
     }
+
 
     @Override
     public void onDestroy() {
-        mGoogleApiClient.disconnect();
+        mWearManager.onStop();
         super.onDestroy();
     }
 
@@ -85,16 +75,9 @@ public class PicAmazementListenerService extends WearableListenerService {
         final List<DataEvent> events = FreezableUtils.freezeIterable(dataEvents);
         dataEvents.close();
 
-        if (!mGoogleApiClient.isConnected()) {
-            ConnectionResult connectionResult = mGoogleApiClient
-                    .blockingConnect(30, TimeUnit.SECONDS);
-            if (!connectionResult.isSuccess()) {
-                mLogFacility.e(LOG_TAG, "Service failed to connect to GoogleApiClient.");
-                return;
-            }
-        }
-
+        // Reads data from the DataApi
         String title = null;
+        Asset bitmapAsset = null;
         for (DataEvent event : events) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 String path = event.getDataItem().getUri().getPath();
@@ -102,9 +85,8 @@ public class PicAmazementListenerService extends WearableListenerService {
                     // Get the data out of the event
                     DataMapItem dataMapItem =
                             DataMapItem.fromDataItem(event.getDataItem());
-
                     title = dataMapItem.getDataMap().getString(AmazingPicture.FIELD_TITLE);
-                    //Asset asset = dataMapItem.getDataMap().getAsset(KEY_IMAGE);
+                    bitmapAsset = dataMapItem.getDataMap().getAsset(AmazingPicture.FIELD_IMAGE);
                 }else {
                     mLogFacility.e(LOG_TAG, "Unrecognized path " + path);
                 }
@@ -115,9 +97,32 @@ public class PicAmazementListenerService extends WearableListenerService {
             return;
         }
 
+        // Prepares the notification to open the new activity
         Intent startIntent = new Intent(this, PictureActivity.class);
         startIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, title);
+        startIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, bitmapAsset);
         startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startIntent);
+
+        // And starts the activity
+        // startActivity(startIntent);
+
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                startIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.WearableExtender wearableExtender = new Notification.WearableExtender()
+                .setDisplayIntent(notificationPendingIntent);
+        Notification.Builder notificationBuilder = new Notification.Builder(this)
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentText(title)
+                .extend(wearableExtender);
+        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(
+                Bag.NOTIFICATION_ID_NEWIMAGE,
+                notificationBuilder.build());
+
+        mLogFacility.v(LOG_TAG, "Sent notification for picture " + title);
     }
 }
