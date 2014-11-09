@@ -21,13 +21,12 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ForApplication;
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
+import it.rainbowbreeze.picama.domain.AmazingPicture;
 
 /**
  * Created by alfredomorresi on 02/11/14.
@@ -114,11 +113,26 @@ public class WearManager {
      *
      * @param picture
      */
-    public void transferAmazingPicture(final BaseAmazingPicture picture) {
+    public void transferAmazingPicture(final AmazingPicture picture) {
         mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getTitle());
         Collection<String> nodes = getNodes();
         if (nodes.isEmpty()) {
             mLogFacility.v(LOG_TAG, "Unfortunately, no nodes were found");
+            return;
+        }
+
+        // Launches Picasso to retrieve the image
+        Bitmap image = null;
+        try {
+            image = Picasso.with(mAppContext)
+                    .load(picture.getUrl())
+                    .resize(640, 400) // Allows parallax scrolling
+                    .get();
+        } catch (IOException e) {
+            mLogFacility.e(LOG_TAG, e);
+        }
+        if (null == image) {
+            mLogFacility.v(LOG_TAG, "No image to transfer to Wear, aborting");
             return;
         }
 
@@ -132,33 +146,16 @@ public class WearManager {
             }
         }
 
-        // Launches Picasso to retrieve the image
-        Bitmap image = null;
-        try {
-            image = Picasso.with(mAppContext)
-                    .load(picture.getUrl())
-                    .resize(640, 400) // Allows parallax scrolling
-                    .get();
-        } catch (IOException e) {
-            mLogFacility.e(LOG_TAG, e);
-        }
-
-        if (null == image) {
-            mLogFacility.v(LOG_TAG, "No image to transfer to Wear, aborting");
-            return;
-        }
         mLogFacility.v(LOG_TAG, "Valid bitmap, Wear DataRequest creation");
         // Prepares the DataMapRequest
-        PutDataMapRequest dataMap = PutDataMapRequest.create(Bag.WEAR_DATAMAP_AMAZINGPICTURE);
-        dataMap.getDataMap().putString(BaseAmazingPicture.FIELD_TITLE, picture.getTitle());
-        dataMap.getDataMap().putString(BaseAmazingPicture.FIELD_SOURCE, picture.getSource());
-        dataMap.getDataMap().putAsset(BaseAmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
-        dataMap.getDataMap().putLong(BaseAmazingPicture.FIELD_TIMESTAMP, (new Date()).getTime());
-        PutDataRequest request = dataMap.asPutDataRequest();
+        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(Bag.WEAR_DATAMAP_AMAZINGPICTURE);
+        picture.fillDataMap(dataMapRequest.getDataMap());
+        dataMapRequest.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
+        PutDataRequest request = dataMapRequest.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
                 mGoogleApiClient, request);
         pendingResult.await();
-        mLogFacility.v(LOG_TAG, "Transferred to Wear");
+        mLogFacility.v(LOG_TAG, "Transferred to Wear picture with id " + picture.getId());
     }
 
     public boolean isPlayServiceAvailable() {

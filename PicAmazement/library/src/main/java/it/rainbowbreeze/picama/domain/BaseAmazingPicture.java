@@ -6,17 +6,27 @@ import java.util.Date;
  * Created by alfredomorresi on 19/10/14.
  */
 public abstract class BaseAmazingPicture {
+    private long mId;
     private String mUrl;
     private String mTitle;
     private String mSource;
     private Date mDate;
 
+    public static final String FIELD_ID = "Id";
     public static final String FIELD_IMAGE = "Image";
     public static final String FIELD_TITLE = "Title";
     public static final String FIELD_SOURCE = "Source";
     public static final String FIELD_TIMESTAMP = "Timestamp"; // Avoids caching
 
     public BaseAmazingPicture() {
+    }
+
+    public long getId() {
+        return mId;
+    }
+    public BaseAmazingPicture setId(long newValue) {
+        mId = newValue;
+        return this;
     }
 
     public String getUrl() {

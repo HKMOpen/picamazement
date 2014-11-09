@@ -5,4 +5,7 @@
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>
 
+    <string name="common_removePicture">Remove</string>
+    <string name="common_savePicture">Save</string>
+
 </resources>

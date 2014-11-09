@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Picture;
 import android.os.Bundle;
+import android.view.Gravity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,7 +30,6 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ForApplication;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
-import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
 import it.rainbowbreeze.picama.ui.PictureActivity;
 
 /**
@@ -205,6 +204,26 @@ public class WearManager {
         // And starts the activity
         //mAppContext.startActivity(startIntent);
 
+        // Action to remove the picture from the stream
+        Intent removePicIntent = new Intent(Bag.INTENT_ACTION_REMOVEPICTURE);
+        removePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
+        PendingIntent removePicPendingIntent = PendingIntent.getActivity(
+                mAppContext, 0, removePicIntent, 0);
+        Notification.Action removePicAction = new Notification.Action(
+                R.drawable.ic_launcher,
+                mAppContext.getString(R.string.common_removePicture),
+                removePicPendingIntent);
+
+        // Action to save the picture from the stream
+        Intent savePicIntent = new Intent(Bag.INTENT_ACTION_SAVEPICTURE);
+        savePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
+        PendingIntent savePicPendingIntent = PendingIntent.getActivity(
+                mAppContext, 0, savePicIntent, 0);
+        Notification.Action savePicAction = new Notification.Action(
+                R.drawable.ic_launcher,
+                mAppContext.getString(R.string.common_savePicture),
+                savePicPendingIntent);
+
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(
                 mAppContext,
                 0,
@@ -212,13 +231,18 @@ public class WearManager {
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.WearableExtender wearableExtender = new Notification.WearableExtender()
-                //.setDisplayIntent(notificationPendingIntent)
+                .setDisplayIntent(notificationPendingIntent)
+                //.setGravity(Gravity.CENTER)
+                //.setHintShowBackgroundOnly(true) // Boh?
                 .setBackground(pictureBitmap);
         Notification.Builder notificationBuilder = new Notification.Builder(mAppContext)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentText(picture.getSource())
+                .setContentTitle(picture.getSource())
+                .addAction(removePicAction)
+                .addAction(savePicAction)
                 .extend(wearableExtender);
+        //TODO: think about moving the actions in the WearableExtender
         ((NotificationManager) mAppContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(
                 Bag.NOTIFICATION_ID_NEWIMAGE,
                 notificationBuilder.build());

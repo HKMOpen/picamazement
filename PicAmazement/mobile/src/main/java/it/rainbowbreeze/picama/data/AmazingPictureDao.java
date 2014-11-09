@@ -69,10 +69,11 @@ public class AmazingPictureDao {
         while (c.moveToNext()) {
             picture = new AmazingPicture();
             picture
-                .setUrl(c.getUrl())
-                .setDate(c.getDate())
-                .setTitle(c.getTitle())
-                .setSource(c.getSource().toString());
+                    .setId(c.getId())
+                    .setUrl(c.getUrl())
+                    .setDate(c.getDate())
+                    .setTitle(c.getTitle())
+                    .setSource(c.getSource().toString());
             break;
         }
         c.close();

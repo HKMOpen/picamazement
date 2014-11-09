@@ -9,4 +9,8 @@ public abstract class SharedBag {
 
     public final static String WEAR_DATAMAP_AMAZINGPICTURE = "/AmazingPicture";
     public final static String WEAR_MESSAGE_SIMPLE = "/SimpleMessage";
+
+    public final static String INTENT_ACTION_REMOVEPICTURE = "RemovePicture";
+    public static final String INTENT_ACTION_SAVEPICTURE = "SavePicture";
+    public final static String INTENT_EXTRA_PICTUREID = "RemovePicture";
 }
