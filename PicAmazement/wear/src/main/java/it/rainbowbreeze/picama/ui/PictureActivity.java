@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.text.TextUtils;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,11 @@ public class PictureActivity extends Activity {
         mWearManager.init();
         mWearManager.onStartASync();
 
+        setContentView(R.layout.act_fullscreen_picture);
+        ImageView imgPicture = (ImageView) findViewById(R.id.fullscreen_imgPicture);
+        imgPicture.setImageBitmap(Bag.getPictureBitmap());
+
+        /*
         setContentView(R.layout.act_picture);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
@@ -59,6 +65,7 @@ public class PictureActivity extends Activity {
                 }
             }
         });
+        */
     }
 
     @Override

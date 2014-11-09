@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -122,13 +123,28 @@ public class FullscreenPictureActivity extends Activity {
         mLogFacility.v(LOG_TAG, "Loading picture at " + url);
 
         // Retrieves the image URL
+        // Uses Picasso built-in methods to measure the size of the containing ImageView and then
+        //  resize the image to fit the ImageView. Memory efficient
+        // Only one drawback: the image have to be present full-size in the cache, otherwise
+        //  the scaled one is scaled or stretched again to fit inside this new ImageView
         ImageView imageView = (ImageView) findViewById(R.id.fullscreen_imgPicture);
         Picasso.with(getApplicationContext())
                 .load(url)
+                //.placeholder()
+                //.error()
                 .fit()
-                .centerCrop()
+                .centerInside()
                 .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imageView = (ImageView) findViewById(R.id.fullscreen_imgPicture);
+                Toast.makeText(FullscreenPictureActivity.this, "W: " + imageView.getWidth() + ", H: " + imageView.getHeight(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     /**
     @Override

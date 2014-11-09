@@ -13,6 +13,7 @@ public class TwitterScraperConfig extends IPictureScraperConfig {
         List<String> usernames = new ArrayList<String>();
         usernames.add("EarthBeauties");
         usernames.add("_Paisajes_");
+        usernames.add("HighFromAbove");
         return usernames;
     }
 }

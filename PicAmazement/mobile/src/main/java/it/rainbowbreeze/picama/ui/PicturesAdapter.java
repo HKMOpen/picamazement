@@ -16,6 +16,16 @@ import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 
 /**
  * Created by alfredomorresi on 26/10/14.
+ *
+ * Picasso consideration
+ * - .fit() waits that the ImageView has been measured, then resize the image the the exact
+ *    size of the ImageView and put it into the cache. If the first imageView that requires
+ *    the image is inside the list item, the cache bitmap will have a small height and width,
+ *    so all the following requests of the same image will obtain a small bitmap.
+ *    To avoid this, download the image at a particular size (full in case of twitter images,
+ *    TBD in case of other images) and use the ImageView scaleType attribute to show the image
+ *    at the right size.
+ *    Unfortunately, it's not always memory-saving, but it works!
  */
 public class PicturesAdapter extends CursorAdapter {
     private final LayoutInflater mInflater;
@@ -32,7 +42,6 @@ public class PicturesAdapter extends CursorAdapter {
         ImageView imgPhoto = (ImageView) newView.findViewById(R.id.picList_imgPicture);
         ViewHolder holder = new ViewHolder(lblTitle, imgPhoto);
         newView.setTag(holder);
-        //Log.d("ALFREDO", "Creating view");
 
         return newView;
     }
@@ -42,10 +51,15 @@ public class PicturesAdapter extends CursorAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         PictureCursor pictureCursor = new PictureCursor(cursor);
         holder.lblTitle.setText(pictureCursor.getTitle());
-        //Log.d("ALFREDO", "Binding view");
 
+        // Removed fit and centerCrop for caching reason, as in the comment of this class
+        //  (following request of the same image will return the small image required by
+        //  the listview
+        // TODO: adjust for a smart memory management
         Picasso.with(holder.imgPicture.getContext())
                 .load(pictureCursor.getUrl())
+                //.fit()
+                //.centerCrop()
                 .into(holder.imgPicture);
     }
 

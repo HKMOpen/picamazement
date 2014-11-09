@@ -1,17 +1,24 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context="it.rainbowbreeze.picama.ui.FullscreenPictureActivity"
+    android:background="#FFFFFF"
 >
 
+    <!-- If the image is loaded with Picasso, remember to set .fit().centerInside() and use center
+          as scaleType or not set scaleType at all
+         If image is not loaded using Picasso, or loaded using it but without the
+          .fit().centerInside(), use fitCenter as scaleType, especially for Twitter source
+          where images are generally smalled (in pixel) than a xxdpi display
+         To see the image at original size, use center and don't use any resizing
+          method in Picasso
+    -->
     <ImageView
         android:id="@+id/fullscreen_imgPicture"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:adjustViewBounds="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
     />
 
 </LinearLayout>

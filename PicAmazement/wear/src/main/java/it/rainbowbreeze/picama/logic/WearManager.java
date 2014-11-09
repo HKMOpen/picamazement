@@ -191,18 +191,29 @@ public class WearManager {
      * @param picture
      */
     public void sendNewPictureNotification(AmazingPicture picture) {
-        // Prepares the notification to open the new activity
-        Intent startIntent = new Intent(mAppContext, PictureActivity.class);
-        startIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, picture.getTitle());
-        startIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, picture.getAssetPicture());
-        startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
         // Read the image from the asset
         Bitmap pictureBitmap = loadBitmapFromAsset(picture.getAssetPicture());
         Bag.putPictureBitmap(pictureBitmap);
 
+        // Prepares the notification to open the new activity
+        Intent fullscreenIntent = new Intent(mAppContext, PictureActivity.class);
+        fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, picture.getTitle());
+        fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, picture.getAssetPicture());
+        fullscreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(
+                mAppContext,
+                0,
+                fullscreenIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
         // And starts the activity
         //mAppContext.startActivity(startIntent);
+
+        // Page to display information about the picture
+        Notification infoPage = new Notification.Builder(mAppContext)
+                .setContentTitle(picture.getSource())
+                .setContentText(picture.getTitle())
+                .build();
 
         // Action to remove the picture from the stream
         Intent removePicIntent = new Intent(Bag.INTENT_ACTION_REMOVEPICTURE);
@@ -224,19 +235,15 @@ public class WearManager {
                 mAppContext.getString(R.string.common_savePicture),
                 savePicPendingIntent);
 
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
-                mAppContext,
-                0,
-                startIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
         Notification.WearableExtender wearableExtender = new Notification.WearableExtender()
-                .setDisplayIntent(notificationPendingIntent)
+                .setDisplayIntent(fullScreenPendingIntent)
+                .setCustomSizePreset(Notification.WearableExtender.SIZE_FULL_SCREEN)
                 //.setGravity(Gravity.CENTER)
                 //.setHintShowBackgroundOnly(true) // Boh?
-                .setBackground(pictureBitmap);
+                .setBackground(pictureBitmap)
+                .addPage(infoPage);
         Notification.Builder notificationBuilder = new Notification.Builder(mAppContext)
-                .setOngoing(true)
+                //.setOngoing(true)  // Notification cannot be swiped right
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(picture.getSource())
                 .addAction(removePicAction)

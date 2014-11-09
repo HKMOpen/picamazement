@@ -127,7 +127,9 @@ public class WearManager {
             image = Picasso.with(mAppContext)
                     .load(picture.getUrl())
                     .resize(640, 400) // Allows parallax scrolling
+                    .centerInside() //maintain aspect ratio
                     .get();
+            mLogFacility.v(LOG_TAG, "Image for Wear size: " + image.getWidth() + "x" + image.getHeight());
         } catch (IOException e) {
             mLogFacility.e(LOG_TAG, e);
         }
