@@ -158,6 +158,11 @@ public class WearManager {
             throw new IllegalArgumentException("Asset must be non-null");
         }
 
+        if (ConnectionResult.SUCCESS != obtainWorkingClient()) {
+            mLogFacility.e(LOG_TAG, "Aborting get bitmap from asset");
+            return null;
+        }
+
         // convert asset into a file descriptor and block until it's ready
         InputStream assetInputStream = Wearable.DataApi.getFdForAsset(
                 mGoogleApiClient, asset).await().getInputStream();
@@ -179,6 +184,11 @@ public class WearManager {
         }).start();
     }
 
+    /**
+     * Cannot be called in the UI thread
+     * @param title
+     * @param pictureAsset
+     */
     public void sendNewPictureNotification(String title, Asset pictureAsset) {
         // Prepares the notification to open the new activity
         Intent startIntent = new Intent(mAppContext, PictureActivity.class);
@@ -186,11 +196,14 @@ public class WearManager {
         startIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, pictureAsset);
         startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        // And starts the activity
-        // startActivity(startIntent);
-
         // Read the image from the asset
         Bitmap pictureBitmap = loadBitmapFromAsset(pictureAsset);
+        Bag.putPictureBitmap(pictureBitmap);
+
+        // And starts the activity
+        mAppContext.startActivity(startIntent);
+
+/*
 
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(
                 mAppContext,
@@ -211,6 +224,6 @@ public class WearManager {
                 notificationBuilder.build());
 
         mLogFacility.v(LOG_TAG, "Sent notification for picture " + title);
-
+*/
     }
 }

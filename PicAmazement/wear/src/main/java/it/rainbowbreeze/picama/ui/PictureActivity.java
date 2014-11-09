@@ -16,6 +16,7 @@ import com.google.android.gms.wearable.Asset;
 import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.LogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
@@ -47,13 +48,15 @@ public class PictureActivity extends Activity {
                 Intent intent = getIntent();
                 String title = intent.getStringExtra(INTENT_EXTRA_TITLE);
                 //Asset pictureAsset = intent.getParcelableExtra(INTENT_EXTRA_IMAGEASSET);
-                //Bitmap pictureBitmap = mWearManager.loadBitmapFromAsset(pictureAsset);
+                Bitmap pictureBitmap = Bag.getPictureBitmap();
 
                 mTextView = (TextView) stub.findViewById(R.id.picture_lblPicTitle);
                 mTextView.setText(TextUtils.isEmpty(title) ? "Nothing arrived" : title);
-                ViewGroup layout = (ViewGroup) findViewById(R.id.picture_layContainer);
-                //BitmapDrawable drawable = new BitmapDrawable(pictureBitmap);
-                //layout.setBackground(drawable);
+                if (null != pictureBitmap) {
+                    ViewGroup layout = (ViewGroup) findViewById(R.id.picture_layContainer);
+                    BitmapDrawable drawable = new BitmapDrawable(pictureBitmap);
+                    layout.setBackground(drawable);
+                }
             }
         });
     }
