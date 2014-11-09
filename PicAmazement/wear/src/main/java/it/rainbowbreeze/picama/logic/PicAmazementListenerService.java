@@ -70,14 +70,14 @@ public class PicAmazementListenerService extends WearableListenerService {
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        mLogFacility.v(LOG_TAG, "onDataChanged: " + dataEvents);
+        mLogFacility.v(LOG_TAG, "Received DataChanged event");
 
         final List<DataEvent> events = FreezableUtils.freezeIterable(dataEvents);
         dataEvents.close();
 
         // Reads data from the DataApi
         String title = null;
-        Asset bitmapAsset = null;
+        Asset pictureAsset = null;
         for (DataEvent event : events) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 String path = event.getDataItem().getUri().getPath();
@@ -86,7 +86,7 @@ public class PicAmazementListenerService extends WearableListenerService {
                     DataMapItem dataMapItem =
                             DataMapItem.fromDataItem(event.getDataItem());
                     title = dataMapItem.getDataMap().getString(AmazingPicture.FIELD_TITLE);
-                    bitmapAsset = dataMapItem.getDataMap().getAsset(AmazingPicture.FIELD_IMAGE);
+                    pictureAsset = dataMapItem.getDataMap().getAsset(AmazingPicture.FIELD_IMAGE);
                 }else {
                     mLogFacility.e(LOG_TAG, "Unrecognized path " + path);
                 }
@@ -94,35 +94,10 @@ public class PicAmazementListenerService extends WearableListenerService {
         }
 
         if (TextUtils.isEmpty(title)) {
-            return;
+            mLogFacility.i(LOG_TAG, "It seems that the picture transmitted has no title, aborting");
+        } else {
+            mLogFacility.v(LOG_TAG, "Data retrieved, sending notification");
+            mWearManager.sendNewPictureNotificationASync(title, pictureAsset);
         }
-
-        // Prepares the notification to open the new activity
-        Intent startIntent = new Intent(this, PictureActivity.class);
-        startIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, title);
-        startIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, bitmapAsset);
-        startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // And starts the activity
-        // startActivity(startIntent);
-
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
-                this,
-                0,
-                startIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Notification.WearableExtender wearableExtender = new Notification.WearableExtender()
-                .setDisplayIntent(notificationPendingIntent);
-        Notification.Builder notificationBuilder = new Notification.Builder(this)
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentText(title)
-                .extend(wearableExtender);
-        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(
-                Bag.NOTIFICATION_ID_NEWIMAGE,
-                notificationBuilder.build());
-
-        mLogFacility.v(LOG_TAG, "Sent notification for picture " + title);
     }
 }

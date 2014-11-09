@@ -1,6 +1,10 @@
 package it.rainbowbreeze.picama.logic;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,8 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import it.rainbowbreeze.picama.R;
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ForApplication;
 import it.rainbowbreeze.picama.common.ILogFacility;
+import it.rainbowbreeze.picama.ui.PictureActivity;
 
 /**
  * Created by alfredomorresi on 02/11/14.
@@ -163,4 +170,47 @@ public class WearManager {
         return BitmapFactory.decodeStream(assetInputStream);
     }
 
+    public void sendNewPictureNotificationASync(final String title, final Asset pictureAsset) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sendNewPictureNotification(title, pictureAsset);
+            }
+        }).start();
+    }
+
+    public void sendNewPictureNotification(String title, Asset pictureAsset) {
+        // Prepares the notification to open the new activity
+        Intent startIntent = new Intent(mAppContext, PictureActivity.class);
+        startIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, title);
+        startIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, pictureAsset);
+        startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // And starts the activity
+        // startActivity(startIntent);
+
+        // Read the image from the asset
+        Bitmap pictureBitmap = loadBitmapFromAsset(pictureAsset);
+
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
+                mAppContext,
+                0,
+                startIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.WearableExtender wearableExtender = new Notification.WearableExtender()
+                //.setDisplayIntent(notificationPendingIntent)
+                .setBackground(pictureBitmap);
+        Notification.Builder notificationBuilder = new Notification.Builder(mAppContext)
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentText(title)
+                .extend(wearableExtender);
+        ((NotificationManager) mAppContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(
+                Bag.NOTIFICATION_ID_NEWIMAGE,
+                notificationBuilder.build());
+
+        mLogFacility.v(LOG_TAG, "Sent notification for picture " + title);
+
+    }
 }
