@@ -2,7 +2,6 @@ package it.rainbowbreeze.picama.logic;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -18,7 +17,6 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,12 +24,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import javax.inject.Inject;
-
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ForApplication;
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
 
 /**
  * Created by alfredomorresi on 02/11/14.
@@ -116,10 +112,9 @@ public class WearManager {
     /**
      * Prepares and send a picture to Android Wear, async
      *
-     * @param context
      * @param picture
      */
-    public void transferAmazingPicture(Context context, final AmazingPicture picture) {
+    public void transferAmazingPicture(final BaseAmazingPicture picture) {
         mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getTitle());
         Collection<String> nodes = getNodes();
         if (nodes.isEmpty()) {
@@ -155,9 +150,10 @@ public class WearManager {
         mLogFacility.v(LOG_TAG, "Valid bitmap, Wear DataRequest creation");
         // Prepares the DataMapRequest
         PutDataMapRequest dataMap = PutDataMapRequest.create(Bag.WEAR_DATAMAP_AMAZINGPICTURE);
-        dataMap.getDataMap().putString(AmazingPicture.FIELD_TITLE, picture.getTitle());
-        dataMap.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
-        dataMap.getDataMap().putLong(AmazingPicture.FIELD_TIMESTAMP, (new Date()).getTime());
+        dataMap.getDataMap().putString(BaseAmazingPicture.FIELD_TITLE, picture.getTitle());
+        dataMap.getDataMap().putString(BaseAmazingPicture.FIELD_SOURCE, picture.getSource());
+        dataMap.getDataMap().putAsset(BaseAmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
+        dataMap.getDataMap().putLong(BaseAmazingPicture.FIELD_TIMESTAMP, (new Date()).getTime());
         PutDataRequest request = dataMap.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
                 mGoogleApiClient, request);

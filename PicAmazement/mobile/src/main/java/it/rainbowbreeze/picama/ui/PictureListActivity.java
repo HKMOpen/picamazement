@@ -20,7 +20,7 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
-import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.WearManager;
 
@@ -111,7 +111,7 @@ public class PictureListActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        mPictureScraperManager.searchForNewImage(getApplicationContext());
+                        mPictureScraperManager.searchForNewImage();
                     }
                 }).start();
                 break;
@@ -131,13 +131,13 @@ public class PictureListActivity extends Activity {
 
     private void sendToWatch() {
         // Finds the first element
-        AmazingPicture picture = mAmazingPictureDao.getFirstPicture();
+        BaseAmazingPicture picture = mAmazingPictureDao.getFirstPicture();
         if (null == picture) {
             Toast.makeText(this, "No picture available", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Prepares to send the element to the Wear
-        mWearManager.transferAmazingPicture(this, picture);
+        mWearManager.transferAmazingPicture(picture);
     }
 }

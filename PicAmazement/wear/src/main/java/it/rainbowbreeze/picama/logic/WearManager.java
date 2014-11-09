@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -28,6 +29,8 @@ import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ForApplication;
 import it.rainbowbreeze.picama.common.ILogFacility;
+import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
 import it.rainbowbreeze.picama.ui.PictureActivity;
 
 /**
@@ -175,35 +178,32 @@ public class WearManager {
         return BitmapFactory.decodeStream(assetInputStream);
     }
 
-    public void sendNewPictureNotificationASync(final String title, final Asset pictureAsset) {
+    public void sendNewPictureNotificationASync(final AmazingPicture picture) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sendNewPictureNotification(title, pictureAsset);
+                sendNewPictureNotification(picture);
             }
         }).start();
     }
 
     /**
      * Cannot be called in the UI thread
-     * @param title
-     * @param pictureAsset
+     * @param picture
      */
-    public void sendNewPictureNotification(String title, Asset pictureAsset) {
+    public void sendNewPictureNotification(AmazingPicture picture) {
         // Prepares the notification to open the new activity
         Intent startIntent = new Intent(mAppContext, PictureActivity.class);
-        startIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, title);
-        startIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, pictureAsset);
+        startIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, picture.getTitle());
+        startIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, picture.getAssetPicture());
         startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // Read the image from the asset
-        Bitmap pictureBitmap = loadBitmapFromAsset(pictureAsset);
+        Bitmap pictureBitmap = loadBitmapFromAsset(picture.getAssetPicture());
         Bag.putPictureBitmap(pictureBitmap);
 
         // And starts the activity
-        mAppContext.startActivity(startIntent);
-
-/*
+        //mAppContext.startActivity(startIntent);
 
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(
                 mAppContext,
@@ -217,13 +217,12 @@ public class WearManager {
         Notification.Builder notificationBuilder = new Notification.Builder(mAppContext)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentText(title)
+                .setContentText(picture.getSource())
                 .extend(wearableExtender);
         ((NotificationManager) mAppContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(
                 Bag.NOTIFICATION_ID_NEWIMAGE,
                 notificationBuilder.build());
 
-        mLogFacility.v(LOG_TAG, "Sent notification for picture " + title);
-*/
+        mLogFacility.v(LOG_TAG, "Sent notification for picture " + picture.getTitle());
     }
 }

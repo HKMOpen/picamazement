@@ -1,7 +1,5 @@
 package it.rainbowbreeze.picama.logic.twitter;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +75,8 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
                         // There is a photo attached to the tweet
                         if (!"photo".equals(mediaEntity.getType())) continue;
 
-                        AmazingPicture pic = new AmazingPicture()
+                        AmazingPicture pic = new AmazingPicture();
+                        pic
                                 .setUrl(mediaEntity.getMediaURL())
                                 .setDate(status.getCreatedAt())
                                 .setTitle(status.getText());

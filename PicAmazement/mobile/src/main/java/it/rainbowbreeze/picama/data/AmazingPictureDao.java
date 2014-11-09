@@ -1,9 +1,6 @@
 package it.rainbowbreeze.picama.data;
 
 import android.content.Context;
-import android.database.Cursor;
-
-import java.util.Date;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
@@ -70,10 +67,12 @@ public class AmazingPictureDao {
                 PictureColumns.DATE + " DESC");
         AmazingPicture picture = null;
         while (c.moveToNext()) {
-            picture = new AmazingPicture()
+            picture = new AmazingPicture();
+            picture
                 .setUrl(c.getUrl())
                 .setDate(c.getDate())
-                .setTitle(c.getTitle());
+                .setTitle(c.getTitle())
+                .setSource(c.getSource().toString());
             break;
         }
         c.close();

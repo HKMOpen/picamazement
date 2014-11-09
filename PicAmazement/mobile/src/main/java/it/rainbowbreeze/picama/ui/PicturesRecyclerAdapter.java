@@ -13,13 +13,13 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import it.rainbowbreeze.picama.R;
-import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
 
 /**
  * Created by alfredomorresi on 19/10/14.
  */
 public class PicturesRecyclerAdapter extends RecyclerView.Adapter<PicturesRecyclerAdapter.ViewHolder> {
-    private List<AmazingPicture> mDataset;
+    private List<BaseAmazingPicture> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -43,7 +43,7 @@ public class PicturesRecyclerAdapter extends RecyclerView.Adapter<PicturesRecycl
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public PicturesRecyclerAdapter(List<AmazingPicture> myDataset) {
+    public PicturesRecyclerAdapter(List<BaseAmazingPicture> myDataset) {
         mDataset = myDataset;
     }
 

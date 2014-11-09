@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.LogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
 
 
 public class PictureListActivityFull extends Activity
@@ -161,7 +161,7 @@ public class PictureListActivityFull extends Activity
             mRecyclerView.setLayoutManager(mLayoutManager);
 
             // specify an adapter (see also next example)
-            List<AmazingPicture> pictures = new ArrayList<AmazingPicture>();
+            List<BaseAmazingPicture> pictures = new ArrayList<BaseAmazingPicture>();
 //            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/400/"));
 //            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/250/sports"));
 //            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/200/sports/Dummy-Text"));

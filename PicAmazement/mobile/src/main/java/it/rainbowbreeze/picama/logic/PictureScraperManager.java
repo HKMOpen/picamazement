@@ -31,7 +31,7 @@ public class PictureScraperManager {
     /**
      * TODO: add a callback and make it async
      */
-    public void searchForNewImage(Context appContext) {
+    public void searchForNewImage() {
         mLogFacility.v(LOG_TAG, "Starting pictures update");
 
         for (IPictureScraper scraper : mPictureScrapers) {
@@ -39,7 +39,7 @@ public class PictureScraperManager {
             List<AmazingPicture> newPictures = scraper.getNewPictures();
             mLogFacility.v(LOG_TAG, "Found " + newPictures.size() + " new pictures");
 
-            addOnlyNewPictures(appContext, newPictures);
+            addOnlyNewPictures(newPictures);
         }
     }
 
@@ -47,7 +47,7 @@ public class PictureScraperManager {
      * Adds only new picture to the local database
      * @param newPictures
      */
-    private void addOnlyNewPictures(Context appContext, List<AmazingPicture> newPictures) {
+    private void addOnlyNewPictures(List<AmazingPicture> newPictures) {
         for (AmazingPicture picture : newPictures) {
             if (TextUtils.isEmpty(picture.getUrl())) {
                 mLogFacility.i(LOG_TAG, "No URL for picture " + picture.getTitle());
