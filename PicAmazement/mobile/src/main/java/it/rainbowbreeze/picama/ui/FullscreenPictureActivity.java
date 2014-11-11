@@ -6,6 +6,7 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
+import it.rainbowbreeze.picama.logic.SendPictureToWearService;
 import it.rainbowbreeze.picama.ui.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -113,6 +114,7 @@ public class FullscreenPictureActivity extends Activity {
             finish();
             return;
         }
+        SendPictureToWearService.startActionSendAmazingPicture(getApplicationContext(), pictureId);
         PictureSelection where = new PictureSelection();
         where.visible(true).and().id(pictureId);
         Cursor c = getApplicationContext().getContentResolver().query(PictureColumns.CONTENT_URI, null,

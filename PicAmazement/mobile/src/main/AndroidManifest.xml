@@ -3,17 +3,14 @@
     package="it.rainbowbreeze.picama" >
 
     <application
-        android:name=".common.MyApp"
+        android:name="it.rainbowbreeze.picama.common.MyApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-    >
-
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"
-        />
+            android:value="@integer/google_play_services_version" />
 
         <!-- android:theme="@style/AppTheme" -->
         <activity
@@ -29,22 +26,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="it.rainbowbreeze.picama.ui.FullscreenPictureActivity"
             android:label="@string/title_activity_fullscreen_picture"
-            android:theme="@style/AppFullscreenTheme"
-        >
+            android:theme="@style/AppFullscreenTheme" >
         </activity>
-        <!--
-            android:configChanges="orientation|keyboardHidden|screenSize"
-        -->
+<!--             android:configChanges="orientation|keyboardHidden|screenSize" -->
 
         <provider
             android:name="it.rainbowbreeze.picama.data.provider.PictureProvider"
             android:authorities="it.rainbowbreeze.picama.provider"
             android:exported="false" />
 
+        <service
+            android:name="it.rainbowbreeze.picama.logic.SendPictureToWearService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

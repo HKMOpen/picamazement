@@ -17,19 +17,15 @@ import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
-import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
-import it.rainbowbreeze.picama.logic.WearManager;
+import it.rainbowbreeze.picama.logic.SendPictureToWearService;
 
 public class PictureListActivity extends Activity {
     private static final String LOG_TAG = PictureListActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject PictureScraperManager mPictureScraperManager;
-    @Inject AmazingPictureDao mAmazingPictureDao;
-    @Inject WearManager mWearManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +53,6 @@ public class PictureListActivity extends Activity {
             }
         });
 
-        mWearManager.init();
-
         /**
         Button btnAddItem = (Button) findViewById(R.id.list_btnAddItem);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
@@ -79,12 +73,10 @@ public class PictureListActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        mWearManager.onStart();
     }
 
     @Override
     protected void onStop() {
-        mWearManager.onStop();
         super.onStop();
     }
 
@@ -130,14 +122,6 @@ public class PictureListActivity extends Activity {
     }
 
     private void sendToWatch() {
-        // Finds the first element
-        AmazingPicture picture = mAmazingPictureDao.getFirstPicture();
-        if (null == picture) {
-            Toast.makeText(this, "No picture available", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Prepares to send the element to the Wear
-        mWearManager.transferAmazingPicture(picture);
+        SendPictureToWearService.startActionSendAmazingPicture(getApplicationContext(), 12);
     }
 }

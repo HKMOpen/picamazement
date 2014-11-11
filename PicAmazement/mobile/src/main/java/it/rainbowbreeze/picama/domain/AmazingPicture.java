@@ -5,6 +5,8 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 
 import java.util.Date;
 
+import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
+
 /**
  * Created by alfredomorresi on 09/11/14.
  */
@@ -18,5 +20,14 @@ public class AmazingPicture extends BaseAmazingPicture {
         dataMap.putString(FIELD_TITLE, getTitle());
         dataMap.putString(FIELD_SOURCE, getSource());
         dataMap.putLong(FIELD_TIMESTAMP, (new Date()).getTime());
+    }
+
+    public AmazingPicture fromCursor(PictureCursor c) {
+        setId(c.getId())
+        .setUrl(c.getUrl())
+        .setDate(c.getDate())
+        .setTitle(c.getTitle())
+        .setSource(c.getSource().toString());
+        return this;
     }
 }

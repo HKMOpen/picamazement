@@ -22,9 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
 
 import it.rainbowbreeze.picama.common.Bag;
-import it.rainbowbreeze.picama.common.ForApplication;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 
@@ -49,14 +49,22 @@ public class WearManager {
      */
 
     private static final String LOG_TAG = WearManager.class.getSimpleName();
+    private static final long GCLIENT_TIMEOUT = 30;
     private final ILogFacility mLogFacility;
     private final Context mAppContext;
-    private Object mSync;
     private GoogleApiClient mGoogleApiClient;
+    private boolean mIsWearAvailable;
 
-    public WearManager(ILogFacility logFacility, @ForApplication Context appContext) {
+    public WearManager(ILogFacility logFacility, Context appContext) {
         mLogFacility = logFacility;
         mAppContext = appContext;
+    }
+
+    public boolean isWearAvailable() {
+        return mIsWearAvailable;
+    }
+    public boolean isWearNotAvailable() {
+        return !mIsWearAvailable;
     }
 
     public void init() {
@@ -65,6 +73,7 @@ public class WearManager {
                     @Override
                     public void onConnected(Bundle connectionHint) {
                         mLogFacility.v(LOG_TAG, "onConnected: " + connectionHint);
+                        setWearAvailability(null);
                         // Now you can use the data layer API
                     }
 
@@ -77,20 +86,61 @@ public class WearManager {
                     @Override
                     public void onConnectionFailed(ConnectionResult result) {
                         mLogFacility.v(LOG_TAG, "onConnectionFailed: " + result);
+                        setWearAvailability(result);
                     }
                 })
                 .addApi(Wearable.API)
                 .build();
     }
 
-    public void onStart() {
-        mGoogleApiClient.connect();
+    /**
+     * Connect to the client.
+     * Do not use in the UI thread
+     */
+    public void onStartAwait() {
+        obtainWorkingClient();
+    }
+
+    /**
+     * Connect to the client
+     */
+    public void onStartASync() {
+        if (!mGoogleApiClient.isConnected() && !mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.connect();
+        }
     }
 
     public void onStop() {
         mGoogleApiClient.disconnect();
     }
 
+    /**
+     * Returns a working Google API Client.
+     * Cannot run in the UI thread
+     * @return
+     */
+    private int obtainWorkingClient() {
+        ConnectionResult connectionResult = mGoogleApiClient
+                .blockingConnect(GCLIENT_TIMEOUT, TimeUnit.SECONDS);
+        setWearAvailability(connectionResult);
+
+        if (!connectionResult.isSuccess()) {
+            mLogFacility.e(LOG_TAG, "Service failed to connect to GoogleApiClient.");
+            return connectionResult.getErrorCode();
+        } else {
+            return ConnectionResult.SUCCESS;
+        }
+    }
+
+    private void setWearAvailability(ConnectionResult result) {
+        if (null == result || result.isSuccess())
+            mIsWearAvailable = true;
+        else if (result.getErrorCode() == ConnectionResult.API_UNAVAILABLE) {
+            mIsWearAvailable = false;
+        } else {
+            mIsWearAvailable = false; // Conservative approach
+        }
+    }
 
     /**
      * Search for different nodes
@@ -109,50 +159,19 @@ public class WearManager {
     }
 
     /**
-     * Prepares and send a picture to Android Wear, async
+     * Prepares and send a picture to Android Wear, sync
      *
      * @param picture
      */
-    public void transferAmazingPicture(final AmazingPicture picture) {
+    public void transferAmazingPicture(final AmazingPicture picture, Bitmap bitmap) {
         mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getTitle());
-        Collection<String> nodes = getNodes();
-        if (nodes.isEmpty()) {
-            mLogFacility.v(LOG_TAG, "Unfortunately, no nodes were found");
+        if (isWearNotAvailable()) {
             return;
         }
-
-        // Launches Picasso to retrieve the image
-        Bitmap image = null;
-        try {
-            image = Picasso.with(mAppContext)
-                    .load(picture.getUrl())
-                    .resize(640, 400) // Allows parallax scrolling
-                    .centerInside() //maintain aspect ratio
-                    .get();
-            mLogFacility.v(LOG_TAG, "Image for Wear size: " + image.getWidth() + "x" + image.getHeight());
-        } catch (IOException e) {
-            mLogFacility.e(LOG_TAG, e);
-        }
-        if (null == image) {
-            mLogFacility.v(LOG_TAG, "No image to transfer to Wear, aborting");
-            return;
-        }
-
-        // Test
-        for(String node:nodes) {
-            mLogFacility.v(LOG_TAG, "Sending data to node " + node);
-            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                    mGoogleApiClient, node, Bag.WEAR_MESSAGE_SIMPLE, null).await();
-            if (!result.getStatus().isSuccess()) {
-                mLogFacility.e(LOG_TAG, "ERROR: failed to send Message: " + result.getStatus());
-            }
-        }
-
-        mLogFacility.v(LOG_TAG, "Valid bitmap, Wear DataRequest creation");
         // Prepares the DataMapRequest
         PutDataMapRequest dataMapRequest = PutDataMapRequest.create(Bag.WEAR_DATAMAP_AMAZINGPICTURE);
         picture.fillDataMap(dataMapRequest.getDataMap());
-        dataMapRequest.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
+        dataMapRequest.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(bitmap));
         PutDataRequest request = dataMapRequest.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
                 mGoogleApiClient, request);
@@ -176,4 +195,22 @@ public class WearManager {
         return Asset.createFromBytes(bs.toByteArray());
     }
 
+    /**
+     * Test for sending simple messages
+     */
+    private void sendMessagesTest() {
+        Collection<String> nodes = getNodes();
+        if (nodes.isEmpty()) {
+            mLogFacility.v(LOG_TAG, "Unfortunately, no nodes were found");
+            return;
+        }
+        for(String node:nodes) {
+            mLogFacility.v(LOG_TAG, "Sending data to node " + node);
+            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
+                    mGoogleApiClient, node, Bag.WEAR_MESSAGE_SIMPLE, null).await();
+            if (!result.getStatus().isSuccess()) {
+                mLogFacility.e(LOG_TAG, "ERROR: failed to send Message: " + result.getStatus());
+            }
+        }
+    }
 }

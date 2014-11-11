@@ -59,21 +59,30 @@ public class AmazingPictureDao {
      *
      * @return
      */
+    public AmazingPicture getPictureById(long pictureId) {
+        PictureSelection pictureSelection = new PictureSelection();
+        pictureSelection.id(pictureId).and().visible(true);
+        return queryAndCreatePicture(pictureSelection);
+    }
+
+    /**
+     * Get the latest picture available
+     *
+     * @return
+     */
     public AmazingPicture getFirstPicture() {
         PictureSelection pictureSelection = new PictureSelection();
         pictureSelection.visible(true);
+        return queryAndCreatePicture(pictureSelection);
+    }
+
+    private AmazingPicture queryAndCreatePicture(PictureSelection pictureSelection) {
         PictureCursor c = pictureSelection.query(mAppContext.getContentResolver(),
                 null,
                 PictureColumns.DATE + " DESC");
         AmazingPicture picture = null;
         while (c.moveToNext()) {
-            picture = new AmazingPicture();
-            picture
-                    .setId(c.getId())
-                    .setUrl(c.getUrl())
-                    .setDate(c.getDate())
-                    .setTitle(c.getTitle())
-                    .setSource(c.getSource().toString());
+            picture = new AmazingPicture().fromCursor(c);
             break;
         }
         c.close();

@@ -8,19 +8,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.Gravity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Asset;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -125,34 +119,6 @@ public class WearManager {
             }
         }
         return ConnectionResult.SUCCESS;
-    }
-
-    /**
-     * Search for different nodes
-     * @return
-     */
-    private Collection<String> getNodes() {
-        mLogFacility.v(LOG_TAG, "Getting connected nodes");
-        HashSet<String> results= new HashSet<String>();
-        NodeApi.GetConnectedNodesResult nodes =
-                Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
-        for (Node node : nodes.getNodes()) {
-            results.add(node.getId());
-        }
-        mLogFacility.v(LOG_TAG, "Found nodes " + results.size());
-        return results;
-    }
-
-    /**
-     * Transform a {@link android.graphics.Bitmap} into an {@link com.google.android.gms.wearable.Asset}
-     *
-     * @param bitmap
-     * @return
-     */
-    private Asset createAssetFromBitmap(Bitmap bitmap) {
-        final ByteArrayOutputStream bs = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bs);
-        return Asset.createFromBytes(bs.toByteArray());
     }
 
     public Bitmap loadBitmapFromAsset(Asset asset) {
