@@ -74,21 +74,18 @@ public class PicAmazementListenerService extends WearableListenerService {
                     // Get the data out of the event
                     DataMapItem dataMapItem =
                             DataMapItem.fromDataItem(event.getDataItem());
-                    picture
-                            .setAssetPicture(dataMapItem.getDataMap().getAsset(BaseAmazingPicture.FIELD_IMAGE))
-                            .setTitle(dataMapItem.getDataMap().getString(BaseAmazingPicture.FIELD_TITLE))
-                            .setSource(dataMapItem.getDataMap().getString(BaseAmazingPicture.FIELD_SOURCE));
+                    picture.fromDataMap(dataMapItem);
                 }else {
                     mLogFacility.e(LOG_TAG, "Unrecognized path " + path);
                 }
             }
+            if (TextUtils.isEmpty(picture.getTitle())) {
+                mLogFacility.i(LOG_TAG, "It seems that the picture transmitted has no title, aborting");
+            } else {
+                mLogFacility.v(LOG_TAG, "Data retrieved, sending notification");
+                mWearManager.sendNewPictureNotificationASync(picture);
+            }
         }
 
-        if (TextUtils.isEmpty(picture.getTitle())) {
-            mLogFacility.i(LOG_TAG, "It seems that the picture transmitted has no title, aborting");
-        } else {
-            mLogFacility.v(LOG_TAG, "Data retrieved, sending notification");
-            mWearManager.sendNewPictureNotificationASync(picture);
-        }
     }
 }

@@ -9,8 +9,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.DeviceDefault"
-    >
+        android:theme="@android:style/Theme.DeviceDefault" >
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -18,10 +17,10 @@
         />
 
         <activity
-            android:name="it.rainbowbreeze.picama.ui.PictureActivity"
-            android:label="@string/app_name"
-            android:exported="true"
+            android:name=".ui.PictureActivity"
             android:allowEmbedded="true"
+            android:exported="true"
+            android:label="@string/app_name"
             android:taskAffinity=""
         >
             <!--
@@ -32,12 +31,23 @@
             -->
         </activity>
 
-        <service android:name=".logic.PicAmazementListenerService">
+        <service
+            android:name=".logic.PicAmazementListenerService"
+        >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
 
+        <service
+            android:name=".logic.PictureActionsIntentService"
+            android:exported="false"
+        >
+            <intent-filter>
+                <action android:name="it.rainbowbreeze.picama.SAVE_PICTURE" />
+                <action android:name="it.rainbowbreeze.picama.DELETE_PICTURE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

@@ -16,10 +16,8 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
@@ -162,6 +160,7 @@ public class WearManager {
      * Prepares and send a picture to Android Wear, sync
      *
      * @param picture
+     * @param bitmap
      */
     public void transferAmazingPicture(final AmazingPicture picture, Bitmap bitmap) {
         mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getTitle());

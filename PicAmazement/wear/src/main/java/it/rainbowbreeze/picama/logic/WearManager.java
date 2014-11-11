@@ -184,7 +184,7 @@ public class WearManager {
         // Action to remove the picture from the stream
         Intent removePicIntent = new Intent(Bag.INTENT_ACTION_REMOVEPICTURE);
         removePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
-        PendingIntent removePicPendingIntent = PendingIntent.getActivity(
+        PendingIntent removePicPendingIntent = PendingIntent.getService(
                 mAppContext, 0, removePicIntent, 0);
         Notification.Action removePicAction = new Notification.Action(
                 R.drawable.ic_launcher,
@@ -194,7 +194,7 @@ public class WearManager {
         // Action to save the picture from the stream
         Intent savePicIntent = new Intent(Bag.INTENT_ACTION_SAVEPICTURE);
         savePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
-        PendingIntent savePicPendingIntent = PendingIntent.getActivity(
+        PendingIntent savePicPendingIntent = PendingIntent.getService(
                 mAppContext, 0, savePicIntent, 0);
         Notification.Action savePicAction = new Notification.Action(
                 R.drawable.ic_launcher,

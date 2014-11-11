@@ -23,11 +23,12 @@ public class AmazingPicture extends BaseAmazingPicture {
     }
 
     public AmazingPicture fromCursor(PictureCursor c) {
-        setId(c.getId())
-        .setUrl(c.getUrl())
-        .setDate(c.getDate())
-        .setTitle(c.getTitle())
-        .setSource(c.getSource().toString());
+        this
+                .setId(c.getId())
+                .setUrl(c.getUrl())
+                .setDate(c.getDate())
+                .setTitle(c.getTitle())
+                .setSource(c.getSource().toString());
         return this;
     }
 }
