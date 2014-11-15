@@ -19,13 +19,11 @@ import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
-import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 public class PictureListActivity extends Activity {
     private static final String LOG_TAG = PictureListActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
-    @Inject PictureScraperManager mPictureScraperManager;
     @Inject ActionsManager mActionsManager;
 
     @Override
@@ -97,16 +95,12 @@ public class PictureListActivity extends Activity {
 
         switch (id) {
             case R.id.picList_mnuDeleteAll:
-                PictureSelection where = new PictureSelection();
-                getApplicationContext().getContentResolver().delete(PictureColumns.CONTENT_URI, where.sel(), where.args());
+                mActionsManager.deleteAllPictures()
+                        .executeAsync();
                 break;
             case R.id.picList_mnuRefresh:
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPictureScraperManager.searchForNewImage();
-                    }
-                }).start();
+                mActionsManager.searchForNewImages()
+                        .executeAsync();
                 break;
             case R.id.picList_mnuSendToWatch:
                 mActionsManager.sendPictureToWear()

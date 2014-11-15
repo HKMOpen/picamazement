@@ -2,14 +2,9 @@ package it.rainbowbreeze.picama.logic;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.google.android.gms.common.api.Api;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.squareup.picasso.Picasso;
 
@@ -35,11 +30,11 @@ public class SendPictureToWearService extends GoogleApiClientBaseService {
     @Inject WearManager mWearManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
 
-    public static final String ACTION_SENDPICTURE = "it.rainbowbreeze.picama.logic.action.FOO";
-    public static final String EXTRA_PARAM_PICTURE_ID = "it.rainbowbreeze.picama.logic.extra.PICTURE_ID";
+    public static final String ACTION_SENDPICTURE = "Action.Wear.SendPicture";
+    public static final String EXTRA_PARAM_PICTURE_ID = "Param.PictureId";
 
     public SendPictureToWearService() {
-        super("SendPictureToWearService");
+        super(UpdatePictureFieldsService.class.getSimpleName());
     }
 
     @Override
@@ -71,7 +66,7 @@ public class SendPictureToWearService extends GoogleApiClientBaseService {
     }
 
     private void sendPictureToWear(long pictureId) {
-        AmazingPicture picture = mAmazingPictureDao.getPictureById(pictureId);
+        AmazingPicture picture = mAmazingPictureDao.getById(pictureId);
         if (null == picture) {
             mLogFacility.i(LOG_TAG, "Strange, picture is null for picture id " + pictureId);
             return;

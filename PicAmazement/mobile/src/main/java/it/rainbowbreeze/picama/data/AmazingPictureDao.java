@@ -24,6 +24,10 @@ public class AmazingPictureDao {
         mLogFacility = logFacility;
     }
 
+    /**
+     * Inserts an {@link it.rainbowbreeze.picama.domain.AmazingPicture} in the Content Provider
+     * @param picture
+     */
     public void insert(AmazingPicture picture) {
         PictureContentValues values = new PictureContentValues()
                 .putTitle(picture.getTitle())
@@ -34,13 +38,32 @@ public class AmazingPictureDao {
     }
 
     /**
-     * Finds if a Picture already exist in the local database, given is unique id
+     * Remove all pictures from the Content Provider
+     */
+    public void removeAll() {
+        PictureSelection where = new PictureSelection();
+        mAppContext.getContentResolver().delete(PictureColumns.CONTENT_URI, where.sel(), where.args());
+    }
+
+    /**
+     * Returns an {@link it.rainbowbreeze.picama.domain.AmazingPicture} given its id
+     *
+     * @return
+     */
+    public AmazingPicture getById(long pictureId) {
+        PictureSelection pictureSelection = new PictureSelection();
+        pictureSelection.id(pictureId).and().visible(true);
+        return queryAndCreatePicture(pictureSelection);
+    }
+
+    /**
+     * Finds if a picture already exist in the local database, given is unique id
      * (generally the url of the picture)
      *
      * @param uniqueId
      * @return
      */
-    public boolean pictureExists(String uniqueId) {
+    public boolean exists(String uniqueId) {
         PictureSelection pictureSelection = new PictureSelection();
         pictureSelection.url(uniqueId);
         String projection[] = {PictureColumns._ID, PictureColumns.URL };
@@ -55,25 +78,22 @@ public class AmazingPictureDao {
     }
 
     /**
-     * Get the latest picture available
+     * Returns the latest {@link it.rainbowbreeze.picama.domain.AmazingPicture} inserted
      *
      * @return
      */
-    public AmazingPicture getPictureById(long pictureId) {
+    public AmazingPicture getFirst() {
         PictureSelection pictureSelection = new PictureSelection();
-        pictureSelection.id(pictureId).and().visible(true);
+        pictureSelection.visible(true);
         return queryAndCreatePicture(pictureSelection);
     }
 
     /**
-     * Get the latest picture available
-     *
-     * @return
+     * Set the hide attribute of a given picture to true
+     * @param pictureId
      */
-    public AmazingPicture getFirstPicture() {
-        PictureSelection pictureSelection = new PictureSelection();
-        pictureSelection.visible(true);
-        return queryAndCreatePicture(pictureSelection);
+    public void hideFromList(long pictureId) {
+
     }
 
     private AmazingPicture queryAndCreatePicture(PictureSelection pictureSelection) {
@@ -88,5 +108,4 @@ public class AmazingPictureDao {
         c.close();
         return picture;
     }
-
 }

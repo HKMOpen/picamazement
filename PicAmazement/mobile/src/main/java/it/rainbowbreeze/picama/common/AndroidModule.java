@@ -100,7 +100,9 @@ public class AndroidModule {
     @Provides @Singleton
     ActionsManager provideActionsManager(
             @ForApplication Context appContext,
-            ILogFacility logFacility) {
-        return new ActionsManager(appContext, logFacility);
+            ILogFacility logFacility,
+            AmazingPictureDao amazingPictureDao,
+            PictureScraperManager pictureScraperManager) {
+        return new ActionsManager(appContext, logFacility, amazingPictureDao, pictureScraperManager);
     }
 }

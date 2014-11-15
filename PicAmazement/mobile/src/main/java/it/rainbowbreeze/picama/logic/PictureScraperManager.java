@@ -1,6 +1,5 @@
 package it.rainbowbreeze.picama.logic;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.List;
@@ -52,7 +51,7 @@ public class PictureScraperManager {
             if (TextUtils.isEmpty(picture.getUrl())) {
                 mLogFacility.i(LOG_TAG, "No URL for picture " + picture.getTitle());
             }
-            if (!mAmazingPictureDao.pictureExists(picture.getUrl())) {
+            if (!mAmazingPictureDao.exists(picture.getUrl())) {
                 mAmazingPictureDao.insert(picture);
                 mLogFacility.v(LOG_TAG, "Added new picture in the DB at url " + picture.getUrl());
             } else {
