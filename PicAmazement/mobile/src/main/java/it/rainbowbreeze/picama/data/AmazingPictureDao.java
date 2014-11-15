@@ -1,6 +1,7 @@
 package it.rainbowbreeze.picama.data;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
@@ -107,5 +108,18 @@ public class AmazingPictureDao {
         }
         c.close();
         return picture;
+    }
+
+    /**
+     * Get latest pictures, sorted by date, from most recent
+     * @param limit max number of pictures to get
+     * @return
+     */
+    public Cursor getLatest(int limit) {
+        PictureSelection where = new PictureSelection();
+        where.visible(true);
+        Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,
+                where.sel(), where.args(), PictureColumns.DATE + " DESC");
+        return c;
     }
 }

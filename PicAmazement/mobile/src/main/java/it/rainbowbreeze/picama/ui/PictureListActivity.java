@@ -17,14 +17,14 @@ import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
-import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
+import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 public class PictureListActivity extends Activity {
     private static final String LOG_TAG = PictureListActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
+    @Inject AmazingPictureDao mAmazingPictureDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +35,7 @@ public class PictureListActivity extends Activity {
         setContentView(R.layout.act_list);
 
         ListView lst = (ListView) findViewById(R.id.list_lstItems);
-
-        PictureSelection where = new PictureSelection();
-        where.visible(true);
-        Cursor c = getApplicationContext().getContentResolver().query(PictureColumns.CONTENT_URI, null,
-                where.sel(), where.args(), PictureColumns.DATE + " DESC");
+        Cursor c = mAmazingPictureDao.getLatest(100);
         lst.setAdapter(new PicturesAdapter(getApplicationContext(), c, true));
 
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {

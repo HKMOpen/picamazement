@@ -1,6 +1,10 @@
 package it.rainbowbreeze.picama.logic.action;
 
 import android.content.Context;
+import android.text.TextUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
@@ -15,12 +19,30 @@ public class ActionsManager {
     private final AmazingPictureDao mAmazingPictureDao;
     private final PictureScraperManager mPictureScraperManager;
 
+    private final Map<String, Object> mExecutionQueue;
+
     public ActionsManager(Context appContext, ILogFacility logFacility, AmazingPictureDao amazingPictureDao, PictureScraperManager pictureScraperManager) {
         mAppContext = appContext;
         mLogFacility = logFacility;
         mAmazingPictureDao = amazingPictureDao;
         mPictureScraperManager = pictureScraperManager;
+        mExecutionQueue = new ConcurrentHashMap<String, Object>();
     }
+
+    public void addNewActionIntoQueue(BaseAction action) {
+        mExecutionQueue.put(action.getUniqueActionId(), action);
+    }
+
+    public void removeActionFromQueue(BaseAction action) {
+        mExecutionQueue.remove(action.getUniqueActionId());
+    }
+
+    public boolean isActionAlreadyInTheQueue(BaseAction action) {
+        mLogFacility.v("Checking for action " + action.getUniqueActionId());
+        mLogFacility.v("queue size is " + mExecutionQueue.size());
+        return (mExecutionQueue.containsKey(action.getUniqueActionId()));
+    }
+
 
     public SendPictureToWearAction sendPictureToWear() {
         return new SendPictureToWearAction(mAppContext, mLogFacility, this);
@@ -34,11 +56,14 @@ public class ActionsManager {
         return new SearchForNewImagesAction(mLogFacility, this, mPictureScraperManager);
     }
 
-
     /**
      * Base interface for an action
      */
     public static abstract class BaseAction {
+        protected static enum ConcurrencyType {
+            SingleInstance,    // Only one actions a time
+            MultipleInstances  // Actions can be execute multiple times in contemporary
+        }
         private final ActionsManager mActionsManager;
         protected final ILogFacility mLogFacility;
 
@@ -48,16 +73,53 @@ public class ActionsManager {
         }
 
         /**
+         * Checks validity of extended action data
+         * @return
+         */
+        protected abstract boolean isDataValid();
+
+        /**
+         * Executes the commands of the action
+         */
+        protected abstract void doYourStuff();
+
+        /**
+         * Identifies it the action can be executed together with similar actions of the same kind
+         * or only one action per time is allowed
+         * @return
+         */
+        protected abstract ConcurrencyType getConcurrencyType();
+
+        /**
+         * Returns a unique action identifiers. If {@link it.rainbowbreeze.picama.logic.action.ActionsManager.BaseAction.ConcurrencyType}
+         * is set to {@link it.rainbowbreeze.picama.logic.action.ActionsManager.BaseAction.ConcurrencyType#MultipleInstances},
+         * only one action with this identifier is allowed in the execution queue
+         *
+         * @return
+         */
+        protected abstract String getUniqueActionId();
+
+        protected abstract String getLogTag();
+
+        /**
          * Call this method to fire the action and return
          */
         public void executeAsync() {
-            if (!isCoreDataValid() && !isDataValid()) {
-                throw new IllegalArgumentException("Some data is missing in your action, aborting");
-            }
+            checkForDataValidity();
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                // Checks if there are other actions with same id in the execution queue
+                    if (ConcurrencyType.SingleInstance == getConcurrencyType()) {
+                        if (mActionsManager.isActionAlreadyInTheQueue(BaseAction.this)) {
+                            mLogFacility.v(getLogTag(), "Action has been refused because another is already on the queue - " + getUniqueActionId());
+                            return;
+                        }
+                    }
+                    mActionsManager.addNewActionIntoQueue(BaseAction.this);
                     doYourStuff();
+                    mActionsManager.removeActionFromQueue(BaseAction.this);
                 }
             }).start();
         }
@@ -66,29 +128,35 @@ public class ActionsManager {
          * Call this method to fire the action and wait
          */
         public void execute() {
-            if (!isDataValid()) {
-                throw new IllegalArgumentException("Some data is missing in your action, aborting");
-            }
+            checkForDataValidity();
+
             doYourStuff();
         }
 
         /**
-         * Executes the commands of the action
+         * Checks if the action data is valid
          */
-        protected abstract void doYourStuff();
+        private void checkForDataValidity() {
+            if (!isCoreDataValid() && !isDataValid()) {
+                throw new IllegalArgumentException("Some data is missing in your action, aborting");
+            }
+        }
 
         /**
          * Checks validity of core action data
          * @return
          */
         protected boolean isCoreDataValid() {
-            return null != mLogFacility;
+            boolean uniqueIdIsCorrect;
+            if (ConcurrencyType.SingleInstance == getConcurrencyType()) {
+                uniqueIdIsCorrect = !TextUtils.isEmpty(getUniqueActionId());
+            } else {
+                // null to getConcurrencyType() means multiple instances possible
+                uniqueIdIsCorrect = true;
+            }
+            return
+                    null != mLogFacility &&
+                    uniqueIdIsCorrect;
         }
-
-        /**
-         * Checks validity of extended action data
-         * @return
-         */
-        protected abstract boolean isDataValid();
     }
 }

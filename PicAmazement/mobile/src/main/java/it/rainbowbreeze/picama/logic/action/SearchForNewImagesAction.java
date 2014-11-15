@@ -16,6 +16,21 @@ public class SearchForNewImagesAction extends ActionsManager.BaseAction {
     }
 
     @Override
+    protected ConcurrencyType getConcurrencyType() {
+        return ConcurrencyType.SingleInstance;
+    }
+
+    @Override
+    protected String getUniqueActionId() {
+        return LOG_TAG;
+    }
+
+    @Override
+    protected String getLogTag() {
+        return LOG_TAG;
+    }
+
+    @Override
     protected boolean isDataValid() {
         return true;
     }
@@ -25,5 +40,4 @@ public class SearchForNewImagesAction extends ActionsManager.BaseAction {
         mLogFacility.v(LOG_TAG, "Searching for new images");
         mPictureScraperManager.searchForNewImage();
     }
-
 }

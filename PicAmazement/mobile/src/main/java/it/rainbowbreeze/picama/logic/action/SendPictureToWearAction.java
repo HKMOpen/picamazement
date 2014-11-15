@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.logic.SendPictureToWearService;
 
 /**
@@ -18,6 +17,21 @@ public class SendPictureToWearAction extends ActionsManager.BaseAction {
     protected SendPictureToWearAction(Context appContext, ILogFacility logFacility, ActionsManager actionsManager) {
         super(logFacility, actionsManager);
         mAppContext = appContext;
+    }
+
+    @Override
+    protected ConcurrencyType getConcurrencyType() {
+        return ConcurrencyType.MultipleInstances;
+    }
+
+    @Override
+    protected String getUniqueActionId() {
+        return LOG_TAG;
+    }
+
+    @Override
+    protected String getLogTag() {
+        return LOG_TAG;
     }
 
     public SendPictureToWearAction setPictureId(long pictureId) {
@@ -39,5 +53,4 @@ public class SendPictureToWearAction extends ActionsManager.BaseAction {
         intent.putExtra(SendPictureToWearService.EXTRA_PARAM_PICTURE_ID, mPictureId);
         mAppContext.startService(intent);
     }
-
 }

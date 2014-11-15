@@ -12,6 +12,7 @@ import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
 import it.rainbowbreeze.picama.logic.SendPictureToWearService;
+import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
 import it.rainbowbreeze.picama.logic.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
@@ -28,6 +29,7 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
                 PictureListActivity.class,
                 FullscreenPictureActivity.class,
                 SendPictureToWearService.class,
+                UpdatePictureFieldsService.class,
         },
         includes = MobileModule.class,
         // True because it declares @Provides not used inside the class, but outside.

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
+import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 
 /**
@@ -23,6 +24,12 @@ public class UpdatePictureFieldsService extends IntentService {
 
     public UpdatePictureFieldsService() {
         super(UpdatePictureFieldsService.class.getSimpleName());
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((MyApp) getApplicationContext()).inject(this);
     }
 
     @Override

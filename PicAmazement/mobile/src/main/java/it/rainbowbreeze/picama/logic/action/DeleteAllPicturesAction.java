@@ -11,10 +11,30 @@ import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
  * Created by alfredomorresi on 15/11/14.
  */
 public class DeleteAllPicturesAction extends BasePictureAction {
-    private static final String LOG_TAG = SendPictureToWearService.class.getSimpleName();
+    private static final String LOG_TAG = DeleteAllPicturesAction.class.getSimpleName();
 
     public DeleteAllPicturesAction(Context appContext, ILogFacility logFacility, ActionsManager actionsManager) {
         super(appContext, logFacility, actionsManager);
+    }
+
+    @Override
+    protected ConcurrencyType getConcurrencyType() {
+        return ConcurrencyType.SingleInstance;
+    }
+
+    @Override
+    protected String getUniqueActionId() {
+        return LOG_TAG;
+    }
+
+    @Override
+    protected String getLogTag() {
+        return LOG_TAG;
+    }
+
+    @Override
+    protected boolean isDataValid() {
+        return true;
     }
 
     @Override
@@ -23,10 +43,5 @@ public class DeleteAllPicturesAction extends BasePictureAction {
         Intent intent = new Intent(mAppContext, UpdatePictureFieldsService.class);
         intent.setAction(UpdatePictureFieldsService.ACTION_REMOVE_ALL_PICTURES);
         mAppContext.startService(intent);
-    }
-
-    @Override
-    protected boolean isDataValid() {
-        return true;
     }
 }

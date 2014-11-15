@@ -42,6 +42,10 @@
             android:name="it.rainbowbreeze.picama.logic.SendPictureToWearService"
             android:exported="false" >
         </service>
+        <service
+            android:name="it.rainbowbreeze.picama.logic.UpdatePictureFieldsService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
