@@ -35,23 +35,8 @@ public class SendPictureToWearService extends GoogleApiClientBaseService {
     @Inject WearManager mWearManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
 
-
-    private static final String ACTION_SENDPICTURE = "it.rainbowbreeze.picama.logic.action.FOO";
-    private static final String EXTRA_PARAM_PICTURE_ID = "it.rainbowbreeze.picama.logic.extra.PICTURE_ID";
-
-    /**
-     * Starts this service to perform action Foo with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionSendAmazingPicture(Context context, long pictureId) {
-        Intent intent = new Intent(context, SendPictureToWearService.class);
-        intent.setAction(ACTION_SENDPICTURE);
-        intent.putExtra(EXTRA_PARAM_PICTURE_ID, pictureId);
-        context.startService(intent);
-    }
+    public static final String ACTION_SENDPICTURE = "it.rainbowbreeze.picama.logic.action.FOO";
+    public static final String EXTRA_PARAM_PICTURE_ID = "it.rainbowbreeze.picama.logic.extra.PICTURE_ID";
 
     public SendPictureToWearService() {
         super("SendPictureToWearService");
@@ -76,7 +61,7 @@ public class SendPictureToWearService extends GoogleApiClientBaseService {
     }
 
     @Override
-    public void doYourStaff(Intent intent) {
+    public void doYourStuff(Intent intent) {
         // All the valid checks are performed on the super method
         final String action = intent.getAction();
         if (ACTION_SENDPICTURE.equals(action)) {

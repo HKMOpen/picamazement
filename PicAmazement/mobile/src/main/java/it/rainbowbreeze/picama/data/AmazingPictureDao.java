@@ -16,12 +16,12 @@ import it.rainbowbreeze.picama.domain.AmazingPicture;
 public class AmazingPictureDao {
     private static final String LOG_TAG = AmazingPictureDao.class.getSimpleName();
 
-    private final ILogFacility mLogFacility;
     private final Context mAppContext;
+    private final ILogFacility mLogFacility;
 
-    public AmazingPictureDao(ILogFacility logFacility, Context appContext) {
-        mLogFacility = logFacility;
+    public AmazingPictureDao(Context appContext, ILogFacility logFacility) {
         mAppContext = appContext;
+        mLogFacility = logFacility;
     }
 
     public void insert(AmazingPicture picture) {

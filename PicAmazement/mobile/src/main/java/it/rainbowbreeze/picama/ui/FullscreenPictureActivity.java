@@ -6,19 +6,15 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
-import it.rainbowbreeze.picama.logic.SendPictureToWearService;
+import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.ui.util.SystemUiHider;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -65,7 +61,7 @@ public class FullscreenPictureActivity extends Activity {
 
     public static final String LOG_TAG = FullscreenPictureActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
-
+    @Inject ActionsManager mActionsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +110,10 @@ public class FullscreenPictureActivity extends Activity {
             finish();
             return;
         }
-        SendPictureToWearService.startActionSendAmazingPicture(getApplicationContext(), pictureId);
+
+        mActionsManager.sendPictureToWear()
+                .setPictureId(pictureId)
+                .executeAsync();
         PictureSelection where = new PictureSelection();
         where.visible(true).and().id(pictureId);
         Cursor c = getApplicationContext().getContentResolver().query(PictureColumns.CONTENT_URI, null,

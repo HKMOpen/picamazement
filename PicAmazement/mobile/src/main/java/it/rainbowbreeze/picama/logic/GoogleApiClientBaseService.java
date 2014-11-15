@@ -2,7 +2,6 @@ package it.rainbowbreeze.picama.logic;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Api;
@@ -16,7 +15,7 @@ import it.rainbowbreeze.picama.common.ILogFacility;
 /**
  * Base Service to manage Google API Client requests.
  *
- * Extends {@link it.rainbowbreeze.picama.logic.GoogleApiClientBaseService#doYourStaff(android.content.Intent)}
+ * Extends {@link it.rainbowbreeze.picama.logic.GoogleApiClientBaseService#doYourStuff(android.content.Intent)}
  * with the code requested by your application
  *
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -61,7 +60,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
      *
      * @param intent
      */
-    protected abstract void doYourStaff(Intent intent);
+    public abstract void doYourStuff(Intent intent);
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -74,7 +73,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
         analyzeConnectionResult(connectionResult);
 
         if (mGoogleApiClient.isConnected() && isRequestedApiAvailable()) {
-            doYourStaff(intent);
+            doYourStuff(intent);
             disconnectFromGoogleApi();
         } else {
             mLogFacility.i(LOG_TAG, "Google Api Client isn't connected, aborting");

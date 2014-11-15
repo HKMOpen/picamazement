@@ -216,7 +216,8 @@ public class WearManager {
                 .addAction(savePicAction)
                 .extend(wearableExtender);
         //TODO: think about moving the actions in the WearableExtender
-        ((NotificationManager) mAppContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify(
+        NotificationManager nm = ((NotificationManager) mAppContext.getSystemService(Context.NOTIFICATION_SERVICE));
+        nm.notify(
                 Bag.NOTIFICATION_ID_NEWIMAGE,
                 notificationBuilder.build());
 

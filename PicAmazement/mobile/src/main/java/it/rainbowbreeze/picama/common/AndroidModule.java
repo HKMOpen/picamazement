@@ -13,6 +13,7 @@ import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
 import it.rainbowbreeze.picama.logic.SendPictureToWearService;
 import it.rainbowbreeze.picama.logic.WearManager;
+import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
 import it.rainbowbreeze.picama.ui.PictureListActivity;
 
@@ -71,18 +72,18 @@ public class AndroidModule {
      * @return
      */
     @Provides @Singleton WearManager provideWearManager(
-            ILogFacility logFacility,
-            @ForApplication Context appContext) {
-        return new WearManager(logFacility, appContext);
+            @ForApplication Context appContext,
+            ILogFacility logFacility) {
+        return new WearManager(appContext, logFacility);
     }
 
     /**
      * @return
      */
     @Provides @Singleton AmazingPictureDao provideAmazingPictureDao(
-            ILogFacility logFacility,
-            @ForApplication Context appContext) {
-        return new AmazingPictureDao(logFacility, appContext);
+            @ForApplication Context appContext,
+            ILogFacility logFacility) {
+        return new AmazingPictureDao(appContext, logFacility);
     }
 
 
@@ -91,5 +92,15 @@ public class AndroidModule {
             PictureScraperManagerConfig pictureScraperManagerConfig,
             AmazingPictureDao amazingPictureDao) {
         return new PictureScraperManager(logFacility, pictureScraperManagerConfig, amazingPictureDao);
+    }
+
+    /**
+     * @return
+     */
+    @Provides @Singleton
+    ActionsManager provideActionsManager(
+            @ForApplication Context appContext,
+            ILogFacility logFacility) {
+        return new ActionsManager(appContext, logFacility);
     }
 }

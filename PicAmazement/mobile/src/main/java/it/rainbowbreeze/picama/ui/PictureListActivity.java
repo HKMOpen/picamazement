@@ -20,12 +20,13 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
-import it.rainbowbreeze.picama.logic.SendPictureToWearService;
+import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 public class PictureListActivity extends Activity {
     private static final String LOG_TAG = PictureListActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject PictureScraperManager mPictureScraperManager;
+    @Inject ActionsManager mActionsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,20 +109,12 @@ public class PictureListActivity extends Activity {
                 }).start();
                 break;
             case R.id.picList_mnuSendToWatch:
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        sendToWatch();
-                    }
-                }).start();
-                break;
+                mActionsManager.sendPictureToWear()
+                        .setPictureId(12)
+                        .executeAsync();
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    private void sendToWatch() {
-        SendPictureToWearService.startActionSendAmazingPicture(getApplicationContext(), 12);
     }
 }

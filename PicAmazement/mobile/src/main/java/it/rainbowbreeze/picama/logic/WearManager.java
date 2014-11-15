@@ -53,9 +53,9 @@ public class WearManager {
     private GoogleApiClient mGoogleApiClient;
     private boolean mIsWearAvailable;
 
-    public WearManager(ILogFacility logFacility, Context appContext) {
-        mLogFacility = logFacility;
+    public WearManager(Context appContext, ILogFacility logFacility) {
         mAppContext = appContext;
+        mLogFacility = logFacility;
     }
 
     public boolean isWearAvailable() {
