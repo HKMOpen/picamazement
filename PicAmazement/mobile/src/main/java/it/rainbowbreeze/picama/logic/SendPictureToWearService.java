@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -28,7 +29,7 @@ import it.rainbowbreeze.picama.domain.AmazingPicture;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class SendPictureToWearService extends IntentService {
+public class SendPictureToWearService extends GoogleApiClientBaseService {
     private static final String LOG_TAG = SendPictureToWearService.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject WearManager mWearManager;
@@ -36,7 +37,6 @@ public class SendPictureToWearService extends IntentService {
 
 
     private static final String ACTION_SENDPICTURE = "it.rainbowbreeze.picama.logic.action.FOO";
-
     private static final String EXTRA_PARAM_PICTURE_ID = "it.rainbowbreeze.picama.logic.extra.PICTURE_ID";
 
     /**
@@ -61,30 +61,27 @@ public class SendPictureToWearService extends IntentService {
     public void onCreate() {
         super.onCreate();
         ((MyApp) getApplication()).inject(this);
-        mLogFacility.v(LOG_TAG, "Starting service");
-        mWearManager.init();
     }
 
     @Override
-    public void onDestroy() {
-        mWearManager.onStop();
-        super.onDestroy();
+    public Api getApi() {
+        return Wearable.API;
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        // Syncronous connection
-        mWearManager.onStartAwait();
-        if (mWearManager.isWearNotAvailable()) {
-            return;
-        }
+    public ILogFacility getLogFacility() {
+        // Class in not null after the call to {@link #onCreate} method, where Dagger
+        // injects what's required
+        return mLogFacility;
+    }
 
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_SENDPICTURE.equals(action)) {
-                final long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, 0);
-                sendPictureToWear(pictureId);
-            }
+    @Override
+    public void doYourStaff(Intent intent) {
+        // All the valid checks are performed on the super method
+        final String action = intent.getAction();
+        if (ACTION_SENDPICTURE.equals(action)) {
+            final long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, 0);
+            sendPictureToWear(pictureId);
         }
     }
 
