@@ -62,11 +62,11 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
     public List<AmazingPicture> getNewPictures() {
         ArrayList<AmazingPicture> pictures = new ArrayList<AmazingPicture>();
 
-            List<Status> statuses;
-            initToken();
+        List<Status> statuses;
+        initToken();
 
-            for (String userName : mUserNames) {
-                mLogFacility.v(LOG_TAG, "Analyzing Twitter account " + userName);
+        for (String userName : mUserNames) {
+            mLogFacility.v(LOG_TAG, "Analyzing Twitter account " + userName);
             try {
                 statuses = mTwitter.getUserTimeline(userName);
                 for (Status status : statuses) {

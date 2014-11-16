@@ -1,9 +1,11 @@
 package it.rainbowbreeze.picama.logic;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.List;
 
+import it.rainbowbreeze.libs.network.NetworkUtils;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
@@ -29,10 +31,15 @@ public class PictureScraperManager {
 
     /**
      * TODO: add a callback and make it async
+     * @param appContext
      */
-    public void searchForNewImage() {
+    public void searchForNewImage(Context appContext) {
         mLogFacility.v(LOG_TAG, "Starting pictures update");
 
+        if (!NetworkUtils.isNetworkAvailable(appContext)) {
+            mLogFacility.v(LOG_TAG, "Aborting the search because the network is not available");
+            return;
+        }
         for (IPictureScraper scraper : mPictureScrapers) {
             mLogFacility.v(LOG_TAG, "Start to scrape from provider " + scraper.getName());
             List<AmazingPicture> newPictures = scraper.getNewPictures();

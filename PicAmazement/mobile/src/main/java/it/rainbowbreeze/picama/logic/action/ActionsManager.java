@@ -53,7 +53,7 @@ public class ActionsManager {
     }
 
     public SearchForNewImagesAction searchForNewImages() {
-        return new SearchForNewImagesAction(mLogFacility, this, mPictureScraperManager);
+        return new SearchForNewImagesAction(mAppContext, mLogFacility, this, mPictureScraperManager);
     }
 
     /**
