@@ -14,4 +14,9 @@ public abstract class BasePictureAction extends ActionsManager.BaseAction {
         super(logFacility, actionsManager);
         mAppContext = appContext;
     }
+
+    @Override
+    protected boolean isCoreDataValid() {
+        return null != mAppContext && super.isCoreDataValid();
+    }
 }

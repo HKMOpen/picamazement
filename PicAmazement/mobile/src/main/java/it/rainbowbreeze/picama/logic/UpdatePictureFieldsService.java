@@ -42,11 +42,11 @@ public class UpdatePictureFieldsService extends IntentService {
         if (ACTION_REMOVE_PICTURE_FROM_LIST.equals(intent.getAction())) {
             long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, -1);
             if (-1 == pictureId) {
-                mLogFacility.i(LOG_TAG, "No valid paramtere for action " + intent.getAction());
+                mLogFacility.i(LOG_TAG, "No valid parameter for action " + intent.getAction());
                 return;
             }
             mLogFacility.v(LOG_TAG, "Hiding from the list picture with id " + pictureId);
-            mAmazingPictureDao.hideFromList(pictureId);
+            mAmazingPictureDao.hideById(pictureId);
 
         } else if (ACTION_REMOVE_ALL_PICTURES.equals(intent.getAction())) {
             mLogFacility.v(LOG_TAG, "Removing all pictures from the list");

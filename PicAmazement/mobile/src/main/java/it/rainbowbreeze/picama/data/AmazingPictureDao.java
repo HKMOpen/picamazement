@@ -2,6 +2,7 @@ package it.rainbowbreeze.picama.data;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
@@ -89,14 +90,6 @@ public class AmazingPictureDao {
         return queryAndCreatePicture(pictureSelection);
     }
 
-    /**
-     * Set the hide attribute of a given picture to true
-     * @param pictureId
-     */
-    public void hideFromList(long pictureId) {
-
-    }
-
     private AmazingPicture queryAndCreatePicture(PictureSelection pictureSelection) {
         PictureCursor c = pictureSelection.query(mAppContext.getContentResolver(),
                 null,
@@ -121,5 +114,20 @@ public class AmazingPictureDao {
         Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,
                 where.sel(), where.args(), PictureColumns.DATE + " DESC");
         return c;
+    }
+
+    /**
+     * Hides a particular picture from the list
+     * @param pictureId
+     */
+    public void hideById(long pictureId) {
+        PictureContentValues values = new PictureContentValues();
+        values.putVisible(false);
+        Uri pictureUri = Uri.parse(PictureColumns.CONTENT_URI + "/" + pictureId);
+        mAppContext.getContentResolver().update(
+                pictureUri,
+                values.values(),
+                null,
+                null);
     }
 }

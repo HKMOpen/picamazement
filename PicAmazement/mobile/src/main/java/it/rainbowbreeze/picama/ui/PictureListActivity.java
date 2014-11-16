@@ -47,6 +47,16 @@ public class PictureListActivity extends Activity {
                 startActivity(intent);
             }
         });
+        lst.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mActionsManager.hidePicture()
+                        .setPictureId(id)
+                        .executeAsync();
+                return true;
+            }
+        });
+
 
         /**
         Button btnAddItem = (Button) findViewById(R.id.list_btnAddItem);
@@ -98,10 +108,14 @@ public class PictureListActivity extends Activity {
                 mActionsManager.searchForNewImages()
                         .executeAsync();
                 break;
+            case R.id.picList_mnuHideHelp:
+                Toast.makeText(this, "Long click to hide a picture", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.picList_mnuSendToWatch:
                 mActionsManager.sendPictureToWear()
                         .setPictureId(12)
                         .executeAsync();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }

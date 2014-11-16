@@ -1,6 +1,7 @@
 package it.rainbowbreeze.picama.data.provider;
 
 import android.test.ProviderTestCase2;
+import android.util.Log;
 
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.provider.PictureProvider;
@@ -17,15 +18,23 @@ public class PictureProviderTest extends ProviderTestCase2<PictureProvider> {
         super(PictureProvider.class, PictureProvider.AUTHORITY);
     }
 
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
     public void testMockContext() {
         PictureSelection pictureSelection = new PictureSelection();
-        PictureCursor c = pictureSelection.query(getMockContext().getContentResolver(),
+        PictureCursor c = pictureSelection.query(getMockContentResolver(),
                 null,
                 PictureColumns.DATE + " DESC");
+        int pictures = 0;
         while (c.moveToNext()) {
-            fail("Shouldn't have pictures");
-            break;
+            pictures++;
+            AmazingPicture picture = new AmazingPicture().fromCursor(c);
+            Log.v("PicAmazement", picture.getId() + " - " + picture.getTitle());
         }
         c.close();
+        assertEquals("Shouldn't have pictures", 0, pictures);
     }
 }

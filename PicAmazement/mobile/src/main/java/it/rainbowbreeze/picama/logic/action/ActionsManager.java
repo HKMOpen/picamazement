@@ -56,6 +56,10 @@ public class ActionsManager {
         return new SearchForNewImagesAction(mAppContext, mLogFacility, this, mPictureScraperManager);
     }
 
+    public HidePictureAction hidePicture() {
+        return new HidePictureAction(mAppContext, mLogFacility, this);
+    }
+
     /**
      * Base interface for an action
      */
@@ -156,6 +160,7 @@ public class ActionsManager {
             }
             return
                     null != mLogFacility &&
+                    null != mActionsManager &&
                     uniqueIdIsCorrect;
         }
     }

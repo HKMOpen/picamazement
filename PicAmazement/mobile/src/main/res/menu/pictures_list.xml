@@ -19,6 +19,11 @@
         android:id="@+id/picList_mnuSendToWatch"
         android:title="@string/picList_mnuSendToWatch"
         app:showAsAction="never"
+    />
+    <item
+        android:id="@+id/picList_mnuHideHelp"
+        android:title="@string/picList_mnuHideHelp"
+        app:showAsAction="never"
         />
     <item
         android:id="@+id/picList_mnuSettings"
