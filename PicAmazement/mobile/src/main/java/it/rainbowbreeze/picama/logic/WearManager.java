@@ -47,7 +47,7 @@ public class WearManager {
      */
 
     private static final String LOG_TAG = WearManager.class.getSimpleName();
-    private static final long GCLIENT_TIMEOUT = 30;
+    private static final long GOOGLEAPICLIENT_TIMEOUT = 30;
     private final ILogFacility mLogFacility;
     private final Context mAppContext;
     private GoogleApiClient mGoogleApiClient;
@@ -119,7 +119,7 @@ public class WearManager {
      */
     private int obtainWorkingClient() {
         ConnectionResult connectionResult = mGoogleApiClient
-                .blockingConnect(GCLIENT_TIMEOUT, TimeUnit.SECONDS);
+                .blockingConnect(GOOGLEAPICLIENT_TIMEOUT, TimeUnit.SECONDS);
         setWearAvailability(connectionResult);
 
         if (!connectionResult.isSuccess()) {
