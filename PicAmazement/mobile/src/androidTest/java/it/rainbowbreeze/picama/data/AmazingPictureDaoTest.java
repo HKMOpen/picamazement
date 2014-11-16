@@ -39,7 +39,11 @@ public class AmazingPictureDaoTest extends ProviderTestCase2<PictureProvider> {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        ObjectGraph.create(new TestModule(), new AndroidModule((MyApp)getContext().getApplicationContext())).inject(this);
+        ObjectGraph
+                .create(
+                        new TestModule(),
+                        new AndroidModule(getContext().getApplicationContext()))
+                .inject(this);
     }
 
     @Override

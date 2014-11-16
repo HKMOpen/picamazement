@@ -3,7 +3,6 @@ package it.rainbowbreeze.picama.common;
 import android.content.Context;
 import android.location.LocationManager;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -42,10 +41,10 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
         complete = true
 )
 public class AndroidModule {
-    private final MyApp mApp;
+    private final Context mAppContent;
 
-    public AndroidModule(MyApp app) {
-        mApp = app;
+    public AndroidModule(Context appContent) {
+        mAppContent = appContent;
     }
 
     /**
@@ -53,7 +52,7 @@ public class AndroidModule {
      * {@link ForApplication @Annotation} to explicitly differentiate it from an activity context.
      */
     @Provides @Singleton @ForApplication public Context provideApplicationContext () {
-        return mApp;
+        return mAppContent;
     }
 
     /**
@@ -63,7 +62,7 @@ public class AndroidModule {
      */
     @Provides @Singleton
     LocationManager provideLocationManager() {
-        return (LocationManager) mApp.getSystemService(Context.LOCATION_SERVICE);
+        return (LocationManager) mAppContent.getSystemService(Context.LOCATION_SERVICE);
     }
 
     /**

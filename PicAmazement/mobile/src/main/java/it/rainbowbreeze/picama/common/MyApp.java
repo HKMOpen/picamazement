@@ -60,7 +60,7 @@ public class MyApp extends Application {
 //                new MobileModule()
 //        );
         return Arrays.asList(
-                (Object) new AndroidModule(this)
+                (Object) new AndroidModule(this.getApplicationContext())
         );
     }
 
