@@ -1,24 +1,22 @@
 package it.rainbowbreeze.picama.data;
 
-import android.content.Context;
 import android.test.InstrumentationTestCase;
-import android.test.ProviderTestCase2;
+import android.test.IsolatedContext;
+import android.test.RenamingDelegatingContext;
+import android.test.mock.MockContentResolver;
+import android.test.mock.MockContext;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.ObjectGraph;
-import dagger.Provides;
 import it.rainbowbreeze.picama.common.AndroidModule;
-import it.rainbowbreeze.picama.common.ForApplication;
-import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.provider.PictureProvider;
 
 /**
  * Created by alfredomorresi on 15/11/14.
  */
-public class AmazingPictureDaoTest extends ProviderTestCase2<PictureProvider> {
+public class AmazingPictureDaoTest extends InstrumentationTestCase {
 
     @Inject AmazingPictureDao mAmazingPictureDao;
 
@@ -29,20 +27,32 @@ public class AmazingPictureDaoTest extends ProviderTestCase2<PictureProvider> {
     )
     protected class TestModule {
     }
-    /**
-     * Constructor.
-     */
-    public AmazingPictureDaoTest() {
-        super(PictureProvider.class, PictureProvider.AUTHORITY);
-    }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
+        IsolatedContext providerContext;
+        MockContentResolver resolver;
+
+        //created the mock context for the provider
+        resolver = new MockContentResolver();
+        final String filenamePrefix = "test.";
+        RenamingDelegatingContext targetContextWrapper = new RenamingDelegatingContext(
+                new MockContext(), // The context that most methods are delegated to
+                getInstrumentation().getTargetContext(), // The context that file methods are delegated to
+                filenamePrefix);
+        providerContext = new IsolatedContext(resolver, targetContextWrapper);
+
+        PictureProvider pictureProvider = new PictureProvider();
+        pictureProvider.attachInfo(providerContext, null);
+        assertNotNull(pictureProvider);
+        resolver.addProvider(PictureProvider.AUTHORITY, pictureProvider);
+
         ObjectGraph
                 .create(
                         new TestModule(),
-                        new AndroidModule(getContext().getApplicationContext()))
+                        new AndroidModule(providerContext))
                 .inject(this);
     }
 
