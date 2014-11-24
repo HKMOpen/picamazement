@@ -50,7 +50,6 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
     public void onCreate() {
         super.onCreate();
         ((MyApp) getApplication()).inject(this);
-        mLogFacility.v(LOG_TAG, "onCreated");
 
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addApi(Wearable.API)
@@ -156,6 +155,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
         // Action to remove the picture from the stream
         Intent removePicIntent = new Intent(Bag.INTENT_ACTION_REMOVEPICTURE);
         removePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
+        removePicIntent.putExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, Bag.NOTIFICATION_ID_NEWIMAGE);
         // The flag FLAG_UPDATE_CURRENT avoids weird pictureId and other extras values
         // (read the PendingIntent notification for that).
         // If two or more PendingIntent need to be active at the same time, add
@@ -173,6 +173,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
         // Action to save the picture of the stream
         Intent savePicIntent = new Intent(Bag.INTENT_ACTION_SAVEPICTURE);
         savePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
+        savePicIntent.putExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, Bag.NOTIFICATION_ID_NEWIMAGE);
         PendingIntent savePicPendingIntent = PendingIntent.getService(
                 appContext,
                 0,

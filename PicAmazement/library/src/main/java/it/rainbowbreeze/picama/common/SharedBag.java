@@ -19,6 +19,7 @@ public abstract class SharedBag {
     public final static String INTENT_ACTION_REMOVEPICTURE = "it.rainbowbreeze.picama.Action.Picture.Remove";
     public static final String INTENT_ACTION_SAVEPICTURE = "it.rainbowbreeze.picama.Action.Picture.Save";
     public final static String INTENT_EXTRA_PICTUREID = "Extra.PictureId";
+    public final static String INTENT_EXTRA_NOTIFICATIONID = "Extra.NotificationId";
 
     public static final long ID_NOT_SET = -1;
     public static final long GOOGLE_API_CLIENT_TIMEOUT = 30;  // seconds

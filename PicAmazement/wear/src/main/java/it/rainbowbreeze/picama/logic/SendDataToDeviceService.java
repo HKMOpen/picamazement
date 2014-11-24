@@ -1,6 +1,9 @@
 package it.rainbowbreeze.picama.logic;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.support.wearable.activity.ConfirmationActivity;
 
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.PendingResult;
@@ -54,26 +57,43 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
         // All the valid checks are performed on the super method
         final String action = intent.getAction();
         long pictureId = intent.getLongExtra(Bag.INTENT_EXTRA_PICTUREID, Bag.ID_NOT_SET);
+        int notificationId = intent.getIntExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, 0);
         if (Bag.INTENT_ACTION_SAVEPICTURE.equals(action)) {
-            sendDataMessageForDevice(Bag.WEAR_PATH_SAVEPICTURE, pictureId);
+            sendDataMessageForDevice(Bag.WEAR_PATH_SAVEPICTURE, pictureId, notificationId);
 
         } else if (Bag.INTENT_ACTION_REMOVEPICTURE.equals(action)) {
-            mLogFacility.v(LOG_TAG, "Picture id here is " + pictureId);
-            sendDataMessageForDevice(Bag.WEAR_PATH_REMOVEPICTURE, pictureId);
+            sendDataMessageForDevice(Bag.WEAR_PATH_REMOVEPICTURE, pictureId, notificationId);
 
         } else {
             mLogFacility.i(LOG_TAG, "Command not recognized: " + action);
         }
     }
 
-    private void sendDataMessageForDevice(String path, long pictureId) {
+    private void sendDataMessageForDevice(String path, long pictureId, int notificationId) {
+        mLogFacility.v(LOG_TAG, "Sending to device path " + path + " for picture id " + pictureId);
+
         PutDataMapRequest dataMapRequest = PutDataMapRequest.create(path);
         dataMapRequest.getDataMap().putLong(Bag.WEAR_DATAMAPITEM_PICTUREID, pictureId);
         dataMapRequest.getDataMap().putLong(Bag.WEAR_DATAMAPITEM_TIMESTAMP, (new Date()).getTime());
         PutDataRequest request = dataMapRequest.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
                 mGoogleApiClient, request);
-        pendingResult.await();
-        mLogFacility.v(LOG_TAG, "Sent to device path " + path + " for picture id " + pictureId);
+        DataApi.DataItemResult result = pendingResult.await();
+
+        if (result.getStatus().isSuccess()) {
+            mLogFacility.v(LOG_TAG, "Sent data to device");
+            // Creates the confirmation wear activity
+            Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
+            intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.SUCCESS_ANIMATION);
+            intent.putExtra(ConfirmationActivity.EXTRA_MESSAGE, "Succeeded!");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(intent);
+            // remove the notification
+            NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
+            nm.cancel(notificationId);
+
+        } else {
+            mLogFacility.i(LOG_TAG, "Error sending data to device, code is " + result.getStatus().getStatusCode());
+        }
     }
 }
