@@ -184,6 +184,20 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 appContext.getString(R.string.common_savePicture),
                 savePicPendingIntent);
 
+        // Action to open the picture on the phone
+        Intent openPicIntent = new Intent(Bag.INTENT_ACTION_OPENONDEVICE);
+        openPicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
+        openPicIntent.putExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, Bag.NOTIFICATION_ID_NEWIMAGE);
+        PendingIntent openPicPendingIntent = PendingIntent.getService(
+                appContext,
+                0,
+                openPicIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification.Action openPicAction = new Notification.Action(
+                android.support.wearable.R.drawable.go_to_phone_00156,
+                appContext.getString(R.string.common_open_on_phone),
+                openPicPendingIntent);
+
         Notification.WearableExtender wearableExtender = new Notification.WearableExtender()
                 .setDisplayIntent(fullScreenPendingIntent)
                 .setCustomSizePreset(Notification.WearableExtender.SIZE_FULL_SCREEN)
@@ -197,6 +211,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 .setContentTitle(picture.getSource())
                 .addAction(removePicAction)
                 .addAction(savePicAction)
+                .addAction(openPicAction)
                 .extend(wearableExtender);
         NotificationManager nm = ((NotificationManager) appContext.getSystemService(Context.NOTIFICATION_SERVICE));
         nm.notify(

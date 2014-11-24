@@ -65,9 +65,27 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
         } else if (Bag.INTENT_ACTION_REMOVEPICTURE.equals(action)) {
             sendDataMessageForDevice(Bag.WEAR_PATH_REMOVEPICTURE, pictureId, notificationId);
 
+        } else if (Bag.INTENT_ACTION_OPENONDEVICE.equals(action)) {
+            openOnDevice(pictureId, notificationId);
+
         } else {
             mLogFacility.i(LOG_TAG, "Command not recognized: " + action);
         }
+    }
+
+    /**
+     * Opens the picture directly on the device
+     * @param pictureId
+     * @param notificationId
+     */
+    private void openOnDevice(long pictureId, int notificationId) {
+        // Sends the data to the device
+
+        // Show the confirmation activity
+        Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
+        intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.OPEN_ON_PHONE_ANIMATION);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplicationContext().startActivity(intent);
     }
 
     private void sendDataMessageForDevice(String path, long pictureId, int notificationId) {
@@ -82,6 +100,7 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
         DataApi.DataItemResult result = pendingResult.await();
 
         if (result.getStatus().isSuccess()) {
+            // Help on Confirmation Activity: http://stackoverflow.com/questions/25482930/how-to-implement-open-on-phone-animation-on-android-wear
             mLogFacility.v(LOG_TAG, "Sent data to device");
             // Creates the confirmation wear activity
             Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
