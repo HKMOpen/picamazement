@@ -1,27 +1,16 @@
 package it.rainbowbreeze.picama.ui;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.wearable.view.WatchViewStub;
-import android.text.TextUtils;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.android.gms.wearable.Asset;
 
 import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.common.LogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.logic.WearManager;
 
 public class PictureActivity extends Activity {
     private static final String LOG_TAG = PictureActivity.class.getSimpleName();
@@ -29,7 +18,6 @@ public class PictureActivity extends Activity {
     public static final String INTENT_EXTRA_IMAGEASSET = "ImageAsset";
 
     @Inject ILogFacility mLogFacility;
-    @Inject WearManager mWearManager;
 
     private TextView mTextView;
 
@@ -38,8 +26,6 @@ public class PictureActivity extends Activity {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).inject(this);
         mLogFacility.logStartOfActivity(LOG_TAG, getClass(), savedInstanceState);
-        mWearManager.init();
-        mWearManager.onStartASync();
 
         setContentView(R.layout.act_fullscreen_picture);
         ImageView imgPicture = (ImageView) findViewById(R.id.fullscreen_imgPicture);
@@ -66,11 +52,5 @@ public class PictureActivity extends Activity {
             }
         });
         */
-    }
-
-    @Override
-    protected void onStop() {
-        mWearManager.onStop();
-        super.onStop();
     }
 }

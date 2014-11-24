@@ -8,7 +8,6 @@ import dagger.Module;
 import dagger.Provides;
 import it.rainbowbreeze.picama.logic.ReceiveDataFromDeviceService;
 import it.rainbowbreeze.picama.logic.SendDataToDeviceService;
-import it.rainbowbreeze.picama.logic.WearManager;
 import it.rainbowbreeze.picama.ui.PictureActivity;
 
 /**
@@ -21,7 +20,6 @@ import it.rainbowbreeze.picama.ui.PictureActivity;
         injects = {
                 ReceiveDataFromDeviceService.class,
                 SendDataToDeviceService.class,
-                WearManager.class,
                 PictureActivity.class
         },
         includes = MobileModule.class,

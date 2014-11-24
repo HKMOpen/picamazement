@@ -76,10 +76,9 @@ public abstract class GoogleApiClientBaseService extends IntentService {
             mLogFacility.i(LOG_TAG, "Intent received is not valid, aborting");
             return;
         }
-        ConnectionResult connectionResult = connectToGoogleApi();
+        ConnectionResult connectionResult = connectToGoogleApiASync();
         analyzeConnectionResult(connectionResult);
 
-        //TODO disconnect if api are not available but is connected
         if (mGoogleApiClient.isConnected() && isRequestedApiAvailable()) {
             doYourStuff(intent);
             disconnectFromGoogleApi();
@@ -120,7 +119,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
      * @param result
      */
     protected void analyzeConnectionResult(ConnectionResult result) {
-        if (null == result || result.isSuccess()) {
+        if (result.isSuccess()) {
             mIsRequestedApiAvailable = true;
             mLogFacility.v(LOG_TAG, "Google Api Client connected");
         } else if (result.getErrorCode() == ConnectionResult.API_UNAVAILABLE) {
@@ -161,9 +160,9 @@ public abstract class GoogleApiClientBaseService extends IntentService {
     }
 
     /**
-     * Connects to Goole API Client
+     * Connects to Google API Client
      */
-    protected ConnectionResult connectToGoogleApi() {
+    protected ConnectionResult connectToGoogleApiASync() {
         return mGoogleApiClient.blockingConnect(
                 getMaxConnectionTime(),
                 TimeUnit.SECONDS);

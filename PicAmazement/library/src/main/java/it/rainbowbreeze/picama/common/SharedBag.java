@@ -21,4 +21,5 @@ public abstract class SharedBag {
     public final static String INTENT_EXTRA_PICTUREID = "Extra.PictureId";
 
     public static final long ID_NOT_SET = -1;
+    public static final long GOOGLE_API_CLIENT_TIMEOUT = 30;  // seconds
 }

@@ -55,7 +55,6 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
         final String action = intent.getAction();
         long pictureId = intent.getLongExtra(Bag.INTENT_EXTRA_PICTUREID, Bag.ID_NOT_SET);
         if (Bag.INTENT_ACTION_SAVEPICTURE.equals(action)) {
-            mLogFacility.v(LOG_TAG, "Picture id here is " + pictureId);
             sendDataMessageForDevice(Bag.WEAR_PATH_SAVEPICTURE, pictureId);
 
         } else if (Bag.INTENT_ACTION_REMOVEPICTURE.equals(action)) {

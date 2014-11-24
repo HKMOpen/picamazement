@@ -9,6 +9,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.concurrent.TimeUnit;
 
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 
 
@@ -76,7 +77,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
             mLogFacility.i(LOG_TAG, "Intent received is not valid, aborting");
             return;
         }
-        ConnectionResult connectionResult = connectToGoogleApi();
+        ConnectionResult connectionResult = connectToGoogleApiASync();
         analyzeConnectionResult(connectionResult);
 
         if (mGoogleApiClient.isConnected() && isRequestedApiAvailable()) {
@@ -145,8 +146,8 @@ public abstract class GoogleApiClientBaseService extends IntentService {
      * Default is 30.
      * @return
      */
-    protected int getMaxConnectionTime() {
-        return 30;
+    protected long getMaxConnectionTime() {
+        return Bag.GOOGLE_API_CLIENT_TIMEOUT;
     }
 
     /**
@@ -162,7 +163,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
     /**
      * Connects to Goole API Client
      */
-    protected ConnectionResult connectToGoogleApi() {
+    protected ConnectionResult connectToGoogleApiASync() {
         return mGoogleApiClient.blockingConnect(
                 getMaxConnectionTime(),
                 TimeUnit.SECONDS);
