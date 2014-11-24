@@ -104,7 +104,7 @@ public class FullscreenPictureActivity extends Activity {
         });
         */
 
-        long pictureId = getIntent().getLongExtra(Bag.PICTURE_ID, -1);
+        long pictureId = getIntent().getLongExtra(Bag.INTENT_EXTRA_PICTUREID, -1);
         if (-1 == pictureId) {
             mLogFacility.i(LOG_TAG, "Cannot find image to load, aborting");
             finish();

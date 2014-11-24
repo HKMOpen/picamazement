@@ -94,7 +94,7 @@ public class ReceiveDataFromWearService extends WearableListenerService {
             long pictureId = SharedUtils.bytesToLong(messageEvent.getData());
             mLogFacility.v(LOG_TAG, "Opening picture with id " + pictureId);
             Intent startIntent = new Intent(this, FullscreenPictureActivity.class);
-            startIntent.putExtra(Bag.PICTURE_ID, pictureId);
+            startIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, pictureId);
             startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startIntent);
         }
