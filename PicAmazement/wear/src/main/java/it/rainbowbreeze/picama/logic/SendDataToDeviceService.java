@@ -8,11 +8,16 @@ import android.support.wearable.activity.ConfirmationActivity;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
+import java.nio.ByteBuffer;
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.inject.Inject;
 
@@ -20,6 +25,7 @@ import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.common.SharedUtils;
 
 /**
  * Created by alfredomorresi on 22/11/14.
@@ -79,13 +85,29 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
      * @param notificationId
      */
     private void openOnDevice(long pictureId, int notificationId) {
+        mLogFacility.v(LOG_TAG, "Sending message " + Bag.WEAR_PATH_OPENPICTURE + " for picture id " + pictureId);
         // Sends the data to the device
+        HashSet <String>results= new HashSet<String>();
+        NodeApi.GetConnectedNodesResult nodes =
+                Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
+        for (Node node : nodes.getNodes()) {
+            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
+                    mGoogleApiClient,
+                    node.getId(),
+                    Bag.WEAR_PATH_OPENPICTURE,
+                    SharedUtils.longToBytes(pictureId)).await();
 
-        // Show the confirmation activity
-        Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
-        intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.OPEN_ON_PHONE_ANIMATION);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getApplicationContext().startActivity(intent);
+            if (!result.getStatus().isSuccess()) {
+                mLogFacility.i(LOG_TAG, "ERROR: failed to send Message: " + result.getStatus());
+            } else {
+                // Show the confirmation activity
+                Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
+                intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.OPEN_ON_PHONE_ANIMATION);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+                cancelNotification(notificationId);
+            }
+        }
     }
 
     private void sendDataMessageForDevice(String path, long pictureId, int notificationId) {
@@ -108,12 +130,16 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
             intent.putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.common_done));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(intent);
-            // Removes the whole notification
-            NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
-            nm.cancel(notificationId);
+            cancelNotification(notificationId);
 
         } else {
             mLogFacility.i(LOG_TAG, "Error sending data to device, code is " + result.getStatus().getStatusCode());
         }
+    }
+
+    private void cancelNotification(int notificationId) {
+        // Removes the whole notification
+        NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
+        nm.cancel(notificationId);
     }
 }

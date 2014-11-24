@@ -106,17 +106,14 @@ public class SendDataToWearService extends GoogleApiClientBaseService {
             return;
         }
 
-        for (int i=0; i<4; i++) {
-            PutDataMapRequest dataMapRequest = PutDataMapRequest.create(Bag.WEAR_PATH_AMAZINGPICTURE);
-            picture.fillDataMap(dataMapRequest.getDataMap());
-            dataMapRequest.getDataMap().putLong(Bag.WEAR_DATAMAPITEM_TIMESTAMP, (new Date()).getTime());
-            dataMapRequest.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
-            PutDataRequest request = dataMapRequest.asPutDataRequest();
-            PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
-                    mGoogleApiClient, request);
-            pendingResult.await();
-            mLogFacility.v(LOG_TAG, "Attemp: " + i + " - Transferred to Wear picture with id " + picture.getId());
-        }
+        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(Bag.WEAR_PATH_AMAZINGPICTURE);
+        picture.fillDataMap(dataMapRequest.getDataMap());
+        dataMapRequest.getDataMap().putLong(Bag.WEAR_DATAMAPITEM_TIMESTAMP, (new Date()).getTime());
+        dataMapRequest.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
+        PutDataRequest request = dataMapRequest.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
+                mGoogleApiClient, request);
+        pendingResult.await();
     }
 
     /**

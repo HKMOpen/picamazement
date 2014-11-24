@@ -1,9 +1,12 @@
 package it.rainbowbreeze.picama.logic.wearable;
 
+import android.content.Intent;
+
 import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
 import java.util.List;
@@ -13,7 +16,9 @@ import javax.inject.Inject;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.common.SharedUtils;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
+import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
 
 /**
  * Created by alfredomorresi on 22/11/14.
@@ -32,7 +37,7 @@ public class ReceiveDataFromWearService extends WearableListenerService {
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        mLogFacility.v(LOG_TAG, "Received onDataChanged event for data ");
+        mLogFacility.v(LOG_TAG, "Received onDataChanged event, starting analysis...");
 
         final List<DataEvent> events = FreezableUtils.freezeIterable(dataEvents);
         dataEvents.close();
@@ -78,6 +83,20 @@ public class ReceiveDataFromWearService extends WearableListenerService {
                     mLogFacility.i(LOG_TAG, "Cannot process the path, aborting");
                 }
             }
+        }
+    }
+
+    @Override
+    public void onMessageReceived(MessageEvent messageEvent) {
+        mLogFacility.v(LOG_TAG, "Received onMessageReceived event, starting analysis...");
+
+        if (messageEvent.getPath().equals(Bag.WEAR_PATH_OPENPICTURE)) {
+            long pictureId = SharedUtils.bytesToLong(messageEvent.getData());
+            mLogFacility.v(LOG_TAG, "Opening picture with id " + pictureId);
+            Intent startIntent = new Intent(this, FullscreenPictureActivity.class);
+            startIntent.putExtra(Bag.PICTURE_ID, pictureId);
+            startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startIntent);
         }
     }
 }

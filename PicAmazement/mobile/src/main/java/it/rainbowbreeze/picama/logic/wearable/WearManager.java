@@ -206,7 +206,7 @@ public class WearManager {
         for(String node:nodes) {
             mLogFacility.v(LOG_TAG, "Sending data to node " + node);
             MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                    mGoogleApiClient, node, Bag.WEAR_PATH_SIMPLEMESSAGE, null).await();
+                    mGoogleApiClient, node, Bag.WEAR_PATH_OPENPICTURE, null).await();
             if (!result.getStatus().isSuccess()) {
                 mLogFacility.e(LOG_TAG, "ERROR: failed to send Message: " + result.getStatus());
             }

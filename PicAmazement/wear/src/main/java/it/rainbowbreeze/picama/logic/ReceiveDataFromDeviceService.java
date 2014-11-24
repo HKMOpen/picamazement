@@ -58,7 +58,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        if (messageEvent.getPath().equals(Bag.WEAR_PATH_SIMPLEMESSAGE)) {
+        if (messageEvent.getPath().equals(Bag.WEAR_PATH_OPENPICTURE)) {
             mLogFacility.v(LOG_TAG, "Received simple message");
         }
     }
@@ -92,7 +92,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                  *
                  * So, ignoring the events triggered by this device.
                  */
-                if (Bag.WEAR_PATH_REMOVEPICTURE.equals(path) || Bag.WEAR_PATH_SAVEPICTURE.equals(path)) {
+                if (Bag.WEAR_PATH_REMOVEPICTURE.equals(path) || Bag.WEAR_PATH_SAVEPICTURE.equals(path) || Bag.WEAR_PATH_OPENPICTURE.equals(path)) {
                     continue;
                 }
 
