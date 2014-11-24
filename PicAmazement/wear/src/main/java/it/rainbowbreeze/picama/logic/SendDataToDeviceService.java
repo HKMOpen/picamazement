@@ -16,6 +16,7 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
@@ -85,10 +86,10 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
             // Creates the confirmation wear activity
             Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
             intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.SUCCESS_ANIMATION);
-            intent.putExtra(ConfirmationActivity.EXTRA_MESSAGE, "Succeeded!");
+            intent.putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.common_done));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(intent);
-            // remove the notification
+            // Removes the whole notification
             NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
             nm.cancel(notificationId);
 

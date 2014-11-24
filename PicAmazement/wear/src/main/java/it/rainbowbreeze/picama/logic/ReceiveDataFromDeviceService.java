@@ -166,7 +166,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 removePicIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Action removePicAction = new Notification.Action(
-                R.drawable.ic_launcher,
+                R.drawable.ic_action_delete,
                 appContext.getString(R.string.common_removePicture),
                 removePicPendingIntent);
 
@@ -180,7 +180,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 savePicIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Action savePicAction = new Notification.Action(
-                R.drawable.ic_launcher,
+                R.drawable.ic_action_save,
                 appContext.getString(R.string.common_savePicture),
                 savePicPendingIntent);
 
