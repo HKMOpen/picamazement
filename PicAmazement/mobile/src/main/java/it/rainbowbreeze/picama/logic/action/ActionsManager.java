@@ -29,11 +29,11 @@ public class ActionsManager {
         mExecutionQueue = new ConcurrentHashMap<String, Object>();
     }
 
-    public void addNewActionIntoQueue(BaseAction action) {
+    protected void addNewActionIntoQueue(BaseAction action) {
         mExecutionQueue.put(action.getUniqueActionId(), action);
     }
 
-    public void removeActionFromQueue(BaseAction action) {
+    protected void removeActionFromQueue(BaseAction action) {
         mExecutionQueue.remove(action.getUniqueActionId());
     }
 

@@ -16,7 +16,6 @@ public abstract class BaseAmazingPicture {
     public static final String FIELD_IMAGE = "Image";
     public static final String FIELD_TITLE = "Title";
     public static final String FIELD_SOURCE = "Source";
-    public static final String FIELD_TIMESTAMP = "Timestamp"; // Avoids caching
 
     public BaseAmazingPicture() {
     }

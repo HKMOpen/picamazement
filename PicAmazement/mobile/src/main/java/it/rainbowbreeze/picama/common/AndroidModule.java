@@ -10,10 +10,11 @@ import dagger.Provides;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
-import it.rainbowbreeze.picama.logic.SendPictureToWearService;
+import it.rainbowbreeze.picama.logic.wearable.SendDataToWearService;
 import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
-import it.rainbowbreeze.picama.logic.WearManager;
+import it.rainbowbreeze.picama.logic.wearable.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
+import it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
 import it.rainbowbreeze.picama.ui.PictureListActivity;
 
@@ -27,8 +28,9 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
         injects = {
                 PictureListActivity.class,
                 FullscreenPictureActivity.class,
-                SendPictureToWearService.class,
+                SendDataToWearService.class,
                 UpdatePictureFieldsService.class,
+                ReceiveDataFromWearService.class,
         },
         includes = MobileModule.class,
         // True because it declares @Provides not used inside the class, but outside.

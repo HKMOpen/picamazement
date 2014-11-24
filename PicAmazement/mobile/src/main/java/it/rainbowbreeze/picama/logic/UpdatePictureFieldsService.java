@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import javax.inject.Inject;
 
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
@@ -18,9 +19,10 @@ public class UpdatePictureFieldsService extends IntentService {
     @Inject ILogFacility mLogFacility;
     @Inject AmazingPictureDao mAmazingPictureDao;
 
-    public static final String ACTION_REMOVE_PICTURE_FROM_LIST = "Action.Picture.HidePicture";
-    public static final String ACTION_REMOVE_ALL_PICTURES = "Action.Picture.RemoveAllPictures";
-    public static final String EXTRA_PARAM_PICTURE_ID = "Param.PictureId";
+    public static final String ACTION_REMOVE_PICTURE_FROM_LIST = Bag.INTENT_ACTION_REMOVEPICTURE;
+    public static final String ACTION_SAVE_PICTURE = Bag.INTENT_ACTION_SAVEPICTURE;
+    public static final String ACTION_REMOVE_ALL_PICTURES = "it.rainbowbreeze.picama.Action.Picture.RemoveAll";
+    public static final String EXTRA_PARAM_PICTURE_ID = Bag.INTENT_EXTRA_PICTUREID;
 
     public UpdatePictureFieldsService() {
         super(UpdatePictureFieldsService.class.getSimpleName());
@@ -51,7 +53,17 @@ public class UpdatePictureFieldsService extends IntentService {
         } else if (ACTION_REMOVE_ALL_PICTURES.equals(intent.getAction())) {
             mLogFacility.v(LOG_TAG, "Removing all pictures from the list");
             mAmazingPictureDao.removeAll();
-        }
 
+        } else if (ACTION_SAVE_PICTURE.equals(intent.getAction())) {
+            long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, -1);
+            if (-1 == pictureId) {
+                mLogFacility.i(LOG_TAG, "No valid parameter for action " + intent.getAction());
+                return;
+            }
+            mLogFacility.v(LOG_TAG, "Saving picture with id " + pictureId);
+
+        } else {
+            mLogFacility.e(LOG_TAG, "Cannot process the requested action");
+        }
     }
 }

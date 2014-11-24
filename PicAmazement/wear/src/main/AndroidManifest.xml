@@ -32,7 +32,7 @@
         </activity>
 
         <service
-            android:name=".logic.PicAmazementListenerService"
+            android:name=".logic.ReceiveDataFromDeviceService"
         >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
@@ -40,12 +40,12 @@
         </service>
 
         <service
-            android:name=".logic.PictureActionsIntentService"
+            android:name=".logic.SendDataToDeviceService"
             android:exported="false"
         >
             <intent-filter>
-                <action android:name="it.rainbowbreeze.picama.SAVE_PICTURE" />
-                <action android:name="it.rainbowbreeze.picama.DELETE_PICTURE" />
+                <action android:name="it.rainbowbreeze.picama.Action.Picture.Save" />
+                <action android:name="it.rainbowbreeze.picama.Action.Picture.Remove" />
             </intent-filter>
         </service>
     </application>

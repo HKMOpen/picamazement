@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.logic;
+package it.rainbowbreeze.picama.logic.wearable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -165,10 +165,10 @@ public class WearManager {
     public void transferAmazingPicture(final AmazingPicture picture, Bitmap bitmap) {
         mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getTitle());
         if (isWearNotAvailable()) {
-            return;
+//            return;
         }
         // Prepares the DataMapRequest
-        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(Bag.WEAR_DATAMAP_AMAZINGPICTURE);
+        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(Bag.WEAR_PATH_AMAZINGPICTURE);
         picture.fillDataMap(dataMapRequest.getDataMap());
         dataMapRequest.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(bitmap));
         PutDataRequest request = dataMapRequest.asPutDataRequest();
@@ -206,7 +206,7 @@ public class WearManager {
         for(String node:nodes) {
             mLogFacility.v(LOG_TAG, "Sending data to node " + node);
             MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                    mGoogleApiClient, node, Bag.WEAR_MESSAGE_SIMPLE, null).await();
+                    mGoogleApiClient, node, Bag.WEAR_PATH_SIMPLEMESSAGE, null).await();
             if (!result.getStatus().isSuccess()) {
                 mLogFacility.e(LOG_TAG, "ERROR: failed to send Message: " + result.getStatus());
             }

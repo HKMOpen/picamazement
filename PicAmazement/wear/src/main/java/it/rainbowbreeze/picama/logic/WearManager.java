@@ -184,8 +184,13 @@ public class WearManager {
         // Action to remove the picture from the stream
         Intent removePicIntent = new Intent(Bag.INTENT_ACTION_REMOVEPICTURE);
         removePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
+        mLogFacility.v(LOG_TAG, "Picture id here is " + picture.getId());
+        // The flag FLAG_UPDATE_CURRENT avoids weird pictureId and other extras values
+        // (read the PendingIntent notification for that).
+        // If two or more PendingIntent need to be active at the same time, add
+        // some extra value to them (again, read docs)
         PendingIntent removePicPendingIntent = PendingIntent.getService(
-                mAppContext, 0, removePicIntent, 0);
+                mAppContext, 0, removePicIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Action removePicAction = new Notification.Action(
                 R.drawable.ic_launcher,
                 mAppContext.getString(R.string.common_removePicture),
@@ -195,7 +200,7 @@ public class WearManager {
         Intent savePicIntent = new Intent(Bag.INTENT_ACTION_SAVEPICTURE);
         savePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
         PendingIntent savePicPendingIntent = PendingIntent.getService(
-                mAppContext, 0, savePicIntent, 0);
+                mAppContext, 0, savePicIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Action savePicAction = new Notification.Action(
                 R.drawable.ic_launcher,
                 mAppContext.getString(R.string.common_savePicture),

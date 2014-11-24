@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.logic.SendPictureToWearService;
 import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
 
 /**

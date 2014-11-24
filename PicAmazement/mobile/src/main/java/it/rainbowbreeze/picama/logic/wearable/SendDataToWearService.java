@@ -1,21 +1,31 @@
-package it.rainbowbreeze.picama.logic;
+package it.rainbowbreeze.picama.logic.wearable;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.google.android.gms.common.api.Api;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.wearable.Asset;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.inject.Inject;
 
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.logic.GoogleApiClientBaseService;
+import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -24,16 +34,15 @@ import it.rainbowbreeze.picama.domain.AmazingPicture;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class SendPictureToWearService extends GoogleApiClientBaseService {
-    private static final String LOG_TAG = SendPictureToWearService.class.getSimpleName();
+public class SendDataToWearService extends GoogleApiClientBaseService {
+    private static final String LOG_TAG = SendDataToWearService.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
-    @Inject WearManager mWearManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
 
     public static final String ACTION_SENDPICTURE = "Action.Wear.SendPicture";
-    public static final String EXTRA_PARAM_PICTURE_ID = "Param.PictureId";
+    public static final String EXTRA_PICTUREID = "Param.PictureId";
 
-    public SendPictureToWearService() {
+    public SendDataToWearService() {
         super(UpdatePictureFieldsService.class.getSimpleName());
     }
 
@@ -49,6 +58,11 @@ public class SendPictureToWearService extends GoogleApiClientBaseService {
     }
 
     @Override
+    public String getLogTag() {
+        return LOG_TAG;
+    }
+
+    @Override
     public ILogFacility getLogFacility() {
         // Class in not null after the call to {@link #onCreate} method, where Dagger
         // injects what's required
@@ -60,7 +74,7 @@ public class SendPictureToWearService extends GoogleApiClientBaseService {
         // All the valid checks are performed on the super method
         final String action = intent.getAction();
         if (ACTION_SENDPICTURE.equals(action)) {
-            final long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, 0);
+            final long pictureId = intent.getLongExtra(EXTRA_PICTUREID, 0);
             sendPictureToWear(pictureId);
         }
     }
@@ -72,7 +86,7 @@ public class SendPictureToWearService extends GoogleApiClientBaseService {
             return;
         }
 
-        mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getTitle());
+        mLogFacility.v(LOG_TAG, "Sending to Wear picture id " + pictureId + " and title " + picture.getTitle());
 
         // Launches Picasso to retrieve the image
         Bitmap image = null;
@@ -91,7 +105,29 @@ public class SendPictureToWearService extends GoogleApiClientBaseService {
             mLogFacility.v(LOG_TAG, "No image to transfer to Wear, aborting");
             return;
         }
-        mWearManager.transferAmazingPicture(picture, image);
+
+        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(Bag.WEAR_PATH_AMAZINGPICTURE);
+        picture.fillDataMap(dataMapRequest.getDataMap());
+        dataMapRequest.getDataMap().putLong(Bag.WEAR_DATAMAPITEM_TIMESTAMP, (new Date()).getTime());
+        dataMapRequest.getDataMap().putAsset(AmazingPicture.FIELD_IMAGE, createAssetFromBitmap(image));
+        PutDataRequest request = dataMapRequest.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
+                mGoogleApiClient, request);
+        pendingResult.await();
+        mLogFacility.v(LOG_TAG, "Transferred to Wear picture with id " + picture.getId());
     }
+
+    /**
+     * Transform a {@link android.graphics.Bitmap} into an {@link com.google.android.gms.wearable.Asset}
+     *
+     * @param bitmap
+     * @return
+     */
+    private Asset createAssetFromBitmap(Bitmap bitmap) {
+        final ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bs);
+        return Asset.createFromBytes(bs.toByteArray());
+    }
+
 
 }

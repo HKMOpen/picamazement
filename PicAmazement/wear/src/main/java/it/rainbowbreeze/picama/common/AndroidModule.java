@@ -6,8 +6,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import it.rainbowbreeze.picama.logic.PicAmazementListenerService;
-import it.rainbowbreeze.picama.logic.PictureActionsIntentService;
+import it.rainbowbreeze.picama.logic.ReceiveDataFromDeviceService;
+import it.rainbowbreeze.picama.logic.SendDataToDeviceService;
 import it.rainbowbreeze.picama.logic.WearManager;
 import it.rainbowbreeze.picama.ui.PictureActivity;
 
@@ -19,8 +19,8 @@ import it.rainbowbreeze.picama.ui.PictureActivity;
  */
 @Module(
         injects = {
-                PicAmazementListenerService.class,
-                PictureActionsIntentService.class,
+                ReceiveDataFromDeviceService.class,
+                SendDataToDeviceService.class,
                 WearManager.class,
                 PictureActivity.class
         },

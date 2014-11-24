@@ -15,10 +15,10 @@ import it.rainbowbreeze.picama.common.ILogFacility;
 /**
  * Base Service to manage Google API Client requests.
  *
- * Extends {@link it.rainbowbreeze.picama.logic.GoogleApiClientBaseService#doYourStuff(android.content.Intent)}
+ * Extends {@link GoogleApiClientBaseService#doYourStuff(android.content.Intent)}
  * with the code requested by your application
  *
- * An {@link IntentService} subclass for handling asynchronous task requests in
+ * An {@link android.app.IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  */
 public abstract class GoogleApiClientBaseService extends IntentService {
@@ -79,6 +79,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
         ConnectionResult connectionResult = connectToGoogleApi();
         analyzeConnectionResult(connectionResult);
 
+        //TODO disconnect if api are not available but is connected
         if (mGoogleApiClient.isConnected() && isRequestedApiAvailable()) {
             doYourStuff(intent);
             disconnectFromGoogleApi();
@@ -101,7 +102,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
     }
 
     /**
-     * Checks if given intent is valid and can be processed by {@link it.rainbowbreeze.picama.logic.GoogleApiClientBaseService#onHandleIntent(android.content.Intent)}.
+     * Checks if given intent is valid and can be processed by {@link GoogleApiClientBaseService#onHandleIntent(android.content.Intent)}.
      * Base implementation only checks for null intent
      *
      * Change this method and add your own custom validation logic

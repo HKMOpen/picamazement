@@ -39,12 +39,23 @@
             android:exported="false" />
 
         <service
-            android:name="it.rainbowbreeze.picama.logic.SendPictureToWearService"
+            android:name=".logic.wearable.SendDataToWearService"
             android:exported="false" >
         </service>
         <service
             android:name="it.rainbowbreeze.picama.logic.UpdatePictureFieldsService"
-            android:exported="false" >
+        >
+            <intent-filter>
+                <action android:name="it.rainbowbreeze.picama.Action.Picture.Hide" />
+                <action android:name="it.rainbowbreeze.picama.Action.Picture.Save" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".logic.wearable.ReceiveDataFromWearService"
+        >
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+            </intent-filter>
         </service>
     </application>
 
