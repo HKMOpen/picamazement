@@ -37,6 +37,7 @@ public class PictureDiskManagerTest extends AndroidTestCase {
 
     public void testGenerateFileNameFromPictureId() {
         assertNull("Wrong name generated", mPictureDiskManager.generateFileNameFromPictureId(-1));
-        assertEquals("Wrong name generated", "0", mPictureDiskManager.generateFileNameFromPictureId(0));
+        assertEquals("Wrong name generated", "0000000", mPictureDiskManager.generateFileNameFromPictureId(0));
+        assertEquals("Wrong name generated", "0000101", mPictureDiskManager.generateFileNameFromPictureId(101));
     }
 }

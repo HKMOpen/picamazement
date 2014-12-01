@@ -8,6 +8,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
@@ -66,6 +67,9 @@ public class PictureDiskManager {
     }
 
     protected String generateFileNameFromPictureId(long pictureId) {
-        return null;
+        if (Bag.ID_NOT_SET == pictureId) {
+            return null;
+        }
+        return String.format("%07d", pictureId);
     }
 }
