@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
 import it.rainbowbreeze.picama.logic.storage.PictureDiskManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
@@ -112,9 +113,10 @@ public class AndroidModule {
 
     @Provides @Singleton
     PictureDiskManager providePictureDiskManager(
-           @ForApplication Context appContext,
-           ILogFacility logFacility,
-           AmazingPictureDao amazingPictureDao) {
-        return new PictureDiskManager(appContext, logFacility, amazingPictureDao);
+            @ForApplication Context appContext,
+            ILogFacility logFacility,
+            AmazingPictureDao amazingPictureDao,
+            FileDownloaderHelper fileDownloaderHelper) {
+        return new PictureDiskManager(appContext, logFacility, amazingPictureDao, fileDownloaderHelper);
     }
 }

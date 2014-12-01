@@ -1,14 +1,12 @@
 package it.rainbowbreeze.picama.logic.storage;
 
 import android.test.AndroidTestCase;
-import android.test.InstrumentationTestCase;
 
 import javax.inject.Inject;
 
 import dagger.Module;
 import dagger.ObjectGraph;
 import it.rainbowbreeze.picama.common.AndroidModule;
-import it.rainbowbreeze.picama.common.MobileModule;
 
 /**
  * Created by alfredomorresi on 01/12/14.
@@ -36,8 +34,10 @@ public class PictureDiskManagerTest extends AndroidTestCase {
     }
 
     public void testGenerateFileNameFromPictureId() {
-        assertNull("Wrong name generated", mPictureDiskManager.generateFileNameFromPictureId(-1));
-        assertEquals("Wrong name generated", "0000000", mPictureDiskManager.generateFileNameFromPictureId(0));
-        assertEquals("Wrong name generated", "0000101", mPictureDiskManager.generateFileNameFromPictureId(101));
+        assertNull("Wrong name generated", mPictureDiskManager.generateFileNameFrom(-1, "image.jpg"));
+        assertEquals("Wrong name generated", "0000000.jpg", mPictureDiskManager.generateFileNameFrom(0, "image.jpg"));
+        assertEquals("Wrong name generated", "0000000.png", mPictureDiskManager.generateFileNameFrom(0, "image.png"));
+        assertEquals("Wrong name generated", "0000101.gif", mPictureDiskManager.generateFileNameFrom(101, "strange.image.name.gif"));
+        assertEquals("Wrong name generated", "0000101", mPictureDiskManager.generateFileNameFrom(101, "strange_image_name"));
     }
 }

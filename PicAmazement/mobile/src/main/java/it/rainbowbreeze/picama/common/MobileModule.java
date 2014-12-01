@@ -4,8 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import it.rainbowbreeze.picama.data.AmazingPictureDao;
-import it.rainbowbreeze.picama.logic.PictureScraperManager;
+import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
 import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
 import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
@@ -41,4 +40,9 @@ public class MobileModule {
 
         return config;
     }
+
+   @Provides @Singleton
+   FileDownloaderHelper provideFileDownloaderHelper(ILogFacility logFacility) {
+       return new FileDownloaderHelper(logFacility);
+   }
 }

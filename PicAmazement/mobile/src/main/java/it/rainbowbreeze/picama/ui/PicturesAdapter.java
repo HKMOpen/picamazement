@@ -18,7 +18,7 @@ import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
  * Created by alfredomorresi on 26/10/14.
  *
  * Picasso consideration
- * - .fit() waits that the ImageView has been measured, then resize the image the the exact
+ * - .fit() waits that the ImageView has been measured, then resize the image to the exact
  *    size of the ImageView and put it into the cache. If the first imageView that requires
  *    the image is inside the list item, the cache bitmap will have a small height and width,
  *    so all the following requests of the same image will obtain a small bitmap.
@@ -54,7 +54,7 @@ public class PicturesAdapter extends CursorAdapter {
 
         // Removed fit and centerCrop for caching reason, as in the comment of this class
         //  (following request of the same image will return the small image required by
-        //  the listview
+        //  the listview)
         // TODO: adjust for a smart memory management
         Picasso.with(holder.imgPicture.getContext())
                 .load(pictureCursor.getUrl())
