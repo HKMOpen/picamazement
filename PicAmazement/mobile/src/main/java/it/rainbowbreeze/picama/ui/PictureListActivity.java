@@ -42,7 +42,7 @@ public class PictureListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getApplicationContext(), "Clicked on id " + id, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), FullscreenPictureActivity.class);
+                Intent intent = new Intent(getApplicationContext(), FullscreenPictureActivity2.class);
                 intent.putExtra(Bag.INTENT_EXTRA_PICTUREID, id);
                 startActivity(intent);
             }

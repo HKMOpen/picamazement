@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.rainbowbreeze.picama" >
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name="it.rainbowbreeze.picama.common.MyApp"
         android:allowBackup="true"
@@ -27,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="it.rainbowbreeze.picama.ui.FullscreenPictureActivity"
+            android:name="it.rainbowbreeze.picama.ui.FullscreenPictureActivity2"
             android:label="@string/title_activity_fullscreen_picture"
             android:theme="@style/AppFullscreenTheme" >
         </activity>
@@ -39,26 +41,27 @@
             android:exported="false" />
 
         <service
-            android:name=".logic.wearable.SendDataToWearService"
+            android:name="it.rainbowbreeze.picama.logic.wearable.SendDataToWearService"
             android:exported="false" >
         </service>
-        <service
-            android:name="it.rainbowbreeze.picama.logic.UpdatePictureFieldsService"
-        >
+        <service android:name="it.rainbowbreeze.picama.logic.UpdatePictureFieldsService" >
             <intent-filter>
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Hide" />
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Save" />
             </intent-filter>
         </service>
-        <service
-            android:name=".logic.wearable.ReceiveDataFromWearService"
-        >
+        <service android:name="it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
-    </application>
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <activity
+            android:name="it.rainbowbreeze.picama.ui.FullscreenPictureActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen_picture"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+    </application>
 
 </manifest>

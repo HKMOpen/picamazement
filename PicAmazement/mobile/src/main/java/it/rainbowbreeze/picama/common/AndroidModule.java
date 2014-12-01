@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.logic.storage.PictureDiskManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
 import it.rainbowbreeze.picama.logic.wearable.SendDataToWearService;
@@ -15,7 +16,7 @@ import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
 import it.rainbowbreeze.picama.logic.wearable.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService;
-import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
+import it.rainbowbreeze.picama.ui.FullscreenPictureActivity2;
 import it.rainbowbreeze.picama.ui.PictureListActivity;
 
 /**
@@ -27,7 +28,7 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
 @Module (
         injects = {
                 PictureListActivity.class,
-                FullscreenPictureActivity.class,
+                FullscreenPictureActivity2.class,
                 SendDataToWearService.class,
                 UpdatePictureFieldsService.class,
                 ReceiveDataFromWearService.class,
@@ -107,5 +108,13 @@ public class AndroidModule {
             AmazingPictureDao amazingPictureDao,
             PictureScraperManager pictureScraperManager) {
         return new ActionsManager(appContext, logFacility, amazingPictureDao, pictureScraperManager);
+    }
+
+    @Provides @Singleton
+    PictureDiskManager providePictureDiskManager(
+           @ForApplication Context appContext,
+           ILogFacility logFacility,
+           AmazingPictureDao amazingPictureDao) {
+        return new PictureDiskManager(appContext, logFacility, amazingPictureDao);
     }
 }

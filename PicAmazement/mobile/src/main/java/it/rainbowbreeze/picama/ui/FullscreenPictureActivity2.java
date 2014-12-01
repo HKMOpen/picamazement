@@ -1,14 +1,26 @@
 package it.rainbowbreeze.picama.ui;
 
+import it.rainbowbreeze.picama.common.Bag;
+import it.rainbowbreeze.picama.common.ILogFacility;
+import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
+import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
+import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
+import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.ui.util.SystemUiHider;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.os.Build;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
+import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
 
@@ -18,7 +30,7 @@ import it.rainbowbreeze.picama.R;
  *
  * @see SystemUiHider
  */
-public class FullscreenPictureActivity extends Activity {
+public class FullscreenPictureActivity2 extends Activity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -47,50 +59,31 @@ public class FullscreenPictureActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
+    public static final String LOG_TAG = FullscreenPictureActivity2.class.getSimpleName();
+    @Inject ILogFacility mLogFacility;
+    @Inject ActionsManager mActionsManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MyApp) getApplication()).inject(this);
+        mLogFacility.logStartOfActivity(LOG_TAG, PictureListActivity.class, savedInstanceState);
 
-        setContentView(R.layout.act_fullscreen_picture);
+        setContentView(R.layout.act_fullscreenpicture);
 
-        final View controlsView = findViewById(R.id.fullscreen_content_controls);
-        final View contentView = findViewById(R.id.fullscreen_content);
+        final View contentView = findViewById(R.id.fullscreen_imgPicture);
 
+        /**
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
         mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
         mSystemUiHider.setup();
         mSystemUiHider
                 .setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-                    // Cached values.
-                    int mControlsHeight;
-                    int mShortAnimTime;
 
                     @Override
                     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
                     public void onVisibilityChange(boolean visible) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                            // If the ViewPropertyAnimator API is available
-                            // (Honeycomb MR2 and later), use it to animate the
-                            // in-layout UI controls at the bottom of the
-                            // screen.
-                            if (mControlsHeight == 0) {
-                                mControlsHeight = controlsView.getHeight();
-                            }
-                            if (mShortAnimTime == 0) {
-                                mShortAnimTime = getResources().getInteger(
-                                        android.R.integer.config_shortAnimTime);
-                            }
-                            controlsView.animate()
-                                    .translationY(visible ? 0 : mControlsHeight)
-                                    .setDuration(mShortAnimTime);
-                        } else {
-                            // If the ViewPropertyAnimator APIs aren't
-                            // available, simply show or hide the in-layout UI
-                            // controls.
-                            controlsView.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        }
-
                         if (visible && AUTO_HIDE) {
                             // Schedule a hide().
                             delayedHide(AUTO_HIDE_DELAY_MILLIS);
@@ -109,13 +102,52 @@ public class FullscreenPictureActivity extends Activity {
                 }
             }
         });
+        */
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        long pictureId = getIntent().getLongExtra(Bag.INTENT_EXTRA_PICTUREID, -1);
+        if (-1 == pictureId) {
+            mLogFacility.i(LOG_TAG, "Cannot find image to load, aborting");
+            finish();
+            return;
+        }
+
+        mActionsManager.sendPictureToWear()
+                .setPictureId(pictureId)
+                .executeAsync();
+        PictureSelection where = new PictureSelection();
+        where.visible(true).and().id(pictureId);
+        Cursor c = getApplicationContext().getContentResolver().query(PictureColumns.CONTENT_URI, null,
+                where.sel(), where.args(), null);
+        PictureCursor pictureCursor = where.query(getContentResolver());
+        pictureCursor.moveToNext();
+        String url = pictureCursor.getUrl();
+        mLogFacility.v(LOG_TAG, "Loading picture at " + url);
+
+        // Retrieves the image URL
+        // Uses Picasso built-in methods to measure the size of the containing ImageView and then
+        //  resize the image to fit the ImageView. Memory efficient
+        // Only one drawback: the image have to be present full-size in the cache, otherwise
+        //  the scaled one is scaled or stretched again to fit inside this new ImageView
+        ImageView imageView = (ImageView) findViewById(R.id.fullscreen_imgPicture);
+        Picasso.with(getApplicationContext())
+                .load(url)
+                //.placeholder()
+                //.error()
+                .fit()
+                .centerInside()
+                .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imageView = (ImageView) findViewById(R.id.fullscreen_imgPicture);
+                Toast.makeText(FullscreenPictureActivity2.this, "W: " + imageView.getWidth() + ", H: " + imageView.getHeight(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+
+    /**
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -125,6 +157,7 @@ public class FullscreenPictureActivity extends Activity {
         // are available.
         delayedHide(100);
     }
+    **/
 
 
     /**
