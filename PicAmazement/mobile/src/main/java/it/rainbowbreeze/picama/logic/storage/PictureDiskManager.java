@@ -56,6 +56,7 @@ public class PictureDiskManager {
         }
 
         // Saves the image
+        mLogFacility.v(LOG_TAG, "Saving to disk picture with id " + pictureId);
         File pictureFile = persistPictureImageToFile(picture);
         // Saves metadata
         File metadataFile = (null != pictureFile)
@@ -76,14 +77,16 @@ public class PictureDiskManager {
         File pictureFile = getFinalStorageFile(
                 picture.getId(),
                 generateFileNameFrom(picture.getId(), picture.getUrl()),
-                "picture");
+                "image");
         if (null == pictureFile || pictureFile.exists()) {
+            mLogFacility.v(LOG_TAG, "File already exists on disk or is null");
             return pictureFile;
         }
-        if (mFileDownloaderHelper.saveUrlToFile(pictureFile, picture.getUrl())) {
+        if (!mFileDownloaderHelper.saveUrlToFile(pictureFile, picture.getUrl())) {
             mLogFacility.v(LOG_TAG, "Aborting loading of image");
             return null;
         }
+        mLogFacility.v(LOG_TAG, "Saved picture image to file on local storage");
         return pictureFile;
     }
 
@@ -94,13 +97,14 @@ public class PictureDiskManager {
     private File persistPictureMetadataToFile(AmazingPicture picture) {
         File metadataFile = getFinalStorageFile(
                 picture.getId(),
-                generateMetadataFileName(picture.getId()),
+                generateMetadataFileName(picture.getId()) + ".txt",
                 "metadata");
         if (null == metadataFile || metadataFile.exists()) {
             return metadataFile;
         }
 
         //TODO
+        mLogFacility.v(LOG_TAG, "Saved picture metadata to file on local storage");
         return metadataFile;
     }
 
@@ -120,9 +124,11 @@ public class PictureDiskManager {
 
         File cache = mAppContext.getExternalCacheDir();
         if (null == cache){
+            mLogFacility.v(LOG_TAG, "It seems that cache directory is not available, Aborting");
             return null;
         }
         File finalFileName = new File(cache, baseFileName);
+        mLogFacility.v(LOG_TAG, "Complete file path is " + finalFileName.getAbsolutePath());
         return finalFileName;
     }
 

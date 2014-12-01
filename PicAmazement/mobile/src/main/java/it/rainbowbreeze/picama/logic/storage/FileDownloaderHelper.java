@@ -41,6 +41,7 @@ public class FileDownloaderHelper {
         if (TextUtils.isEmpty(url)) {
             mLogFacility.i(LOG_TAG, "Url to download is null, aborting");
         }
+        mLogFacility.v(LOG_TAG, "Saving url " + url + " to file " + destinationFile.getAbsolutePath());
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -53,7 +54,6 @@ public class FileDownloaderHelper {
             return false;
         }
         InputStream is = response.body().byteStream();
-
         BufferedInputStream input = new BufferedInputStream(is);
         OutputStream output = null;
         try {
@@ -82,6 +82,7 @@ public class FileDownloaderHelper {
             }
         }
 
+        mLogFacility.v(LOG_TAG, "File was saved");
         return true;
     }
 }
