@@ -60,6 +60,10 @@ public class ActionsManager {
         return new HidePictureAction(mAppContext, mLogFacility, this);
     }
 
+    public SavePictureAction savePicture() {
+        return new SavePictureAction(mAppContext, mLogFacility, this);
+    }
+
     /**
      * Base interface for an action
      */

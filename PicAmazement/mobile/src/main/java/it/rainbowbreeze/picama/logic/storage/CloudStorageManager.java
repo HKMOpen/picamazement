@@ -23,26 +23,26 @@ public class CloudStorageManager {
     }
 
     /**
-     * Retrieves the list of picture to saves and save them, updating
-     * the list of saved picture at the end
+     * Saves the picture in the cloud
+     *
+     * @param pictureId
      */
-    public void savePicturesToStorage() {
-
-    }
-
-
-    public void saveToStorage(long pictureId) {
+    public void saveToCloudStorages(long pictureId) {
         // Saves to local storage the picture
-        mPictureDiskManager.savePictureToStorage(pictureId);
-        File imageFile = null;
-        File metadataFile = null;
+        PictureDiskManager.Result result = mPictureDiskManager.savePictureToStorage(pictureId);
+        if (result.isNotSuccess()) {
+            return;
+        }
+
+        File imageFile = result.pictureFile;
+        File metadataFile = result.metadataFile;
         //TODO
 
         // Save the files to cloud
         for (BaseCloudProvider cloudProvider : mCloudProviders) {
-            boolean result;
-            result = cloudProvider.save(imageFile);
-            result = cloudProvider.save(metadataFile);
+            boolean cloudResult;
+            cloudResult = cloudProvider.save(imageFile);
+            cloudResult = cloudProvider.save(metadataFile);
 
             // Record saving process progress
             //TODO

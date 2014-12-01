@@ -10,6 +10,7 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 
 /**
  * Created by alfredomorresi on 15/11/14.
@@ -18,6 +19,7 @@ public class UpdatePictureFieldsService extends IntentService {
     private static final String LOG_TAG = UpdatePictureFieldsService.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject AmazingPictureDao mAmazingPictureDao;
+    @Inject CloudStorageManager mCloudStorageManager;
 
     public static final String ACTION_REMOVE_PICTURE_FROM_LIST = Bag.INTENT_ACTION_REMOVEPICTURE;
     public static final String ACTION_SAVE_PICTURE = Bag.INTENT_ACTION_SAVEPICTURE;
@@ -42,8 +44,8 @@ public class UpdatePictureFieldsService extends IntentService {
         }
 
         if (ACTION_REMOVE_PICTURE_FROM_LIST.equals(intent.getAction())) {
-            long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, -1);
-            if (-1 == pictureId) {
+            long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, Bag.ID_NOT_SET);
+            if (Bag.ID_NOT_SET == pictureId) {
                 mLogFacility.i(LOG_TAG, "No valid parameter for action " + intent.getAction());
                 return;
             }
@@ -55,12 +57,13 @@ public class UpdatePictureFieldsService extends IntentService {
             mAmazingPictureDao.removeAll();
 
         } else if (ACTION_SAVE_PICTURE.equals(intent.getAction())) {
-            long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, -1);
-            if (-1 == pictureId) {
+            long pictureId = intent.getLongExtra(EXTRA_PARAM_PICTURE_ID, Bag.ID_NOT_SET);
+            if (Bag.ID_NOT_SET == pictureId) {
                 mLogFacility.i(LOG_TAG, "No valid parameter for action " + intent.getAction());
                 return;
             }
             mLogFacility.v(LOG_TAG, "Saving picture with id " + pictureId);
+            mCloudStorageManager.saveToCloudStorages(pictureId);
 
         } else {
             mLogFacility.e(LOG_TAG, "Cannot process the requested action");

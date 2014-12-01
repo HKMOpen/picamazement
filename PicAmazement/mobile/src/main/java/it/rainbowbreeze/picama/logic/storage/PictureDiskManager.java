@@ -10,12 +10,30 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.logic.BaseResult;
 
 /**
  * Created by alfredomorresi on 29/11/14.
  */
 public class PictureDiskManager {
     private static final String LOG_TAG = PictureDiskManager.class.getSimpleName();
+
+    public static class Result extends BaseResult {
+        public final File pictureFile;
+        public final File metadataFile;
+
+        public static Result Result_Not_Ok = new Result(NOT_SUCCESS, null, null);
+
+        public Result(File pictureFile, File metadataFile) {
+            this(SUCCESS, pictureFile, metadataFile);
+        }
+
+        private Result(int result, File pictureFile, File metadataFile) {
+            super(result);
+            this.pictureFile = pictureFile;
+            this.metadataFile = metadataFile;
+        }
+    }
 
     private final Context mAppContext;
     private final ILogFacility mLogFacility;
@@ -29,12 +47,12 @@ public class PictureDiskManager {
         mFileDownloaderHelper = fileDownloaderHelper;
     }
 
-    public void savePictureToStorage(long pictureId) {
+    public Result savePictureToStorage(long pictureId) {
         // Retrieves the picture object
         AmazingPicture picture = mAmazingPictureDao.getById(pictureId);
         if (null == picture) {
             mLogFacility.i(LOG_TAG, "Strange, picture is null for picture id " + pictureId);
-            return;
+            return Result.Result_Not_Ok;
         }
 
         // Saves the image
@@ -43,6 +61,10 @@ public class PictureDiskManager {
         File metadataFile = (null != pictureFile)
                 ? persistPictureMetadataToFile(picture)
                 : null;
+
+        return (null != metadataFile)
+                ? new Result(pictureFile, metadataFile)
+                : Result.Result_Not_Ok;
     }
 
     /**
