@@ -57,6 +57,8 @@ public class PictureListActivity extends Activity {
             }
         });
 
+        //TODO manage cursor closing while onPause etc, or using a loader
+
 
         /**
         Button btnAddItem = (Button) findViewById(R.id.list_btnAddItem);
