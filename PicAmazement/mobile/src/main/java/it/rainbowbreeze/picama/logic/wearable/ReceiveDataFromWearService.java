@@ -7,6 +7,7 @@ import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.WearableListenerService;
 
 import java.util.List;
@@ -101,5 +102,16 @@ public class ReceiveDataFromWearService extends WearableListenerService {
             startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startIntent);
         }
+    }
+
+    @Override
+    public void onPeerConnected(Node peer) {
+        super.onPeerConnected(peer);
+        Bag.wearAvailable = true;
+    }
+    @Override
+    public void onPeerDisconnected(Node peer) {
+        super.onPeerDisconnected(peer);
+        Bag.wearAvailable = false;
     }
 }
