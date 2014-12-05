@@ -12,7 +12,7 @@ public class GDriveSettingsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_dropbox_settings);
+        setContentView(R.layout.act_gdrive_settings);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new DropboxSettingsFragment())
@@ -24,7 +24,7 @@ public class GDriveSettingsActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dropbox_setup, menu);
+        getMenuInflater().inflate(R.menu.gdrive_settings, menu);
         return true;
     }
 

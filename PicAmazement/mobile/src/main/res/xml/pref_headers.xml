@@ -2,15 +2,15 @@
 
     <!-- These settings headers are only used on tablets. -->
 
-    <header android:fragment="it.rainbowbreeze.picama.ui.SettingsActivity2$GeneralPreferenceFragment"
+    <header android:fragment="it.rainbowbreeze.picama.ui.SettingsActivityExamples$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="it.rainbowbreeze.picama.ui.SettingsActivity2$NotificationPreferenceFragment"
+        android:fragment="it.rainbowbreeze.picama.ui.SettingsActivityExamples$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="it.rainbowbreeze.picama.ui.SettingsActivity2$DataSyncPreferenceFragment"
+        android:fragment="it.rainbowbreeze.picama.ui.SettingsActivityExamples$DataSyncPreferenceFragment"
         android:title="@string/pref_header_data_sync" />
 
 </preference-headers>
