@@ -29,6 +29,18 @@ public class AppPreferences {
         return this;
     }
 
+    private static final String PREF_SYNCENABLED = "Pref_SyncEnabled";
+    public boolean isSyncEnabled() {
+        return mAppPrefences.getBoolean(PREF_SYNCENABLED, false);
+    }
+    public AppPreferences setSyncEnabled(boolean newValue) {
+        openSharedEditor();
+        mAppPrefences.getBoolean(PREF_SYNCENABLED, false);
+        saveIfNeeded();
+        return this;
+    }
+
+
     public AppPreferences setBatchSave() {
         mSaveInBatch = true;
         return this;
