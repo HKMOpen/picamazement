@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.ui;
+package it.rainbowbreeze.picama.ui.old;
 
 
 import android.app.Activity;
@@ -29,7 +29,7 @@ import it.rainbowbreeze.picama.R;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class PicturesListNavigationDrawerFragment extends Fragment {
+public class PicturesRecyclerNavigationDrawerFragment extends Fragment {
 
     /**
      * Remember the position of the selected item.
@@ -60,7 +60,7 @@ public class PicturesListNavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    public PicturesListNavigationDrawerFragment() {
+    public PicturesRecyclerNavigationDrawerFragment() {
     }
 
     @Override
@@ -265,7 +265,7 @@ public class PicturesListNavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+        actionBar.setTitle(R.string.common_app_name);
     }
 
     private ActionBar getActionBar() {

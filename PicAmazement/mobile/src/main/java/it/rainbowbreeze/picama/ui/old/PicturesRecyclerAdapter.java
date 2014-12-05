@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.ui;
+package it.rainbowbreeze.picama.ui.old;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

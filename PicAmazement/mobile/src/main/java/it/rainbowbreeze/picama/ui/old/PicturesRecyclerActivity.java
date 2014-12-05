@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.ui;
+package it.rainbowbreeze.picama.ui.old;
 
 import android.app.Activity;
 
@@ -13,18 +13,17 @@ import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.common.LogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 
 
-public class PicturesRecyclerListActivity extends Activity
-        implements PicturesListNavigationDrawerFragment.NavigationDrawerCallbacks {
+public class PicturesRecyclerActivity extends Activity
+        implements PicturesRecyclerNavigationDrawerFragment.NavigationDrawerCallbacks {
     @Inject ILogFacility mLogFacility;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    private PicturesListNavigationDrawerFragment mNavigationDrawerFragment;
+    private PicturesRecyclerNavigationDrawerFragment mNavigationDrawerFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -36,9 +35,9 @@ public class PicturesRecyclerListActivity extends Activity
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).inject(this);
 
-        setContentView(R.layout.act_pictureslist);
+        setContentView(R.layout.act_picturesrecyclerlist);
 
-        mNavigationDrawerFragment = (PicturesListNavigationDrawerFragment)
+        mNavigationDrawerFragment = (PicturesRecyclerNavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
@@ -53,7 +52,7 @@ public class PicturesRecyclerListActivity extends Activity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PicturesListFragment.newInstance(position + 1))
+                .replace(R.id.container, PicturesRecyclerFragment.newInstance(position + 1))
                 .commit();
     }
 
@@ -86,7 +85,7 @@ public class PicturesRecyclerListActivity extends Activity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             //TODO split fragment menu from global menu
-            getMenuInflater().inflate(R.menu.pictures_list, menu);
+            getMenuInflater().inflate(R.menu.pictures_recycler_list, menu);
             restoreActionBar();
             return true;
         }

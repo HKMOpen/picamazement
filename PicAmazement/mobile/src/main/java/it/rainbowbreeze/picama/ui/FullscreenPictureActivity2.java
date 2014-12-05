@@ -67,9 +67,9 @@ public class FullscreenPictureActivity2 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).inject(this);
-        mLogFacility.logStartOfActivity(LOG_TAG, PicturesListActivity.class, savedInstanceState);
+        mLogFacility.logStartOfActivity(LOG_TAG, FullscreenPictureActivity2.class, savedInstanceState);
 
-        setContentView(R.layout.act_fullscreenpicture);
+        setContentView(R.layout.act_fullscreen_picture_2);
 
         final View contentView = findViewById(R.id.fullscreen_imgPicture);
 

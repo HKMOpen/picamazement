@@ -1,32 +1,45 @@
 package it.rainbowbreeze.picama.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
-import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
+import it.rainbowbreeze.picama.common.Bag;
+import it.rainbowbreeze.picama.common.ILogFacility;
+import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 /**
- * A placeholder fragment containing a simple view.
+ * http://3.bp.blogspot.com/-YJSE-iQngrw/U3bLHPnB1YI/AAAAAAAABWs/CD03Kp6O-zM/s1600/fragmentlifecycle.png
+ *
  */
 public class PicturesListFragment extends Fragment {
+    private static final String LOG_TAG = PicturesListFragment.class.getSimpleName();
+    @Inject ILogFacility mLogFacility;
+    @Inject ActionsManager mActionsManager;
+    @Inject AmazingPictureDao mAmazingPictureDao;
+    private Context mAppContext;
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -44,35 +57,40 @@ public class PicturesListFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fra_picturelist, container, false);
+        View rootView = inflater.inflate(R.layout.fra_pictures_list, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.picture_recycler_view);
+        ListView lst = (ListView) rootView.findViewById(R.id.list_lstItems);
+        Cursor c = mAmazingPictureDao.getLatest(100);
+        lst.setAdapter(new PicturesAdapter(mAppContext, c, true));
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        //mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        //mLayoutManager = new LinearLayoutManager(container.getContext());
-        mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        List<BaseAmazingPicture> pictures = new ArrayList<BaseAmazingPicture>();
-//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/400/"));
-//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/250/sports"));
-//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/200/sports/Dummy-Text"));
-//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/600/500/nature"));
-//            pictures.add(new AmazingPicture(0, "http://lorempixel.com/500/200/food"));
-        mAdapter = new PicturesRecyclerAdapter(pictures);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setOnClickListener(new View.OnClickListener() {
+        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(mAppContext, "Clicked on id " + id, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mAppContext, FullscreenPictureActivity2.class);
+                intent.putExtra(Bag.INTENT_EXTRA_PICTUREID, id);
+                startActivity(intent);
             }
         });
+        lst.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mActionsManager.hidePicture()
+                        .setPictureId(id)
+                        .executeAsync();
+                return true;
+            }
+        });
+
+        //TODO manage cursor closing while onPause etc, or using a loader
 
         return rootView;
     }
@@ -80,7 +98,40 @@ public class PicturesListFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((PicturesRecyclerListActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+        mAppContext = activity.getApplicationContext();
+        ((MyApp) mAppContext).inject(this);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.pictures_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        boolean value = true;
+        switch (id) {
+            case R.id.piclist_mnuDeleteAll:
+                mActionsManager.deleteAllPictures()
+                        .executeAsync();
+                break;
+            case R.id.piclist_mnuRefresh:
+                mActionsManager.searchForNewImages()
+                        .executeAsync();
+                break;
+            case R.id.piclist_mnuHideHelp:
+                Toast.makeText(mAppContext, "Long click to hide a picture", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                value = super.onOptionsItemSelected(item);
+        }
+        return value;
+    }
+
 }
