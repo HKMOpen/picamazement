@@ -1,0 +1,27 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+>
+
+    <PreferenceScreen
+        android:key="prefkey_storages"
+        android:title="@string/pref_storages"
+        android:persistent="false"
+    >
+        <Preference
+            android:title="@string/pref_dropbox"
+        >
+            <intent
+                android:action="action_StartDropboxSettings"
+            />
+        </Preference>
+        <Preference
+            android:title="@string/pref_googledrive"
+            >
+            <intent
+                android:action="action_StartGDriveSettings"
+                />
+        </Preference>
+    </PreferenceScreen>
+
+
+</PreferenceScreen>

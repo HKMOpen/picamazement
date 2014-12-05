@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="it.rainbowbreeze.picama.common.MyApp"
+        android:name=".common.MyApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -17,52 +17,81 @@
 
         <!-- android:theme="@style/AppTheme" -->
         <activity
-            android:name="it.rainbowbreeze.picama.ui.PictureListActivityFull"
+            android:name=".ui.PictureRecyclerListActivity"
             android:label="@string/common_app_name" >
         </activity>
         <activity
-            android:name="it.rainbowbreeze.picama.ui.PictureListActivity"
+            android:name=".ui.PictureListActivity"
             android:label="@string/common_app_name" >
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
         <activity
-            android:name="it.rainbowbreeze.picama.ui.FullscreenPictureActivity2"
+            android:name=".ui.FullscreenPictureActivity2"
             android:label="@string/title_activity_fullscreen_picture"
             android:theme="@style/AppFullscreenTheme" >
         </activity>
         <!-- android:configChanges="orientation|keyboardHidden|screenSize" -->
+        <activity
+            android:name="ui.FullscreenPictureActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen_picture"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.DropboxSettingsActivity"
+            android:label="@string/dropboxsettings_act_title"
+        >
+            <intent-filter>
+                <action android:name="action_StartDropboxSettings"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.GDriveSettingsActivity"
+            android:label="@string/gdrivesettings_act_title"
+            >
+            <intent-filter>
+                <action android:name="action_StartGDriveSettings"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
 
         <provider
-            android:name="it.rainbowbreeze.picama.data.provider.PictureProvider"
+            android:name=".data.provider.PictureProvider"
             android:authorities="it.rainbowbreeze.picama.provider"
             android:exported="false" />
 
         <service
-            android:name="it.rainbowbreeze.picama.logic.wearable.SendDataToWearService"
+            android:name=".logic.wearable.SendDataToWearService"
             android:exported="false" >
         </service>
-        <service android:name="it.rainbowbreeze.picama.logic.UpdatePictureFieldsService" >
+        <service android:name=".logic.UpdatePictureFieldsService" >
             <intent-filter>
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Hide" />
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Save" />
             </intent-filter>
         </service>
-        <service android:name="it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService" >
+        <service android:name=".logic.wearable.ReceiveDataFromWearService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
 
-        <activity
-            android:name="it.rainbowbreeze.picama.ui.FullscreenPictureActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen_picture"
-            android:theme="@style/FullscreenTheme" >
-        </activity>
     </application>
 
 </manifest>

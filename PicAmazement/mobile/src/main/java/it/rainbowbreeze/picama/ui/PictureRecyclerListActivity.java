@@ -26,14 +26,14 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.domain.BaseAmazingPicture;
 
 
-public class PictureListActivityFull extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class PictureRecyclerListActivity extends Activity
+        implements NavigationDrawerFragmentV4.NavigationDrawerCallbacks {
     @Inject LogFacility mLogFacility;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationDrawerFragmentV4 mNavigationDrawerFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -47,7 +47,7 @@ public class PictureListActivityFull extends Activity
 
         setContentView(R.layout.act_picturelist);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        mNavigationDrawerFragment = (NavigationDrawerFragmentV4)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
@@ -181,7 +181,7 @@ public class PictureListActivityFull extends Activity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((PictureListActivityFull) activity).onSectionAttached(
+            ((PictureRecyclerListActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }

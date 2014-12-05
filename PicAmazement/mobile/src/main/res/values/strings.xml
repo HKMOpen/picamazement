@@ -12,16 +12,19 @@
     <string name="title_activity_list">List Activity</string>
     <string name="hello_world">Hello world!</string>
     <string name="common_app_name">Pic Amazement</string>
-
     <string name="picList_mnuDeleteAll">Delete All</string>
     <string name="picList_mnuRefresh">Refresh</string>
     <string name="picList_mnuSettings">Settings</string>
     <string name="picList_mnuSendToWatch">Send to Wear</string>
     <string name="picList_mnuHideHelp">Hide a pic</string>
-
     <string name="title_activity_fullscreen_picture">Fullscreen picture</string>
-
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="pref_storages">Storages</string>
+    <string name="pref_dropbox">Dropbox</string>
+    <string name="pref_googledrive">Google Drive</string>
+
+    <string name="dropboxsettings_act_title">Dropbox Settings</string>
+    <string name="gdrivesettings_act_title">Google Drive Settings</string>
 
 </resources>
