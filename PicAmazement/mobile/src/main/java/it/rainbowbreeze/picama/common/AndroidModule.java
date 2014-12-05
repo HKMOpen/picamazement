@@ -19,7 +19,8 @@ import it.rainbowbreeze.picama.logic.wearable.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity2;
-import it.rainbowbreeze.picama.ui.PictureListActivity;
+import it.rainbowbreeze.picama.ui.PicturesListActivity;
+import it.rainbowbreeze.picama.ui.PicturesRecyclerListActivity;
 
 /**
  * A Dagger module for Android-specific dependencies which require a {@link Context} or
@@ -29,7 +30,7 @@ import it.rainbowbreeze.picama.ui.PictureListActivity;
  */
 @Module (
         injects = {
-                PictureListActivity.class,
+                PicturesRecyclerListActivity.class,
                 FullscreenPictureActivity2.class,
                 SendDataToWearService.class,
                 UpdatePictureFieldsService.class,

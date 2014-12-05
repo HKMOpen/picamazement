@@ -20,8 +20,8 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
-public class PictureListActivity extends Activity {
-    private static final String LOG_TAG = PictureListActivity.class.getSimpleName();
+public class PicturesListActivity extends Activity {
+    private static final String LOG_TAG = PicturesListActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
@@ -30,7 +30,7 @@ public class PictureListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).inject(this);
-        mLogFacility.logStartOfActivity(LOG_TAG, PictureListActivity.class, savedInstanceState);
+        mLogFacility.logStartOfActivity(LOG_TAG, PicturesListActivity.class, savedInstanceState);
 
         setContentView(R.layout.act_list);
 
