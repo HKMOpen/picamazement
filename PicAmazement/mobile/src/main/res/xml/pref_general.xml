@@ -3,9 +3,8 @@
 >
 
     <PreferenceScreen
-        android:key="prefkey_storages"
-        android:title="@string/pref_storages"
-        android:persistent="false"
+        android:title="@string/pref_storage_section"
+        android:summary="@string/pref_storage_summary"
     >
         <Preference
             android:title="@string/pref_dropbox"
@@ -16,12 +15,32 @@
         </Preference>
         <Preference
             android:title="@string/pref_googledrive"
-            >
+        >
             <intent
                 android:action="action_StartGDriveSettings"
-                />
+            />
         </Preference>
     </PreferenceScreen>
 
+    <PreferenceCategory
+        android:title="@string/pref_sync_section"
+    >
+        <CheckBoxPreference
+            android:key="pref_enableBackgroundSync"
+            android:title="@string/pref_enableSync"
+            android:text="@string/pref_enableSync"
+            android:defaultValue="false"
+        />
+
+        <!-- This preference simply launches an intent when selected. Use this UI sparingly, per
+             design guidelines. -->
+        <Preference
+            android:title="@string/pref_title_system_sync_settings"
+            android:dependency="pref_enableBackgroundSync"
+        >
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

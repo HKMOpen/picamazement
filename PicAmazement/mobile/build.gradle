@@ -3,6 +3,8 @@ apply plugin: 'com.android.application'
 //def TWITTER_CONSUMER_SECRET = System.properties['PicAmazementTwitterConsumerSecretProp'] ?: '"Define Twitter Consumer secret"';
 def TWITTER_CONSUMER_KEY = '"' + PicAmazementTwitterConsumerKeyProp + '"' ?: '"Define Twitter Consumer key"';
 def TWITTER_CONSUMER_SECRET = '"' + PicAmazementTwitterConsumerSecretProp + '"'  ?: '"Define Twitter Consumer secret"';
+def DROPBOX_APP_KEY = '"' + PicAmazementDropboxAppKeyProp + '"' ?: '"Define Dropbox App key"';
+def DROPBOX_APP_SECRET = '"' + PicAmazementDropboxAppSecretProp + '"'  ?: '"Define Dropbox App secret"';
 
 android {
     compileSdkVersion 21
@@ -48,4 +50,6 @@ dependencies {
 android.buildTypes.each { type ->
     type.buildConfigField 'String', 'TWITTER_CONSUMER_KEY', TWITTER_CONSUMER_KEY
     type.buildConfigField 'String', 'TWITTER_CONSUMER_SECRET', TWITTER_CONSUMER_SECRET
+    type.buildConfigField 'String', 'DROPBOX_APP_KEY', DROPBOX_APP_KEY
+    type.buildConfigField 'String', 'DROPBOX_APP_SECRET', DROPBOX_APP_SECRET
 }

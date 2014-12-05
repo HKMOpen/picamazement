@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_storage_section">Storages</string>
+    <string name="pref_storage_summary">Login to different cloud storage, so picture can be saved in the cloud</string>
+    <string name="pref_sync_section">Sync</string>
+    <string name="pref_dropbox">Dropbox</string>
+    <string name="pref_googledrive">Google Drive</string>
+    <string name="pref_enableSync">Enable background sync</string>
+</resources>

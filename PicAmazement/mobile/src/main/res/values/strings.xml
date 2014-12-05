@@ -19,14 +19,12 @@
 
     <string name="fullscreen_actTitle">Fullscreen picture</string>
 
-    <string name="pref_storages">Storages</string>
-    <string name="pref_dropbox">Dropbox</string>
-    <string name="pref_googledrive">Google Drive</string>
-
     <string name="dropboxsettings_actTitle">Dropbox Settings</string>
 
     <string name="gdrivesettings_actTitle">Google Drive Settings</string>
+
     <string name="dummy_content">DUMMY_CONTENT</string>
     <string name="dummy_button">DUMMY_BUTTON</string>
+
 
 </resources>
