@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
 import it.rainbowbreeze.picama.logic.storage.PictureDiskManager;
@@ -38,6 +39,7 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
                 SendDataToWearService.class,
                 UpdatePictureFieldsService.class,
                 ReceiveDataFromWearService.class,
+                MyApp.class,
         },
         includes = MobileModule.class,
         // True because it declares @Provides not used inside the class, but outside.
@@ -132,4 +134,11 @@ public class AndroidModule {
         return new CloudStorageManager(logFacility, pictureDiskManager);
     }
 
+
+    @Provides @Singleton
+    public AppPrefsManager provideAppPrefsManager(
+            @ForApplication Context appContext,
+            ILogFacility logFacility) {
+        return new AppPrefsManager(appContext, logFacility);
+    }
 }

@@ -12,6 +12,6 @@ public class Bag extends SharedBag {
     public static boolean wearAvailable = false;
 
     public final static String DROPBOX_APP_KEY = BuildConfig.DROPBOX_APP_KEY;
-    public final static String DROPBPX_APP_SECRET = BuildConfig.DROPBOX_APP_SECRET;
+    public final static String DROPBOX_APP_SECRET = BuildConfig.DROPBOX_APP_SECRET;
 
 }

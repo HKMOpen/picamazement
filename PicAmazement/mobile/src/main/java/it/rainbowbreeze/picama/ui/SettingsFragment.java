@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import it.rainbowbreeze.picama.R;
+import it.rainbowbreeze.picama.data.AppPrefsManager;
 
 /**
  * Created by alfredomorresi on 05/12/14.
@@ -20,15 +22,18 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        PreferenceManager prefMgr = getPreferenceManager();
+        prefMgr.setSharedPreferencesName(AppPrefsManager.PREFS_FILE_NAME);
+        prefMgr.setSharedPreferencesMode(PreferenceActivity.MODE_PRIVATE);
         addPreferencesFromResource(R.xml.pref_general);
+
         mPreSyncFrequency = findPreference(PREFKEY_SYNC_FREQUENCY);
+        setSyncFrequencySummary(getPreferenceManager().getSharedPreferences());
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // See http://developer.android.com/reference/android/preference/PreferenceManager.html#KEY_HAS_SET_DEFAULT_VALUES
-        PreferenceManager.setDefaultValues(activity, R.xml.pref_general, false);
     }
 
     @Override
@@ -48,8 +53,23 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PREFKEY_SYNC_FREQUENCY.equals(key)) {
-            Preference preference = findPreference(key);
-            mPreSyncFrequency.setSummary(R.string.pref_storage_summary);
+            setSyncFrequencySummary(sharedPreferences);
+        }
+    }
+
+    private void setSyncFrequencySummary(SharedPreferences sharedPreferences) {
+        // Finds the index of the value in the array of potential values
+        String prefValue = sharedPreferences.getString(PREFKEY_SYNC_FREQUENCY, "");
+        String[] values = getActivity().getApplicationContext().getResources().getStringArray(R.array.pref_syncFrequency_entryValues);
+        int i;
+        for (i=0; i < values.length; i++) {
+            if (values[i].equals(prefValue)) break;
+        }
+        if (i < values.length) {
+            String[] entries = getActivity().getResources().getStringArray(R.array.pref_syncFrequency_entries);
+            mPreSyncFrequency.setSummary(entries[i]);
+        } else {
+            mPreSyncFrequency.setSummary(getActivity().getString(R.string.pref_syncFrequency_valueNotSet));
         }
     }
 }

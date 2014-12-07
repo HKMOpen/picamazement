@@ -7,7 +7,10 @@ import com.squareup.picasso.Picasso;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import dagger.ObjectGraph;
+import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.shared.BuildConfig;
 
 /**
@@ -36,6 +39,8 @@ import it.rainbowbreeze.picama.shared.BuildConfig;
  */
 public class MyApp extends Application {
     private ObjectGraph mObjectGraph;
+    @Inject
+    AppPrefsManager mAppPreferences;
 
     @Override
     public void onCreate() {
@@ -45,6 +50,9 @@ public class MyApp extends Application {
         Picasso.with(getApplicationContext()).setLoggingEnabled(BuildConfig.DEBUG);
 
         mObjectGraph = ObjectGraph.create(getModules().toArray());
+
+        inject(this);
+        mAppPreferences.setDefaultValues();
     }
 
     /**

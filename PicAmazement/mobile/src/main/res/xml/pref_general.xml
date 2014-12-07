@@ -3,18 +3,18 @@
 >
 
     <PreferenceScreen
-        android:title="@string/pref_storage_section"
+        android:title="@string/pref_storage_title"
         android:summary="@string/pref_storage_summary"
     >
         <Preference
-            android:title="@string/pref_dropbox"
+            android:title="@string/pref_dropbox_title"
         >
             <intent
                 android:action="action_StartDropboxSettings"
             />
         </Preference>
         <Preference
-            android:title="@string/pref_googledrive"
+            android:title="@string/pref_googledrive_title"
         >
             <intent
                 android:action="action_StartGDriveSettings"
@@ -23,23 +23,35 @@
     </PreferenceScreen>
 
     <PreferenceCategory
-        android:title="@string/pref_sync_section"
+        android:title="@string/pref_sync_title"
+        android:summary="@string/pref_sync_summary"
     >
         <CheckBoxPreference
             android:key="pref_enableBackgroundSync"
-            android:title="@string/pref_enableSync"
-            android:text="@string/pref_enableSync"
-            android:defaultValue="false"
+            android:title="@string/pref_enableSync_title"
+            android:text="@string/pref_enableSync_text"
+            android:defaultValue="true"
         />
 
         <!-- This preference simply launches an intent when selected. Use this UI sparingly, per
              design guidelines. -->
+        <!--
         <Preference
             android:title="@string/pref_title_system_sync_settings"
             android:dependency="pref_enableBackgroundSync"
         >
             <intent android:action="android.settings.SYNC_SETTINGS" />
         </Preference>
+        -->
+        <ListPreference
+            android:key="pref_syncFrequency"
+            android:dependency="pref_enableBackgroundSync"
+            android:title="@string/pref_syncFrequency_title"
+            android:dialogTitle="Frequency"
+            android:entries="@array/pref_syncFrequency_entries"
+            android:entryValues="@array/pref_syncFrequency_entryValues"
+            android:defaultValue="@string/pref_syncFrequency_default"
+        />
 
     </PreferenceCategory>
 
