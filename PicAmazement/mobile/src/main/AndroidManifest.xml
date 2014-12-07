@@ -63,10 +63,24 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboard">
+            <intent-filter>
+                <!-- Change this to be db- followed by your app key -->
+                <data android:scheme="db-ueahnhl3wy8htkq" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <provider
             android:name=".data.provider.PictureProvider"
             android:authorities="it.rainbowbreeze.picama.provider"
-            android:exported="false" />
+            android:exported="false"
+        />
 
         <service
             android:name=".logic.wearable.SendDataToWearService"

@@ -10,6 +10,7 @@ import dagger.Provides;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
+import it.rainbowbreeze.picama.logic.storage.DropboxCloudProvider;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
 import it.rainbowbreeze.picama.logic.storage.PictureDiskManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
@@ -19,6 +20,7 @@ import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
 import it.rainbowbreeze.picama.logic.wearable.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService;
+import it.rainbowbreeze.picama.ui.DropboxSettingsFragment;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity2;
 import it.rainbowbreeze.picama.ui.MainActivity;
 import it.rainbowbreeze.picama.ui.PicturesListFragment;
@@ -32,14 +34,16 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
  */
 @Module (
         injects = {
-                PicturesRecyclerActivity.class,
+                MyApp.class,
                 MainActivity.class,
+                PicturesRecyclerActivity.class,
                 PicturesListFragment.class,
                 FullscreenPictureActivity2.class,
+                DropboxSettingsFragment.class,
+
                 SendDataToWearService.class,
                 UpdatePictureFieldsService.class,
                 ReceiveDataFromWearService.class,
-                MyApp.class,
         },
         includes = MobileModule.class,
         // True because it declares @Provides not used inside the class, but outside.
@@ -134,11 +138,18 @@ public class AndroidModule {
         return new CloudStorageManager(logFacility, pictureDiskManager);
     }
 
-
     @Provides @Singleton
     public AppPrefsManager provideAppPrefsManager(
             @ForApplication Context appContext,
             ILogFacility logFacility) {
         return new AppPrefsManager(appContext, logFacility);
     }
+
+    @Provides @Singleton
+    public DropboxCloudProvider provideDropboxCloudProvider(
+            ILogFacility logFacility,
+            AppPrefsManager appPrefsManager) {
+        return new DropboxCloudProvider(logFacility, appPrefsManager);
+    }
+
 }

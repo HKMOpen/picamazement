@@ -10,4 +10,11 @@
     tools:context="it.rainbowbreeze.picama.ui.DropboxSettingsFragment"
 >
 
+    <Button
+        android:id="@+id/dropboxsettings_btnStartAuth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dropboxsettings_btnStartAuth"
+    />
+
 </RelativeLayout>

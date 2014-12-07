@@ -19,6 +19,8 @@ public class AppPrefsManager {
     private final ILogFacility mLogFacility;
 
     public static final String PREFS_FILE_NAME = "PicAmazementPrefs";
+    private static final String NULL_STRING = "null";
+
     private final Context mAppContext;
     private final SharedPreferences mAppPreferences;
     private boolean mSaveInBatch;
@@ -27,16 +29,30 @@ public class AppPrefsManager {
     public AppPrefsManager(Context appContext, ILogFacility logFacility) {
         mAppContext = appContext;
         mLogFacility = logFacility;
-        mAppPreferences = appContext.getSharedPreferences(PREFS_FILE_NAME, 0);
+        mAppPreferences = appContext.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
+    }
+
+    private boolean hasDefaultValuesBeenSet() {
+        // See http://developer.android.com/reference/android/preference/PreferenceManager.html#KEY_HAS_SET_DEFAULT_VALUES
+        SharedPreferences appPreferences = mAppContext.getSharedPreferences(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, Context.MODE_PRIVATE);
+        boolean defaultValuesSet = appPreferences.getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false);
+        return defaultValuesSet;
     }
 
     /**
      * Sets default values for the preferences, given the XML file
      */
     public void setDefaultValues() {
-        mLogFacility.v(LOG_TAG, "Setting default preference values");
-        // See http://developer.android.com/reference/android/preference/PreferenceManager.html#KEY_HAS_SET_DEFAULT_VALUES
-        PreferenceManager.setDefaultValues(mAppContext, PREFS_FILE_NAME, Context.MODE_PRIVATE, R.xml.pref_general, false);
+        if (!hasDefaultValuesBeenSet()) {
+            mLogFacility.v(LOG_TAG, "Setting default preference values");
+            // This call sets also the system flag
+            PreferenceManager.setDefaultValues(mAppContext, PREFS_FILE_NAME, Context.MODE_PRIVATE, R.xml.pref_general, false);
+            // Adds customized values
+            setBatchSave()
+                    .setDropboxEnabled(false)
+                    .setDropboxAuthToken(NULL_STRING)
+                    .save();
+        }
     }
 
     private static final String PREF_DROPBOXENABLED = "pref_dropboxEnabled";
@@ -45,10 +61,28 @@ public class AppPrefsManager {
     }
     public AppPrefsManager setDropboxEnabled(boolean newValue) {
         openSharedEditor();
-        mAppPreferences.getBoolean(PREF_DROPBOXENABLED, false);
+        mSharedEditor.putBoolean(PREF_DROPBOXENABLED, false);
         saveIfNeeded();
         return this;
     }
+
+    private static final String PREF_DROPBOX_OAUTH2_ACCESS_TOKEN = "pref_dropboxOAuth2AccessToken";
+    public String getDropboxOAuth2AccessToken() {
+        return mAppPreferences.getString(PREF_DROPBOX_OAUTH2_ACCESS_TOKEN, NULL_STRING);
+    }
+    public AppPrefsManager setDropboxAuthToken(String OAuth2AccessToken) {
+        openSharedEditor();
+        mSharedEditor.putString(PREF_DROPBOX_OAUTH2_ACCESS_TOKEN, OAuth2AccessToken);
+        saveIfNeeded();
+        return this;
+    }
+    public boolean isDropboxAuthorized() {
+        return !NULL_STRING.equals(getDropboxOAuth2AccessToken());
+    }
+    public void resetDropboxAuthToken() {
+        setDropboxAuthToken(NULL_STRING);
+    }
+
 
     // Look at the xml file!
     private static final String PREF_SYNCENABLED = "pref_enableBackgroundSync";
@@ -63,6 +97,10 @@ public class AppPrefsManager {
     }
 
 
+    /**
+     * Set batch save mode. When set, remember to call {@link #save()} at the end of your changes.
+     * @return
+     */
     public AppPrefsManager setBatchSave() {
         mSaveInBatch = true;
         return this;
@@ -87,8 +125,15 @@ public class AppPrefsManager {
             mSharedEditor = mAppPreferences.edit();
         }
     }
+
+    /**
+     * Do not save while in batch edit mode, otherwise saves preferences
+     * @return
+     */
     private boolean saveIfNeeded() {
-        return !mSaveInBatch ? save() : false;
+        return mSaveInBatch
+                ? false
+                : save();
     }
 
 }

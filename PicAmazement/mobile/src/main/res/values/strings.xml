@@ -22,6 +22,8 @@
     <string name="settings_actTitle">Dropbox Settings</string>
 
     <string name="dropboxsettings_actTitle">Dropbox Settings</string>
+    <string name="dropboxsettings_btnStartAuth">Access to Dropbox</string>
+    <string name="dropboxsettings_btnAuthDone">Dropbox connected</string>
 
     <string name="gdrivesettings_actTitle">Google Drive Settings</string>
 
