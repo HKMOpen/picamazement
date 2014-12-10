@@ -22,7 +22,7 @@ android {
             //buildConfigField "boolean", "REPORT_CRASHES", "true"
         }
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
