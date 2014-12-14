@@ -35,13 +35,14 @@ public class PictureScraperManager {
     /**
      * TODO: add a callback and make it async
      * @param appContext
+     * @return true if at least one new picture has been found
      */
-    public void searchForNewImage(Context appContext) {
+    public boolean searchForNewImage(Context appContext) {
         mLogFacility.v(LOG_TAG, "Starting pictures update");
 
         if (mAppPrefsManager.isSyncing()) {
             mLogFacility.v(LOG_TAG, "Syncing already in progress, aborting");
-            return;
+            return false;
         }
 
         mAppPrefsManager.startSync();
@@ -49,33 +50,38 @@ public class PictureScraperManager {
         if (!NetworkUtils.isNetworkAvailable(appContext)) {
             mLogFacility.v(LOG_TAG, "Aborting the search because the network is not available");
             mAppPrefsManager.stopSync();
-            return;
+            return false;
         }
+        boolean foundNewPictures = false;
         for (IPictureScraper scraper : mPictureScrapers) {
             mLogFacility.v(LOG_TAG, "Start to scrape from provider " + scraper.getName());
             List<AmazingPicture> newPictures = scraper.getNewPictures();
             mLogFacility.v(LOG_TAG, "Found " + newPictures.size() + " new pictures");
 
-            addOnlyNewPictures(newPictures);
+            foundNewPictures = foundNewPictures || addOnlyNewPictures(newPictures);
         }
         mAppPrefsManager.stopSync();
+        return foundNewPictures;
     }
 
     /**
      * Adds only new picture to the local database
      * @param newPictures
      */
-    private void addOnlyNewPictures(List<AmazingPicture> newPictures) {
+    private boolean addOnlyNewPictures(List<AmazingPicture> newPictures) {
+        boolean foundNewPictures = false;
         for (AmazingPicture picture : newPictures) {
             if (TextUtils.isEmpty(picture.getUrl())) {
                 mLogFacility.i(LOG_TAG, "No URL for picture " + picture.getTitle());
             }
             if (!mAmazingPictureDao.exists(picture.getUrl())) {
                 mAmazingPictureDao.insert(picture);
+                foundNewPictures = true;
                 mLogFacility.v(LOG_TAG, "Added new picture in the DB at url " + picture.getUrl());
             } else {
                 mLogFacility.v(LOG_TAG, "Skipped picture with url " + picture.getUrl());
             }
         }
+        return foundNewPictures;
     }
 }

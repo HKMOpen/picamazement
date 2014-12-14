@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 
 /**
@@ -19,6 +20,8 @@ public class RefreshPictureService extends IntentService {
     private static final String LOG_TAG = RefreshPictureService.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject PictureScraperManager mPictureScraperManager;
+    @Inject ActionsManager mActionsManager;
+
 
     public static final String ACTION_REFRESH_PICTURES = "it.rainbowbreeze.picama.Action.Picture.Refresh";
 
@@ -41,7 +44,11 @@ public class RefreshPictureService extends IntentService {
 
         if (ACTION_REFRESH_PICTURES.equals(intent.getAction())) {
             mLogFacility.v(LOG_TAG, "Refreshing pictures");
-            mPictureScraperManager.searchForNewImage(getApplicationContext());
+            boolean foundNewPictures = mPictureScraperManager.searchForNewImage(getApplicationContext());
+
+            if (foundNewPictures) {
+                mActionsManager.sendPictureToWear().executeAsync();
+            }
 
         } else {
             mLogFacility.e(LOG_TAG, "Cannot process the requested action");
