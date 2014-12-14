@@ -32,13 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.FullscreenPictureActivity2"
-            android:label="@string/fullscreen_actTitle"
-            android:theme="@style/AppFullscreenTheme" >
-        </activity>
-        <!-- android:configChanges="orientation|keyboardHidden|screenSize" -->
-        <activity
-            android:name="ui.FullscreenPictureActivity"
+            android:name=".ui.FullscreenPictureActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/fullscreen_actTitle"
             android:theme="@style/FullscreenTheme" >

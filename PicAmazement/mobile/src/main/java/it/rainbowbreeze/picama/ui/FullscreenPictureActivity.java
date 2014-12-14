@@ -1,5 +1,11 @@
 package it.rainbowbreeze.picama.ui;
 
+import it.rainbowbreeze.picama.common.Bag;
+import it.rainbowbreeze.picama.common.ILogFacility;
+import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.domain.AmazingPicture;
+import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.ui.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -9,6 +15,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
+import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
 
@@ -47,18 +59,25 @@ public class FullscreenPictureActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
+    public static final String LOG_TAG = FullscreenPictureActivity.class.getSimpleName();
+    @Inject ILogFacility mLogFacility;
+    @Inject ActionsManager mActionsManager;
+    @Inject AmazingPictureDao mAmazingPictureDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MyApp) getApplication()).inject(this);
+        mLogFacility.logStartOfActivity(LOG_TAG, this.getClass(), savedInstanceState);
 
         setContentView(R.layout.act_fullscreen_picture);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
-        final View contentView = findViewById(R.id.fullscreen_content);
+        final ImageView contentImageView = (ImageView) findViewById(R.id.fullscreen_imgPicture);
 
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
-        mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
+        mSystemUiHider = SystemUiHider.getInstance(this, contentImageView, HIDER_FLAGS);
         mSystemUiHider.setup();
         mSystemUiHider
                 .setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
@@ -99,7 +118,7 @@ public class FullscreenPictureActivity extends Activity {
                 });
 
         // Set up the user interaction to manually show or hide the system UI.
-        contentView.setOnClickListener(new View.OnClickListener() {
+        contentImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (TOGGLE_ON_CLICK) {
@@ -107,13 +126,44 @@ public class FullscreenPictureActivity extends Activity {
                 } else {
                     mSystemUiHider.show();
                 }
+                ImageView imageView = (ImageView) findViewById(R.id.fullscreen_imgPicture);
+                Toast.makeText(FullscreenPictureActivity.this, "W: " + imageView.getWidth() + ", H: " + imageView.getHeight(), Toast.LENGTH_SHORT).show();
             }
         });
+
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+
+        long pictureId = getIntent().getLongExtra(Bag.INTENT_EXTRA_PICTUREID, Bag.ID_NOT_SET);
+        if (Bag.ID_NOT_SET == pictureId) {
+            mLogFacility.i(LOG_TAG, "Wrong picture number to show, aborting");
+            finish();
+            return;
+        }
+
+        mActionsManager.sendPictureToWear()
+                .setPictureId(pictureId)
+                .executeAsync();
+
+
+        AmazingPicture picture = mAmazingPictureDao.getById(pictureId);
+        mLogFacility.v(LOG_TAG, "Loading picture at " + picture.getUrl());
+
+        // Retrieves the image URL
+        // Uses Picasso built-in methods to measure the size of the containing ImageView and then
+        //  resize the image to fit the ImageView. Memory efficient
+        // Only one drawback: the image have to be present full-size in the cache, otherwise
+        //  the scaled one is scaled or stretched again to fit inside this new ImageView
+        Picasso.with(getApplicationContext())
+                .load(picture.getUrl())
+                        //.placeholder()
+                        //.error()
+                .fit()
+                .centerInside()
+                .into(contentImageView);
     }
 
     @Override

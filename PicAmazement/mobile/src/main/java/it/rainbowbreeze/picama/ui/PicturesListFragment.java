@@ -75,7 +75,7 @@ public class PicturesListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(mAppContext, "Clicked on id " + id, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mAppContext, FullscreenPictureActivity2.class);
+                Intent intent = new Intent(mAppContext, FullscreenPictureActivity.class);
                 intent.putExtra(Bag.INTENT_EXTRA_PICTUREID, id);
                 startActivity(intent);
             }

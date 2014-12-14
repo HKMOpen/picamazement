@@ -19,7 +19,7 @@ import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.common.SharedUtils;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
-import it.rainbowbreeze.picama.ui.FullscreenPictureActivity2;
+import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
 
 /**
  * Created by alfredomorresi on 22/11/14.
@@ -97,7 +97,7 @@ public class ReceiveDataFromWearService extends WearableListenerService {
         if (messageEvent.getPath().equals(Bag.WEAR_PATH_OPENPICTURE)) {
             long pictureId = SharedUtils.bytesToLong(messageEvent.getData());
             mLogFacility.v(LOG_TAG, "Opening picture with id " + pictureId);
-            Intent startIntent = new Intent(this, FullscreenPictureActivity2.class);
+            Intent startIntent = new Intent(this, FullscreenPictureActivity.class);
             startIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, pictureId);
             startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startIntent);

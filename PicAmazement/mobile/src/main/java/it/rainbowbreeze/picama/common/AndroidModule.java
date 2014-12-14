@@ -24,7 +24,7 @@ import it.rainbowbreeze.picama.logic.wearable.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService;
 import it.rainbowbreeze.picama.ui.DropboxSettingsFragment;
-import it.rainbowbreeze.picama.ui.FullscreenPictureActivity2;
+import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
 import it.rainbowbreeze.picama.ui.MainActivity;
 import it.rainbowbreeze.picama.ui.PicturesListFragment;
 import it.rainbowbreeze.picama.ui.SettingsFragment;
@@ -42,7 +42,7 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
                 MainActivity.class,
                 PicturesRecyclerActivity.class,
                 PicturesListFragment.class,
-                FullscreenPictureActivity2.class,
+                FullscreenPictureActivity.class,
                 DropboxSettingsFragment.class,
                 SettingsFragment.class,
 
