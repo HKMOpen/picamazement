@@ -37,7 +37,7 @@ public class LogicManager {
 
         // Checks last sync time
         long lastSyncTime = mAppPrefsManager.getLastSyncTime();
-        long syncIntervalInPref = 24 / Integer.getInteger(mAppPrefsManager.getSyncFrequency())
+        long syncIntervalInPref = 24 / Integer.parseInt(mAppPrefsManager.getSyncFrequency())
                 * 3600 * 1000L; // milliseconds
         long currentTime = Calendar.getInstance().getTimeInMillis();
         long nextSyncInterval = 0;

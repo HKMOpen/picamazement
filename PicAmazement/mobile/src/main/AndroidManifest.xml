@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <!-- /JobScheduler permission -->
     <application
         android:name=".common.MyApp"
         android:allowBackup="true"

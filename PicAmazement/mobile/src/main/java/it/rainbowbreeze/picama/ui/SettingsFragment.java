@@ -67,6 +67,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PREFKEY_SYNC_FREQUENCY.equals(key)) {
             setSyncFrequencySummary(sharedPreferences);
+            // Cancel the background sync and calculate the new interval
+            mLogicManager.cancelPictureRefresh(getActivity().getApplicationContext());
+            mLogicManager.schedulePicturesRefresh(getActivity().getApplicationContext());
+
         } else if (PREFKEY_ENABLE_BACKGROUND_SYNC.equals(key)) {
             boolean prefValue = sharedPreferences.getBoolean(PREFKEY_ENABLE_BACKGROUND_SYNC, false);
             if (prefValue) {

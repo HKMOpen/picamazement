@@ -27,6 +27,7 @@ import it.rainbowbreeze.picama.ui.DropboxSettingsFragment;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity2;
 import it.rainbowbreeze.picama.ui.MainActivity;
 import it.rainbowbreeze.picama.ui.PicturesListFragment;
+import it.rainbowbreeze.picama.ui.SettingsFragment;
 import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
 
 /**
@@ -43,6 +44,7 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
                 PicturesListFragment.class,
                 FullscreenPictureActivity2.class,
                 DropboxSettingsFragment.class,
+                SettingsFragment.class,
 
                 SendDataToWearService.class,
                 UpdatePictureFieldsService.class,
