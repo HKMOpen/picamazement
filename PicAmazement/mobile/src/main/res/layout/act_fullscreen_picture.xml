@@ -64,6 +64,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_action_save"
                     android:text="@string/fullscreen_btnSave"
                 />
                 <Button
@@ -72,6 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_action_delete"
                     android:text="@string/fullscreen_btnDelete"
                 />
                 <Button
