@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.logic;
+package it.rainbowbreeze.picama.logic.storage;
 
 /**
  * Created by alfredomorresi on 01/12/14.

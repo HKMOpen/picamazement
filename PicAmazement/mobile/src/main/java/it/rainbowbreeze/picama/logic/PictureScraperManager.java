@@ -8,6 +8,7 @@ import java.util.List;
 import it.rainbowbreeze.libs.network.NetworkUtils;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 
 /**
@@ -20,11 +21,13 @@ public class PictureScraperManager {
     private final PictureScraperManagerConfig mConfig;
     private final List<IPictureScraper> mPictureScrapers;
     private final AmazingPictureDao mAmazingPictureDao;
+    private final AppPrefsManager mAppPrefsManager;
 
     public PictureScraperManager(ILogFacility logFacility, PictureScraperManagerConfig config,
-                                 AmazingPictureDao amazingPictureDao) {
+                                 AmazingPictureDao amazingPictureDao, AppPrefsManager appPrefsManager) {
         mLogFacility = logFacility;
         mConfig = config;
+        mAppPrefsManager = appPrefsManager;
         mPictureScrapers = mConfig.getPictureScrapers();
         mAmazingPictureDao = amazingPictureDao;
     }
@@ -36,8 +39,16 @@ public class PictureScraperManager {
     public void searchForNewImage(Context appContext) {
         mLogFacility.v(LOG_TAG, "Starting pictures update");
 
+        if (mAppPrefsManager.isSyncing()) {
+            mLogFacility.v(LOG_TAG, "Syncing already in progress, aborting");
+            return;
+        }
+
+        mAppPrefsManager.startSync();
+
         if (!NetworkUtils.isNetworkAvailable(appContext)) {
             mLogFacility.v(LOG_TAG, "Aborting the search because the network is not available");
+            mAppPrefsManager.stopSync();
             return;
         }
         for (IPictureScraper scraper : mPictureScrapers) {
@@ -47,6 +58,7 @@ public class PictureScraperManager {
 
             addOnlyNewPictures(newPictures);
         }
+        mAppPrefsManager.stopSync();
     }
 
     /**

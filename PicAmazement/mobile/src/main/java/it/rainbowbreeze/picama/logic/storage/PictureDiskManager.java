@@ -10,7 +10,6 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
-import it.rainbowbreeze.picama.logic.BaseResult;
 
 /**
  * Created by alfredomorresi on 29/11/14.

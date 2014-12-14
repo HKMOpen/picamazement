@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.Calendar;
+
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.ILogFacility;
 
@@ -55,13 +57,44 @@ public class AppPrefsManager {
         }
     }
 
+    private static final String PREF_LASTSYNCTIME = "pref_lastSyncTime";
+    public long getLastSyncTime() {
+        return mAppPreferences.getLong(PREF_LASTSYNCTIME, 0);
+    }
+    public AppPrefsManager setLastSyncTime(long newValue) {
+        openSharedEditor();
+        mSharedEditor.putLong(PREF_LASTSYNCTIME, newValue);
+        saveIfNeeded();
+        return this;
+    }
+
+    // Is refreshing picture list
+    private static final String PREF_ISSYNCING = "pref_isSyncing";
+    public boolean isSyncing() {
+        return mAppPreferences.getBoolean(PREF_ISSYNCING, false);
+    }
+    public AppPrefsManager startSync() {
+        openSharedEditor();
+        mSharedEditor.putBoolean(PREF_ISSYNCING, true);
+        saveIfNeeded();
+        return this;
+    }
+    public AppPrefsManager stopSync() {
+        openSharedEditor();
+        mSharedEditor.putBoolean(PREF_ISSYNCING, false);
+        mSharedEditor.putLong(PREF_LASTSYNCTIME, Calendar.getInstance().getTimeInMillis());
+
+        saveIfNeeded();
+        return this;
+    }
+
     private static final String PREF_DROPBOXENABLED = "pref_dropboxEnabled";
     public boolean isDropboxEnabled() {
         return mAppPreferences.getBoolean(PREF_DROPBOXENABLED, false);
     }
     public AppPrefsManager setDropboxEnabled(boolean newValue) {
         openSharedEditor();
-        mSharedEditor.putBoolean(PREF_DROPBOXENABLED, false);
+        mSharedEditor.putBoolean(PREF_DROPBOXENABLED, newValue);
         saveIfNeeded();
         return this;
     }

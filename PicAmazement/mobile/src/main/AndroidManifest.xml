@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- /JobScheduler permission -->
     <application
         android:name=".common.MyApp"
         android:allowBackup="true"
@@ -26,10 +28,10 @@
             android:label="@string/common_app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.FullscreenPictureActivity2"
             android:label="@string/fullscreen_actTitle"
@@ -51,6 +53,7 @@
             android:label="@string/dropboxsettings_actTitle" >
             <intent-filter>
                 <action android:name="action_StartDropboxSettings" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -59,19 +62,22 @@
             android:label="@string/gdrivesettings_actTitle" >
             <intent-filter>
                 <action android:name="action_StartGDriveSettings" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.dropbox.client2.android.AuthActivity"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|keyboard">
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask" >
             <intent-filter>
+
                 <!-- Change this to be db- followed by your app key -->
                 <data android:scheme="db-ueahnhl3wy8htkq" />
+
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -97,6 +103,20 @@
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
+        <service
+            android:name=".logic.RefreshPictureService"
+            android:exported="false"
+        >
+            <intent-filter>
+                <action android:name="it.rainbowbreeze.picama.Action.Picture.Refresh" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".logic.RefreshPictureReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

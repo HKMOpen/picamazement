@@ -9,6 +9,9 @@ import dagger.Module;
 import dagger.Provides;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
+import it.rainbowbreeze.picama.logic.LogicManager;
+import it.rainbowbreeze.picama.logic.RefreshPictureReceiver;
+import it.rainbowbreeze.picama.logic.RefreshPictureService;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 import it.rainbowbreeze.picama.logic.storage.DropboxCloudProvider;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
@@ -44,6 +47,9 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
                 SendDataToWearService.class,
                 UpdatePictureFieldsService.class,
                 ReceiveDataFromWearService.class,
+                RefreshPictureService.class,
+
+                RefreshPictureReceiver.class,
         },
         includes = MobileModule.class,
         // True because it declares @Provides not used inside the class, but outside.
@@ -106,8 +112,11 @@ public class AndroidModule {
     @Provides @Singleton public PictureScraperManager providePictureScrapeManager (
             ILogFacility logFacility,
             PictureScraperManagerConfig pictureScraperManagerConfig,
-            AmazingPictureDao amazingPictureDao) {
-        return new PictureScraperManager(logFacility, pictureScraperManagerConfig, amazingPictureDao);
+            AmazingPictureDao amazingPictureDao,
+            AppPrefsManager appPrefsManager) {
+        return new PictureScraperManager(
+                logFacility, pictureScraperManagerConfig,
+                amazingPictureDao, appPrefsManager);
     }
 
     /**
@@ -143,6 +152,13 @@ public class AndroidModule {
             @ForApplication Context appContext,
             ILogFacility logFacility) {
         return new AppPrefsManager(appContext, logFacility);
+    }
+
+    @Provides @Singleton
+    public LogicManager provideLogicManager(
+            ILogFacility logFacility,
+            AppPrefsManager appPrefsManager) {
+        return new LogicManager(logFacility, appPrefsManager);
     }
 
     @Provides @Singleton

@@ -8,15 +8,26 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
+import javax.inject.Inject;
+
 import it.rainbowbreeze.picama.R;
+import it.rainbowbreeze.picama.common.ILogFacility;
+import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
+import it.rainbowbreeze.picama.logic.LogicManager;
 
 /**
  * Created by alfredomorresi on 05/12/14.
  */
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final String Log_TAG = SettingsFragment.class.getSimpleName();
+    @Inject ILogFacility mLogFacility;
+    @Inject LogicManager mLogicManager;
+
     private static final String PREFKEY_SYNC_FREQUENCY = "pref_syncFrequency";
+    private static final String PREFKEY_ENABLE_BACKGROUND_SYNC = "pref_enableBackgroundSync";
     private Preference mPreSyncFrequency;
+    private Preference mPreEnableBackgroundSync;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +45,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        ((MyApp) getActivity().getApplicationContext()).inject(this);
     }
 
     @Override
@@ -48,12 +60,20 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onPause();
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
+
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PREFKEY_SYNC_FREQUENCY.equals(key)) {
             setSyncFrequencySummary(sharedPreferences);
+        } else if (PREFKEY_ENABLE_BACKGROUND_SYNC.equals(key)) {
+            boolean prefValue = sharedPreferences.getBoolean(PREFKEY_ENABLE_BACKGROUND_SYNC, false);
+            if (prefValue) {
+                mLogicManager.schedulePicturesRefresh(getActivity().getApplicationContext());
+            } else {
+                mLogicManager.cancelPictureRefresh(getActivity().getApplicationContext());
+            }
         }
     }
 
