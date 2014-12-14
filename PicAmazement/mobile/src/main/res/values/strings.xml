@@ -18,6 +18,9 @@
     <string name="piclist_mnuHideHelp">Hide a pic</string>
 
     <string name="fullscreen_actTitle">Fullscreen picture</string>
+    <string name="fullscreen_btnDelete">Delete</string>
+    <string name="fullscreen_btnSave">Save</string>
+    <string name="fullscreen_btnSendToWear">Wear</string>
 
     <string name="settings_actTitle">Dropbox Settings</string>
 
@@ -26,9 +29,5 @@
     <string name="dropboxsettings_btnAuthDone">Dropbox connected</string>
 
     <string name="gdrivesettings_actTitle">Google Drive Settings</string>
-
-    <string name="dummy_content">DUMMY_CONTENT</string>
-    <string name="dummy_button">DUMMY_BUTTON</string>
-
 
 </resources>

@@ -15,7 +15,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -69,6 +71,13 @@ public class FullscreenPictureActivity extends Activity {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).inject(this);
         mLogFacility.logStartOfActivity(LOG_TAG, this.getClass(), savedInstanceState);
+
+        final long pictureId = getIntent().getLongExtra(Bag.INTENT_EXTRA_PICTUREID, Bag.ID_NOT_SET);
+        if (Bag.ID_NOT_SET == pictureId) {
+            mLogFacility.i(LOG_TAG, "Wrong picture number to show, aborting");
+            finish();
+            return;
+        }
 
         setContentView(R.layout.act_fullscreen_picture);
 
@@ -135,19 +144,40 @@ public class FullscreenPictureActivity extends Activity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        Button btnSave = (Button) findViewById(R.id.fullscreen_btnSave);
+        btnSave.setOnTouchListener(mDelayHideTouchListener);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActionsManager.savePicture()
+                        .setPictureId(pictureId)
+                        .execute();
+                finish();
+            }
+        });
 
-        long pictureId = getIntent().getLongExtra(Bag.INTENT_EXTRA_PICTUREID, Bag.ID_NOT_SET);
-        if (Bag.ID_NOT_SET == pictureId) {
-            mLogFacility.i(LOG_TAG, "Wrong picture number to show, aborting");
-            finish();
-            return;
-        }
+        Button btnHide = (Button) findViewById(R.id.fullscreen_btnDelete);
+        btnHide.setOnTouchListener(mDelayHideTouchListener);
+        btnHide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActionsManager.hidePicture()
+                        .setPictureId(pictureId)
+                        .execute();
+                finish();
+            }
+        });
 
-        mActionsManager.sendPictureToWear()
-                .setPictureId(pictureId)
-                .executeAsync();
-
+        Button btnSendToWear = (Button) findViewById(R.id.fullscreen_btnSendToWear);
+        btnSendToWear.setOnTouchListener(mDelayHideTouchListener);
+        btnSendToWear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActionsManager.sendPictureToWear()
+                        .setPictureId(pictureId)
+                        .execute();
+            }
+        });
 
         AmazingPicture picture = mAmazingPictureDao.getById(pictureId);
         mLogFacility.v(LOG_TAG, "Loading picture at " + picture.getUrl());
@@ -164,6 +194,9 @@ public class FullscreenPictureActivity extends Activity {
                 .fit()
                 .centerInside()
                 .into(contentImageView);
+
+        TextView lblDesc = (TextView) findViewById(R.id.fullscreen_lblDesc);
+        lblDesc.setText(picture.getTitle());
     }
 
     @Override
