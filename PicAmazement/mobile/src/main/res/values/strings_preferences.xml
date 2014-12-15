@@ -9,6 +9,7 @@
     <string name="pref_enableSync_text">Enable background sync blablabla</string>
     <string name="pref_syncFrequency_title">How often you want to sync?</string>
     <string name="pref_syncFrequency_valueNotSet">Please select a value</string>
+    <string name="pref_syncFrequency_lastSync">\nLast at: %s</string>
     <string-array name="pref_syncFrequency_entries">
         <item>Daily</item>
         <item>Twice a day</item>

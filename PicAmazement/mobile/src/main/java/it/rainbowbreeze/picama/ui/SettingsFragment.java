@@ -8,6 +8,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+
 import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
@@ -23,11 +26,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private static final String Log_TAG = SettingsFragment.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject LogicManager mLogicManager;
+    @Inject AppPrefsManager mAppPrefsManager;
 
     private static final String PREFKEY_SYNC_FREQUENCY = "pref_syncFrequency";
     private static final String PREFKEY_ENABLE_BACKGROUND_SYNC = "pref_enableBackgroundSync";
     private Preference mPreSyncFrequency;
-    private Preference mPreEnableBackgroundSync;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,19 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
         if (i < values.length) {
             String[] entries = getActivity().getResources().getStringArray(R.array.pref_syncFrequency_entries);
-            mPreSyncFrequency.setSummary(entries[i]);
+            String finalText = entries[i];
+            long lastSyncTime = mAppPrefsManager.getLastSyncTime();
+            if (lastSyncTime > 0) {
+                GregorianCalendar cal = new GregorianCalendar();
+                cal.setTimeInMillis(lastSyncTime);
+                // http://developer.android.com/reference/java/text/SimpleDateFormat.html
+                //SimpleDateFormat ft = new SimpleDateFormat("yyyy.MM.dd 'at' hh:mm:ss a zzz");
+                SimpleDateFormat ft = new SimpleDateFormat("yyyy.MM.dd',' kk:mm:ss");
+                finalText += String.format(
+                        getString(R.string.pref_syncFrequency_lastSync),
+                        ft.format(cal.getTime()));
+            }
+            mPreSyncFrequency.setSummary(finalText);
         } else {
             mPreSyncFrequency.setSummary(getActivity().getString(R.string.pref_syncFrequency_valueNotSet));
         }
