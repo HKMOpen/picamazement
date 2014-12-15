@@ -10,5 +10,7 @@ import it.rainbowbreeze.picama.domain.AmazingPicture;
 public interface IPictureScraper <Config extends IPictureScraperConfig>{
     List<AmazingPicture> getNewPictures();
 
-    String getName();
+    String getSourceName();
+
+    String getLoggingParams();
 }

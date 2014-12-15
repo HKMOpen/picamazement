@@ -14,6 +14,7 @@ public abstract class BaseAmazingPicture {
     private Date mDate;
 
     public static final String FIELD_ID = "Id";
+    public static final String FIELD_URL = "Url";
     public static final String FIELD_IMAGE = "Image";
     public static final String FIELD_TITLE = "Title";
     public static final String FIELD_DESC = "Desc";

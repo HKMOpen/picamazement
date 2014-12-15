@@ -113,16 +113,20 @@ public class PictureSelection extends AbstractSelection<PictureSelection> {
         return this;
     }
 
-    public PictureSelection source(PictureSource... value) {
+    public PictureSelection source(String... value) {
         addEquals(PictureColumns.SOURCE, value);
         return this;
     }
 
-    public PictureSelection sourceNot(PictureSource... value) {
+    public PictureSelection sourceNot(String... value) {
         addNotEquals(PictureColumns.SOURCE, value);
         return this;
     }
 
+    public PictureSelection sourceLike(String... value) {
+        addLike(PictureColumns.SOURCE, value);
+        return this;
+    }
 
     public PictureSelection date(Date... value) {
         addEquals(PictureColumns.DATE, value);

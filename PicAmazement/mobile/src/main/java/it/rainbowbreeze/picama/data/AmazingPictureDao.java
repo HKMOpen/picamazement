@@ -9,7 +9,6 @@ import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureContentValues;
 import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
-import it.rainbowbreeze.picama.data.provider.picture.PictureSource;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 
 /**
@@ -31,11 +30,8 @@ public class AmazingPictureDao {
      * @param picture
      */
     public void insert(AmazingPicture picture) {
-        PictureContentValues values = new PictureContentValues()
-                .putTitle(picture.getDesc())
-                .putUrl(picture.getUrl())
-                .putSource(PictureSource.Twitter)
-                .putDate(picture.getDate());
+        PictureContentValues values = new PictureContentValues();
+        picture.fillContentValues(values);
         mAppContext.getContentResolver().insert(PictureColumns.CONTENT_URI, values.values());
     }
 

@@ -54,7 +54,7 @@ public class PictureScraperManager {
         }
         boolean foundNewPictures = false;
         for (IPictureScraper scraper : mPictureScrapers) {
-            mLogFacility.v(LOG_TAG, "Start to scrape from provider " + scraper.getName());
+            mLogFacility.v(LOG_TAG, "Start to scrape from provider " + scraper.getLoggingParams());
             List<AmazingPicture> newPictures = scraper.getNewPictures();
             mLogFacility.v(LOG_TAG, "Found " + newPictures.size() + " new pictures");
 

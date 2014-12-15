@@ -2,6 +2,7 @@ package it.rainbowbreeze.picama.domain;
 
 import com.google.android.gms.wearable.DataMap;
 
+import it.rainbowbreeze.picama.data.provider.picture.PictureContentValues;
 import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 
 /**
@@ -14,6 +15,7 @@ public class AmazingPicture extends BaseAmazingPicture {
 
     public void fillDataMap(DataMap dataMap) {
         dataMap.putLong(FIELD_ID, getId());
+        dataMap.putString(FIELD_URL, getUrl());
         dataMap.putString(FIELD_TITLE, getTitle());
         dataMap.putString(FIELD_DESC, getDesc());
         dataMap.putString(FIELD_SOURCE, getSource());
@@ -26,7 +28,17 @@ public class AmazingPicture extends BaseAmazingPicture {
                 .setDate(c.getDate())
                 .setTitle(c.getTitle())
                 .setDesc(c.getDesc())
-                .setSource(c.getSource().toString());
+                .setSource(c.getSource());
         return this;
+    }
+
+    public void fillContentValues(PictureContentValues values) {
+        values
+                .putTitle(getTitle())
+                .putDesc(getDesc())
+                .putUrl(getUrl())
+                .putSource(getSource())
+                .putDate(getDate());
+
     }
 }

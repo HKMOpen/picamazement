@@ -54,8 +54,13 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
     }
 
     @Override
-    public String getName() {
-        return "Twitter - " + mUserNames.toString();
+    public String getSourceName() {
+        return "Twitter";
+    }
+
+    @Override
+    public String getLoggingParams() {
+        return "Twitter" + mUserNames.toString();
     }
 
     @Override
@@ -80,7 +85,8 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
                                 .setUrl(mediaEntity.getMediaURL())
                                 .setDate(status.getCreatedAt())
                                 .setTitle(userName)
-                                .setDesc(status.getText());
+                                .setDesc(status.getText())
+                                .setSource(getSourceName());
                         pictures.add(pic);
                     }
                 }

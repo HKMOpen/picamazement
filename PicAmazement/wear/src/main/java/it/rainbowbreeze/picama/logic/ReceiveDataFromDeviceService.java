@@ -148,7 +148,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
 
         // Page to display information about the picture
         Notification infoPage = new Notification.Builder(appContext)
-                .setContentTitle(picture.getSource())
+                .setContentTitle(picture.getTitle())
                 .setContentText(picture.getDesc())
                 .build();
 

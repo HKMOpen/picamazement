@@ -61,9 +61,9 @@ public class PictureContentValues extends AbstractContentValues {
     }
 
 
-    public PictureContentValues putSource(PictureSource value) {
+    public PictureContentValues putSource(String value) {
         if (value == null) throw new IllegalArgumentException("value for source must not be null");
-        mContentValues.put(PictureColumns.SOURCE, value.ordinal());
+        mContentValues.put(PictureColumns.SOURCE, value);
         return this;
     }
 

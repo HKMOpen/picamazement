@@ -54,10 +54,9 @@ public class PictureCursor extends AbstractCursor {
      * Get the {@code source} value.
      * Cannot be {@code null}.
      */
-    public PictureSource getSource() {
-        Integer intValue = getIntegerOrNull(PictureColumns.SOURCE);
-        if (intValue == null) return null;
-        return PictureSource.values()[intValue];
+    public String getSource() {
+        Integer index = getCachedColumnIndexOrThrow(PictureColumns.SOURCE);
+        return getString(index);
     }
 
     /**
