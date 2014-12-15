@@ -134,7 +134,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
 
         // Prepares the notification to open the new activity
         Intent fullscreenIntent = new Intent(appContext, PictureActivity.class);
-        fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, picture.getTitle());
+        fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, picture.getDesc());
         fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, picture.getAssetPicture());
         fullscreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(
@@ -149,7 +149,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
         // Page to display information about the picture
         Notification infoPage = new Notification.Builder(appContext)
                 .setContentTitle(picture.getSource())
-                .setContentText(picture.getTitle())
+                .setContentText(picture.getDesc())
                 .build();
 
         // Action to remove the picture from the stream
@@ -218,7 +218,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 Bag.NOTIFICATION_ID_NEWIMAGE,
                 notificationBuilder.build());
 
-        mLogFacility.v(LOG_TAG, "Sent notification for picture " + picture.getTitle());
+        mLogFacility.v(LOG_TAG, "Sent notification for picture " + picture.getDesc());
 
     }
 

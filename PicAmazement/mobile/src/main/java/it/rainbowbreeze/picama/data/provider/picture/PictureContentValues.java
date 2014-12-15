@@ -35,12 +35,28 @@ public class PictureContentValues extends AbstractContentValues {
 
 
     public PictureContentValues putTitle(String value) {
+        if (value == null) throw new IllegalArgumentException("value for title must not be null");
         mContentValues.put(PictureColumns.TITLE, value);
         return this;
     }
 
-    public PictureContentValues putTitleNull() {
-        mContentValues.putNull(PictureColumns.TITLE);
+
+
+    public PictureContentValues putDesc(String value) {
+        if (value == null) throw new IllegalArgumentException("value for desc must not be null");
+        mContentValues.put(PictureColumns.DESC, value);
+        return this;
+    }
+
+
+
+    public PictureContentValues putAuthor(String value) {
+        mContentValues.put(PictureColumns.AUTHOR, value);
+        return this;
+    }
+
+    public PictureContentValues putAuthorNull() {
+        mContentValues.putNull(PictureColumns.AUTHOR);
         return this;
     }
 
@@ -68,6 +84,20 @@ public class PictureContentValues extends AbstractContentValues {
 
     public PictureContentValues putVisible(boolean value) {
         mContentValues.put(PictureColumns.VISIBLE, value);
+        return this;
+    }
+
+
+
+    public PictureContentValues putSaveasked(boolean value) {
+        mContentValues.put(PictureColumns.SAVEASKED, value);
+        return this;
+    }
+
+
+
+    public PictureContentValues putSavefinished(boolean value) {
+        mContentValues.put(PictureColumns.SAVEFINISHED, value);
         return this;
     }
 

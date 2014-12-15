@@ -83,6 +83,36 @@ public class PictureSelection extends AbstractSelection<PictureSelection> {
         return this;
     }
 
+    public PictureSelection desc(String... value) {
+        addEquals(PictureColumns.DESC, value);
+        return this;
+    }
+
+    public PictureSelection descNot(String... value) {
+        addNotEquals(PictureColumns.DESC, value);
+        return this;
+    }
+
+    public PictureSelection descLike(String... value) {
+        addLike(PictureColumns.DESC, value);
+        return this;
+    }
+
+    public PictureSelection author(String... value) {
+        addEquals(PictureColumns.AUTHOR, value);
+        return this;
+    }
+
+    public PictureSelection authorNot(String... value) {
+        addNotEquals(PictureColumns.AUTHOR, value);
+        return this;
+    }
+
+    public PictureSelection authorLike(String... value) {
+        addLike(PictureColumns.AUTHOR, value);
+        return this;
+    }
+
     public PictureSelection source(PictureSource... value) {
         addEquals(PictureColumns.SOURCE, value);
         return this;
@@ -131,6 +161,16 @@ public class PictureSelection extends AbstractSelection<PictureSelection> {
 
     public PictureSelection visible(boolean value) {
         addEquals(PictureColumns.VISIBLE, toObjectArray(value));
+        return this;
+    }
+
+    public PictureSelection saveasked(boolean value) {
+        addEquals(PictureColumns.SAVEASKED, toObjectArray(value));
+        return this;
+    }
+
+    public PictureSelection savefinished(boolean value) {
+        addEquals(PictureColumns.SAVEFINISHED, toObjectArray(value));
         return this;
     }
 }

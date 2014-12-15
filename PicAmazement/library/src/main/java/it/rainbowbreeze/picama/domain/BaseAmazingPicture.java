@@ -9,12 +9,14 @@ public abstract class BaseAmazingPicture {
     private long mId;
     private String mUrl;
     private String mTitle;
+    private String mDesc;
     private String mSource;
     private Date mDate;
 
     public static final String FIELD_ID = "Id";
     public static final String FIELD_IMAGE = "Image";
     public static final String FIELD_TITLE = "Title";
+    public static final String FIELD_DESC = "Desc";
     public static final String FIELD_SOURCE = "Source";
 
     public BaseAmazingPicture() {
@@ -41,6 +43,14 @@ public abstract class BaseAmazingPicture {
     }
     public BaseAmazingPicture setTitle(String newValue) {
         mTitle = newValue;
+        return this;
+    }
+
+    public String getDesc() {
+        return mDesc;
+    }
+    public BaseAmazingPicture setDesc(String newValue) {
+        mDesc = newValue;
         return this;
     }
 

@@ -86,7 +86,7 @@ public class SendDataToWearService extends GoogleApiClientBaseService {
             return;
         }
 
-        mLogFacility.v(LOG_TAG, "Sending to Wear picture id " + pictureId + " and title " + picture.getTitle());
+        mLogFacility.v(LOG_TAG, "Sending to Wear picture id " + pictureId + " and title " + picture.getDesc());
 
         // Launches Picasso to retrieve the image
         Bitmap image = null;

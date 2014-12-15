@@ -163,7 +163,7 @@ public class WearManager {
      * @param bitmap
      */
     public void transferAmazingPicture(final AmazingPicture picture, Bitmap bitmap) {
-        mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getTitle());
+        mLogFacility.v(LOG_TAG, "Sending to Wear picture " + picture.getDesc());
         if (isWearNotAvailable()) {
 //            return;
         }

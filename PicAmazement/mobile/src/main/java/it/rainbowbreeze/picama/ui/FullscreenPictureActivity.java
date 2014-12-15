@@ -4,6 +4,7 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.ui.util.SystemUiHider;
@@ -64,6 +65,7 @@ public class FullscreenPictureActivity extends Activity {
     public static final String LOG_TAG = FullscreenPictureActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
+    @Inject AppPrefsManager mAppPrefsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
 
     @Override
@@ -135,8 +137,7 @@ public class FullscreenPictureActivity extends Activity {
                 } else {
                     mSystemUiHider.show();
                 }
-                ImageView imageView = (ImageView) findViewById(R.id.fullscreen_imgPicture);
-                Toast.makeText(FullscreenPictureActivity.this, "W: " + imageView.getWidth() + ", H: " + imageView.getHeight(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FullscreenPictureActivity.this, "W: " + contentImageView.getWidth() + ", H: " + contentImageView.getHeight(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -155,6 +156,7 @@ public class FullscreenPictureActivity extends Activity {
                 finish();
             }
         });
+        btnSave.setEnabled(mAppPrefsManager.isDropboxEnabled());
 
         Button btnHide = (Button) findViewById(R.id.fullscreen_btnDelete);
         btnHide.setOnTouchListener(mDelayHideTouchListener);
@@ -196,7 +198,9 @@ public class FullscreenPictureActivity extends Activity {
                 .into(contentImageView);
 
         TextView lblDesc = (TextView) findViewById(R.id.fullscreen_lblDesc);
-        lblDesc.setText(picture.getTitle());
+        lblDesc.setText(picture.getDesc());
+
+        this.setTitle(picture.getTitle());
     }
 
     @Override

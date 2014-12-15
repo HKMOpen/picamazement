@@ -32,7 +32,7 @@ public class AmazingPictureDao {
      */
     public void insert(AmazingPicture picture) {
         PictureContentValues values = new PictureContentValues()
-                .putTitle(picture.getTitle())
+                .putTitle(picture.getDesc())
                 .putUrl(picture.getUrl())
                 .putSource(PictureSource.Twitter)
                 .putDate(picture.getDate());

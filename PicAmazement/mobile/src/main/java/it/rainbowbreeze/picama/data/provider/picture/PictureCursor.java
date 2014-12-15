@@ -25,10 +25,28 @@ public class PictureCursor extends AbstractCursor {
 
     /**
      * Get the {@code title} value.
-     * Can be {@code null}.
+     * Cannot be {@code null}.
      */
     public String getTitle() {
         Integer index = getCachedColumnIndexOrThrow(PictureColumns.TITLE);
+        return getString(index);
+    }
+
+    /**
+     * Get the {@code desc} value.
+     * Cannot be {@code null}.
+     */
+    public String getDesc() {
+        Integer index = getCachedColumnIndexOrThrow(PictureColumns.DESC);
+        return getString(index);
+    }
+
+    /**
+     * Get the {@code author} value.
+     * Can be {@code null}.
+     */
+    public String getAuthor() {
+        Integer index = getCachedColumnIndexOrThrow(PictureColumns.AUTHOR);
         return getString(index);
     }
 
@@ -55,5 +73,19 @@ public class PictureCursor extends AbstractCursor {
      */
     public boolean getVisible() {
         return getBoolean(PictureColumns.VISIBLE);
+    }
+
+    /**
+     * Get the {@code saveasked} value.
+     */
+    public boolean getSaveasked() {
+        return getBoolean(PictureColumns.SAVEASKED);
+    }
+
+    /**
+     * Get the {@code savefinished} value.
+     */
+    public boolean getSavefinished() {
+        return getBoolean(PictureColumns.SAVEFINISHED);
     }
 }

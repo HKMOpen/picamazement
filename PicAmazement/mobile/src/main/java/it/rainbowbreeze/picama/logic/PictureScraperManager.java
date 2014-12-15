@@ -72,7 +72,7 @@ public class PictureScraperManager {
         boolean foundNewPictures = false;
         for (AmazingPicture picture : newPictures) {
             if (TextUtils.isEmpty(picture.getUrl())) {
-                mLogFacility.i(LOG_TAG, "No URL for picture " + picture.getTitle());
+                mLogFacility.i(LOG_TAG, "No URL for picture " + picture.getDesc());
             }
             if (!mAmazingPictureDao.exists(picture.getUrl())) {
                 mAmazingPictureDao.insert(picture);

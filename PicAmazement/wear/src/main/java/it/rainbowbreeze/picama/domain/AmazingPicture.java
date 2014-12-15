@@ -21,7 +21,7 @@ public class AmazingPicture extends BaseAmazingPicture {
         this
                 .setAssetPicture(dataMapItem.getDataMap().getAsset(BaseAmazingPicture.FIELD_IMAGE))
                 .setId(dataMapItem.getDataMap().getLong(BaseAmazingPicture.FIELD_ID))
-                .setTitle(dataMapItem.getDataMap().getString(BaseAmazingPicture.FIELD_TITLE))
+                .setDesc(dataMapItem.getDataMap().getString(BaseAmazingPicture.FIELD_DESC))
                 .setSource(dataMapItem.getDataMap().getString(BaseAmazingPicture.FIELD_SOURCE));
         return this;
     }

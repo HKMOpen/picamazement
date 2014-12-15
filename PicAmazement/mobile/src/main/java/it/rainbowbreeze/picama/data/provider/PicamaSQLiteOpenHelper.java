@@ -27,10 +27,14 @@ public class PicamaSQLiteOpenHelper extends SQLiteOpenHelper {
             + PictureColumns.TABLE_NAME + " ( "
             + PictureColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + PictureColumns.URL + " TEXT NOT NULL, "
-            + PictureColumns.TITLE + " TEXT, "
+            + PictureColumns.TITLE + " TEXT NOT NULL, "
+            + PictureColumns.DESC + " TEXT NOT NULL, "
+            + PictureColumns.AUTHOR + " TEXT, "
             + PictureColumns.SOURCE + " INTEGER NOT NULL, "
             + PictureColumns.DATE + " INTEGER NOT NULL, "
-            + PictureColumns.VISIBLE + " INTEGER NOT NULL DEFAULT '1' "
+            + PictureColumns.VISIBLE + " INTEGER NOT NULL DEFAULT '1', "
+            + PictureColumns.SAVEASKED + " INTEGER NOT NULL DEFAULT '0', "
+            + PictureColumns.SAVEFINISHED + " INTEGER NOT NULL DEFAULT '0' "
             + " );";
 
     // @formatter:on

@@ -3,8 +3,6 @@ package it.rainbowbreeze.picama.data.provider;
 import android.test.ProviderTestCase2;
 import android.util.Log;
 
-import it.rainbowbreeze.picama.data.AmazingPictureDao;
-import it.rainbowbreeze.picama.data.provider.PictureProvider;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
 import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
 import it.rainbowbreeze.picama.data.provider.picture.PictureSelection;
@@ -32,7 +30,7 @@ public class PictureProviderTest extends ProviderTestCase2<PictureProvider> {
         while (c.moveToNext()) {
             pictures++;
             AmazingPicture picture = new AmazingPicture().fromCursor(c);
-            Log.v("PicAmazement", picture.getId() + " - " + picture.getTitle());
+            Log.v("PicAmazement", picture.getId() + " - " + picture.getDesc());
         }
         c.close();
         assertEquals("Shouldn't have pictures", 0, pictures);

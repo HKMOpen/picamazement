@@ -79,7 +79,8 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
                         pic
                                 .setUrl(mediaEntity.getMediaURL())
                                 .setDate(status.getCreatedAt())
-                                .setTitle(status.getText());
+                                .setTitle(userName)
+                                .setDesc(status.getText());
                         pictures.add(pic);
                     }
                 }
