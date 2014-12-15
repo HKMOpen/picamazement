@@ -73,6 +73,12 @@ public class AppPrefsManager {
     public boolean isSyncing() {
         return mAppPreferences.getBoolean(PREF_ISSYNCING, false);
     }
+    public AppPrefsManager resetSyncStatus() {
+        openSharedEditor();
+        mSharedEditor.putBoolean(PREF_ISSYNCING, false);
+        saveIfNeeded();
+        return this;
+    }
     public AppPrefsManager startSync() {
         openSharedEditor();
         mSharedEditor.putBoolean(PREF_ISSYNCING, true);

@@ -16,7 +16,7 @@ public class SearchForNewImagesAction extends ActionsManager.BaseAction {
     public SearchForNewImagesAction(Context appContext, ILogFacility logFacility, ActionsManager actionsManager, PictureScraperManager pictureScraperManager) {
         super(logFacility, actionsManager);
         mAppContext = appContext;
-        this.mPictureScraperManager = pictureScraperManager;
+        mPictureScraperManager = pictureScraperManager;
     }
 
     @Override
@@ -42,6 +42,6 @@ public class SearchForNewImagesAction extends ActionsManager.BaseAction {
     @Override
     protected void doYourStuff() {
         mLogFacility.v(LOG_TAG, "Searching for new images");
-        mPictureScraperManager.searchForNewImage(mAppContext);
+        mPictureScraperManager.searchForNewImage(mAppContext, true);
     }
 }

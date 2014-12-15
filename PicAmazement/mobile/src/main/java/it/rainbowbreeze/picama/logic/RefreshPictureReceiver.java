@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.data.AppPrefsManager;
 
 /**
  *
@@ -21,6 +22,7 @@ public class RefreshPictureReceiver extends BroadcastReceiver {
 
     @Inject ILogFacility mLogFacility;
     @Inject LogicManager mLogicManager;
+    @Inject AppPrefsManager mAppPrefsManager;
 
 
     @Override
@@ -28,6 +30,7 @@ public class RefreshPictureReceiver extends BroadcastReceiver {
         ((MyApp) context).inject(this);
 
         mLogFacility.v(LOG_TAG, "Scheduling pictures refresh");
+        mAppPrefsManager.resetSyncStatus();  // In case a sync has been interrupted
         mLogicManager.schedulePicturesRefresh(context);
     }
 }

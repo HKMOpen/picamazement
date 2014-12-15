@@ -37,10 +37,10 @@ public class PictureScraperManager {
      * @param appContext
      * @return true if at least one new picture has been found
      */
-    public boolean searchForNewImage(Context appContext) {
-        mLogFacility.v(LOG_TAG, "Starting pictures update");
+    public boolean searchForNewImage(Context appContext, boolean forceSync) {
+        mLogFacility.v(LOG_TAG, "Starting pictures update and force: " + forceSync);
 
-        if (mAppPrefsManager.isSyncing()) {
+        if (!forceSync && mAppPrefsManager.isSyncing()) {
             mLogFacility.v(LOG_TAG, "Syncing already in progress, aborting");
             return false;
         }
@@ -84,4 +84,5 @@ public class PictureScraperManager {
         }
         return foundNewPictures;
     }
+
 }

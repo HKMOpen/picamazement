@@ -44,7 +44,7 @@ public class RefreshPictureService extends IntentService {
 
         if (ACTION_REFRESH_PICTURES.equals(intent.getAction())) {
             mLogFacility.v(LOG_TAG, "Refreshing pictures");
-            boolean foundNewPictures = mPictureScraperManager.searchForNewImage(getApplicationContext());
+            boolean foundNewPictures = mPictureScraperManager.searchForNewImage(getApplicationContext(), false);
 
             if (foundNewPictures) {
                 mActionsManager.sendPictureToWear().executeAsync();
