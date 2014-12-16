@@ -8,6 +8,8 @@ import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
+import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 
@@ -21,6 +23,7 @@ public class RefreshPictureService extends IntentService {
     @Inject ILogFacility mLogFacility;
     @Inject PictureScraperManager mPictureScraperManager;
     @Inject ActionsManager mActionsManager;
+    @Inject AmazingPictureDao mAmazingPictureDao;
 
 
     public static final String ACTION_REFRESH_PICTURES = "it.rainbowbreeze.picama.Action.Picture.Refresh";
@@ -47,7 +50,11 @@ public class RefreshPictureService extends IntentService {
             boolean foundNewPictures = mPictureScraperManager.searchForNewImage(getApplicationContext(), false);
 
             if (foundNewPictures) {
-                mActionsManager.sendPictureToWear().executeAsync();
+                AmazingPicture picture = mAmazingPictureDao.getFirst();
+                if (null != picture)  // Just in case...
+                mActionsManager.sendPictureToWear()
+                        .setPictureId(picture.getId())
+                        .execute();
             }
 
         } else {

@@ -3,6 +3,7 @@ package it.rainbowbreeze.picama.logic.action;
 import android.content.Context;
 import android.content.Intent;
 
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
 
@@ -15,6 +16,7 @@ public class HidePictureAction extends BasePictureAction {
 
     public HidePictureAction(Context appContext, ILogFacility logFacility, ActionsManager actionsManager) {
         super(appContext, logFacility, actionsManager);
+        mPictureId = Bag.ID_NOT_SET;
     }
 
     public HidePictureAction setPictureId(long pictureId) {
@@ -24,7 +26,7 @@ public class HidePictureAction extends BasePictureAction {
 
     @Override
     protected boolean isDataValid() {
-        return mPictureId >= 0;
+        return Bag.ID_NOT_SET != mPictureId;
     }
 
     @Override

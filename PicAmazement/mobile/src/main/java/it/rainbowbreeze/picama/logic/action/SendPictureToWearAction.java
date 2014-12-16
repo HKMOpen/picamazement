@@ -3,6 +3,7 @@ package it.rainbowbreeze.picama.logic.action;
 import android.content.Context;
 import android.content.Intent;
 
+import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.logic.wearable.SendDataToWearService;
 
@@ -17,6 +18,7 @@ public class SendPictureToWearAction extends ActionsManager.BaseAction {
     protected SendPictureToWearAction(Context appContext, ILogFacility logFacility, ActionsManager actionsManager) {
         super(logFacility, actionsManager);
         mAppContext = appContext;
+        mPictureId = Bag.ID_NOT_SET;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class SendPictureToWearAction extends ActionsManager.BaseAction {
     @Override
     protected boolean isDataValid() {
         return null != mAppContext &&
-                mPictureId >= 0;
+                Bag.ID_NOT_SET != mPictureId;
     }
 
     @Override

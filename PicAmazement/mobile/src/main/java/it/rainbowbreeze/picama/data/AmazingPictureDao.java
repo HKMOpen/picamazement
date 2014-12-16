@@ -105,6 +105,7 @@ public class AmazingPictureDao {
      * @return
      */
     public Cursor getLatest(int limit) {
+        //TODO implement limit
         PictureSelection where = new PictureSelection();
         where.visible(true);
         Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,

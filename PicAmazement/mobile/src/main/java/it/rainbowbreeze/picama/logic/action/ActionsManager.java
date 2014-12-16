@@ -145,7 +145,7 @@ public class ActionsManager {
          * Checks if the action data is valid
          */
         private void checkForDataValidity() {
-            if (!isCoreDataValid() && !isDataValid()) {
+            if (!isCoreDataValid() || !isDataValid()) {
                 throw new IllegalArgumentException("Some data is missing in your action, aborting");
             }
         }
