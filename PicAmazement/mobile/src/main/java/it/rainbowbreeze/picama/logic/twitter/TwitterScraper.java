@@ -85,7 +85,7 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
                                 .setUrl(mediaEntity.getMediaURL())
                                 .setDate(status.getCreatedAt())
                                 .setTitle(userName)
-                                .setDesc(status.getText())
+                                .setDesc(sanitizeText(status.getText()))
                                 .setSource(getSourceName());
                         pictures.add(pic);
                     }
@@ -97,6 +97,17 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
         }
 
         return pictures;
+    }
+
+    /**
+     * Removes link and other unuseful stuff from the twitter description
+     * @param sourceDesc
+     * @return
+     */
+    protected String sanitizeText(String sourceDesc) {
+
+        int posIni = sourceDesc.lastIndexOf("http://");
+        return sourceDesc.substring(0, posIni - 1).trim();
     }
 
     private void initToken() {

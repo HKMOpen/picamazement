@@ -50,6 +50,7 @@ public class TwitterScraperTest extends AndroidTestCase {
         super.tearDown();
     }
 
+    /**
     public void testGetPictures() {
         List<AmazingPicture> pictures = mTwitterScraper.getNewPictures();
         assertNotNull(pictures);
@@ -60,5 +61,15 @@ public class TwitterScraperTest extends AndroidTestCase {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setApplicationOnlyAuthEnabled(true);
 
+    }
+    */
+
+    public void testSanitizeText() {
+        assertEquals("Saniteze didn't work",
+                "Alucinante! esto es realmente una foto, no dos.",
+                mTwitterScraper.sanitizeText("Alucinante! esto es realmente una foto, no dos. http://t.co/7ME1v7N7Gr"));
+        assertEquals("Saniteze didn't work",
+                "Alucinante! esto es realmente una foto, no dos.",
+                mTwitterScraper.sanitizeText("Alucinante! esto es realmente una foto, no dos. http://t.co/7ME1v7N7Gr  "));
     }
 }
