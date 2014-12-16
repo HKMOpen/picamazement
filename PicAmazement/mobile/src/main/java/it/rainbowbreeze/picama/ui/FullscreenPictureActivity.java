@@ -200,7 +200,7 @@ public class FullscreenPictureActivity extends Activity {
         TextView lblDesc = (TextView) findViewById(R.id.fullscreen_lblDesc);
         lblDesc.setText(picture.getDesc());
 
-        this.setTitle(picture.getSource() + "-" + picture.getTitle());
+        this.setTitle(picture.getSource() + " - " + picture.getTitle());
     }
 
     @Override

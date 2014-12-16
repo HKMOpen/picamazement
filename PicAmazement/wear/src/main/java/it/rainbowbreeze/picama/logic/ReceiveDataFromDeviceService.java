@@ -134,7 +134,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
 
         // Prepares the notification to open the new activity
         Intent fullscreenIntent = new Intent(appContext, PictureActivity.class);
-        fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, picture.getDesc());
+        fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, picture.getTitle());
         fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, picture.getAssetPicture());
         fullscreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(
@@ -208,7 +208,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
         Notification.Builder notificationBuilder = new Notification.Builder(appContext)
                 //.setOngoing(true)  // Notification cannot be swiped right
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle(picture.getSource())
+                .setContentTitle(picture.getTitle())
                 .addAction(removePicAction)
                 .addAction(savePicAction)
                 .addAction(openPicAction)
