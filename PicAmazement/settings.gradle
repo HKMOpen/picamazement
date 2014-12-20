@@ -1,1 +1,2 @@
-include ':mobile', ':wear', ':library', ':ext-libraries:rainbowlibs'
+include ':mobile', ':wear', ':library'
+include ':ext-libraries:rainbowlibs', ':ext-libraries:dropbox_sdk'
