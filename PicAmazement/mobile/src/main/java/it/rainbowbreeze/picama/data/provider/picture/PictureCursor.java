@@ -84,7 +84,7 @@ public class PictureCursor extends AbstractCursor {
     /**
      * Get the {@code savefinished} value.
      */
-    public boolean getSavefinished() {
-        return getBoolean(PictureColumns.SAVEFINISHED);
+    public int getSavefinished() {
+        return getIntegerOrNull(PictureColumns.SAVEFINISHED);
     }
 }

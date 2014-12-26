@@ -96,7 +96,7 @@ public class PictureContentValues extends AbstractContentValues {
 
 
 
-    public PictureContentValues putSavefinished(boolean value) {
+    public PictureContentValues putSavefinished(int value) {
         mContentValues.put(PictureColumns.SAVEFINISHED, value);
         return this;
     }

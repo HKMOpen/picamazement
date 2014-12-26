@@ -4,7 +4,12 @@ import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
@@ -75,7 +80,7 @@ public class PictureDiskManager {
     private File persistPictureImageToFile(AmazingPicture picture) {
         File pictureFile = getFinalStorageFile(
                 picture.getId(),
-                generateFileNameFrom(picture.getId(), picture.getUrl()),
+                generateFileNameFrom(picture),
                 "image");
         if (null == pictureFile || pictureFile.exists()) {
             mLogFacility.v(LOG_TAG, "File already exists on disk or is null");
@@ -96,13 +101,14 @@ public class PictureDiskManager {
     private File persistPictureMetadataToFile(AmazingPicture picture) {
         File metadataFile = getFinalStorageFile(
                 picture.getId(),
-                generateMetadataFileName(picture.getId()) + ".txt",
+                generateMetadataFileName(picture),
                 "metadata");
         if (null == metadataFile || metadataFile.exists()) {
             return metadataFile;
         }
 
         //TODO
+        //FileOutputStream fout = new FileOutputStream(metadataFile, true);
         mLogFacility.v(LOG_TAG, "Saved picture metadata to file on local storage");
         return metadataFile;
     }
@@ -131,22 +137,64 @@ public class PictureDiskManager {
         return finalFileName;
     }
 
-    protected String generateFileNameFrom(long pictureId, String url) {
-        if (Bag.ID_NOT_SET == pictureId || TextUtils.isEmpty(url)) {
+    /**
+     * Generates the name of the image file from the picture object
+     * @param picture
+     * @return
+     */
+    protected String generateFileNameFrom(AmazingPicture picture) {
+        if (null == picture
+                || TextUtils.isEmpty(picture.getUrl())) {
             return null;
         }
         //Extract file extension from the url
+        String url = picture.getUrl();
         int pos = url.lastIndexOf(".");
         String extension = pos > -1
                 ? url.substring(pos).trim()
                 : "";
-        return String.format("%07d", pictureId) + extension;
+        return baseGenerateFileName(picture, extension);
     }
 
-    protected String generateMetadataFileName(long pictureId) {
-        if (Bag.ID_NOT_SET == pictureId) {
+    /**
+     * Generates the name of the metadata file from the picture object
+     * @param picture
+     * @return
+     */
+    protected String generateMetadataFileName(AmazingPicture picture) {
+        return baseGenerateFileName(picture, ".txt");
+    }
+
+    private String baseGenerateFileName(AmazingPicture picture, String extension) {
+        if (null == picture
+                || Bag.ID_NOT_SET == picture.getId()
+                || TextUtils.isEmpty(picture.getUrl())
+                || 0l == picture.getDateLong()) {
             return null;
         }
-        return String.format("%07d", pictureId);
+
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(picture.getDateLong());
+        // http://developer.android.com/reference/java/text/SimpleDateFormat.html
+        //SimpleDateFormat ft = new SimpleDateFormat("yyyy.MM.dd 'at' hh:mm:ss a zzz");
+        SimpleDateFormat ft = new SimpleDateFormat("yyyyMMdd'-'kkmm");
+        return String.format("%s_%07d%s", ft.format(cal.getTime()), picture.getId(), extension);
+    }
+
+    /**
+     * Created the json string with the image metadata
+     * @param picture
+     * @return
+     */
+    protected String createMetadata(AmazingPicture picture) {
+        try {
+            JSONObject jsonObject = picture.toJson();
+            return null != jsonObject
+                    ? jsonObject.toString(4)
+                    : null;
+        } catch (JSONException e) {
+            mLogFacility.e(LOG_TAG, "Error serializing metadata to JSON", e);
+            return null;
+        }
     }
 }

@@ -11,6 +11,7 @@ public abstract class BaseAmazingPicture {
     private String mTitle;
     private String mDesc;
     private String mSource;
+    private String mAuthor;
     private Date mDate;
 
     public static final String FIELD_ID = "Id";
@@ -19,6 +20,8 @@ public abstract class BaseAmazingPicture {
     public static final String FIELD_TITLE = "Title";
     public static final String FIELD_DESC = "Desc";
     public static final String FIELD_SOURCE = "Source";
+    public static final String FIELD_DATE = "Date";
+    public static final String FIELD_AUTHOR = "Author";
 
     public BaseAmazingPicture() {
     }
@@ -55,6 +58,14 @@ public abstract class BaseAmazingPicture {
         return this;
     }
 
+    public String getAuthor() {
+        return mAuthor;
+    }
+    public BaseAmazingPicture setAuthor(String newValue) {
+        mAuthor = newValue;
+        return this;
+    }
+
     public String getSource() {
         return mSource;
     }
@@ -65,6 +76,11 @@ public abstract class BaseAmazingPicture {
 
     public Date getDate() {
         return mDate;
+    }
+    public long getDateLong() {
+        return null != mDate
+                ? mDate.getTime()
+                : 0;
     }
     public BaseAmazingPicture setDate(Date newValue) {
         mDate = newValue;

@@ -173,8 +173,33 @@ public class PictureSelection extends AbstractSelection<PictureSelection> {
         return this;
     }
 
-    public PictureSelection savefinished(boolean value) {
+    public PictureSelection savefinished(int... value) {
         addEquals(PictureColumns.SAVEFINISHED, toObjectArray(value));
+        return this;
+    }
+
+    public PictureSelection savefinishedNot(int... value) {
+        addNotEquals(PictureColumns.SAVEFINISHED, toObjectArray(value));
+        return this;
+    }
+
+    public PictureSelection savefinishedGt(int value) {
+        addGreaterThan(PictureColumns.SAVEFINISHED, value);
+        return this;
+    }
+
+    public PictureSelection savefinishedGtEq(int value) {
+        addGreaterThanOrEquals(PictureColumns.SAVEFINISHED, value);
+        return this;
+    }
+
+    public PictureSelection savefinishedLt(int value) {
+        addLessThan(PictureColumns.SAVEFINISHED, value);
+        return this;
+    }
+
+    public PictureSelection savefinishedLtEq(int value) {
+        addLessThanOrEquals(PictureColumns.SAVEFINISHED, value);
         return this;
     }
 }

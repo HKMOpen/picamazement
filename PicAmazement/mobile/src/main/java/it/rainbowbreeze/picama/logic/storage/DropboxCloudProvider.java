@@ -27,6 +27,7 @@ public class DropboxCloudProvider extends BaseCloudProvider {
     private DropboxAPI<AndroidAuthSession> mDBApi;
     final static private Session.AccessType ACCESS_TYPE = Session.AccessType.DROPBOX;
     private boolean mIsInAuthFlow = false;
+    private boolean mIsInitialed = false;
 
     public DropboxCloudProvider(ILogFacility logFacility, AppPrefsManager appPrefsManager) {
         mLogFacility = logFacility;
@@ -34,12 +35,14 @@ public class DropboxCloudProvider extends BaseCloudProvider {
     }
 
     public void initDropboxApi() {
+        if (mIsInitialed) return;
         AppKeyPair appKeys = new AppKeyPair(Bag.DROPBOX_APP_KEY, Bag.DROPBOX_APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys, ACCESS_TYPE);
         if (mAppPrefsManager.isDropboxAuthorized()) {
             session.setOAuth2AccessToken(mAppPrefsManager.getDropboxOAuth2AccessToken());
         }
         mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+        mIsInitialed = true;
     }
 
     /**
@@ -93,8 +96,7 @@ public class DropboxCloudProvider extends BaseCloudProvider {
         }
     }
 
-    public void uploadFile() throws FileNotFoundException, DropboxException {
-        File file = new File("working-draft.txt");
+    public void uploadFile(File file) throws FileNotFoundException, DropboxException {
         FileInputStream inputStream = new FileInputStream(file);
         DropboxAPI.Entry response = mDBApi.putFile("/magnum-opus.txt", inputStream,
                 file.length(), null, null);

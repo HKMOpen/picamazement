@@ -122,6 +122,16 @@ public class AppPrefsManager {
         setDropboxAuthToken(NULL_STRING);
     }
 
+    private static final String PREF_DROPBOX_SAVE_PATH = "pref_dropboxSavePath";
+    public String getDropboxSavePath() {
+        return mAppPreferences.getString(PREF_DROPBOX_SAVE_PATH, NULL_STRING);
+    }
+    public AppPrefsManager setDropboxSavePath(String newValue) {
+        openSharedEditor();
+        mSharedEditor.putString(PREF_DROPBOX_SAVE_PATH, newValue);
+        saveIfNeeded();
+        return this;
+    }
 
     // Look at the xml file!
     private static final String PREF_SYNCENABLED = "pref_enableBackgroundSync";
