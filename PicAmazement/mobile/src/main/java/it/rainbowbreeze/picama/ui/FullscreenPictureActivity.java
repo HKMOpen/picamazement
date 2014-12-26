@@ -7,6 +7,7 @@ import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
+import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 import it.rainbowbreeze.picama.ui.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -65,7 +66,7 @@ public class FullscreenPictureActivity extends Activity {
     public static final String LOG_TAG = FullscreenPictureActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
-    @Inject AppPrefsManager mAppPrefsManager;
+    @Inject CloudStorageManager mCloudStorageManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
 
     @Override
@@ -156,7 +157,7 @@ public class FullscreenPictureActivity extends Activity {
                 finish();
             }
         });
-        btnSave.setEnabled(mAppPrefsManager.isDropboxEnabled());
+        btnSave.setEnabled(mCloudStorageManager.isCloudSavePossible());
 
         Button btnHide = (Button) findViewById(R.id.fullscreen_btnDelete);
         btnHide.setOnTouchListener(mDelayHideTouchListener);

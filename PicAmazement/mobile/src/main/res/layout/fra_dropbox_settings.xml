@@ -11,10 +11,18 @@
     tools:context="it.rainbowbreeze.picama.ui.DropboxSettingsFragment"
 >
 
+    <CheckBox
+        android:id="@+id/dropboxsettings_chkSaveToThisStorage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dropboxsettings_chkSaveToThisStorage"
+    />
+
     <Button
         android:id="@+id/dropboxsettings_btnStartAuth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="@string/dropboxsettings_btnStartAuth"
     />
 

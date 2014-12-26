@@ -1,5 +1,7 @@
 package it.rainbowbreeze.picama.logic.twitter;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,9 +109,15 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
      * @return
      */
     protected String sanitizeText(String sourceDesc) {
-
+        if (TextUtils.isEmpty(sourceDesc)) return sourceDesc;
         int posIni = sourceDesc.lastIndexOf("http://");
-        return sourceDesc.substring(0, posIni - 1).trim();
+        if (0 == posIni) {
+            return null;
+        } else if (posIni > 0) {
+            return sourceDesc.substring(0, posIni - 1).trim();
+        } else {
+            return sourceDesc;
+        }
     }
 
     private void initToken() {

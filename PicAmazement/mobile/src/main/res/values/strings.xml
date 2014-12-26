@@ -25,6 +25,7 @@
     <string name="settings_actTitle">Dropbox Settings</string>
 
     <string name="dropboxsettings_actTitle">Dropbox Settings</string>
+    <string name="dropboxsettings_chkSaveToThisStorage">Enable Dropbox for saving pictures</string>
     <string name="dropboxsettings_btnStartAuth">Access to Dropbox</string>
     <string name="dropboxsettings_lblSaveDirCaption">Current saving location</string>
     <string name="dropboxsettings_btnSelectSaveDir">Select save path</string>

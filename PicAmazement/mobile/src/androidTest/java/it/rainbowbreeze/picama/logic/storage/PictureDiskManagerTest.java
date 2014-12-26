@@ -45,7 +45,6 @@ public class PictureDiskManagerTest extends AndroidTestCase {
             }
             return mAmazingPictureDao;
         }
-
     }
 
     @Override
@@ -106,7 +105,6 @@ public class PictureDiskManagerTest extends AndroidTestCase {
 
         mPictureDiskManager.savePictureToStorage(picture.getId());
     }
-
 
     /** Helper **/
     private AmazingPicture getPicture1() {

@@ -16,10 +16,16 @@ public class CloudStorageManager {
     private final PictureDiskManager mPictureDiskManager;
     private final List<BaseCloudProvider> mCloudProviders;
 
-    public CloudStorageManager(ILogFacility logFacility, PictureDiskManager pictureDiskManager) {
+    public CloudStorageManager(
+            ILogFacility logFacility,
+            PictureDiskManager pictureDiskManager,
+            BaseCloudProvider... cloudProviders) {
         mLogFacility = logFacility;
         mPictureDiskManager = pictureDiskManager;
         mCloudProviders = new ArrayList<BaseCloudProvider>();
+        for (BaseCloudProvider cloudProvider : cloudProviders) {
+            mCloudProviders.add(cloudProvider);
+        }
     }
 
     /**
@@ -36,16 +42,39 @@ public class CloudStorageManager {
 
         File imageFile = result.pictureFile;
         File metadataFile = result.metadataFile;
-        //TODO
 
-        // Save the files to cloud
+        // Save the file to cloud providers
         for (BaseCloudProvider cloudProvider : mCloudProviders) {
             boolean cloudResult;
+            mLogFacility.v(LOG_TAG, "Uploading picture id " + pictureId + " to cloud storage " + cloudProvider.getName());
             cloudResult = cloudProvider.save(imageFile);
+            if (cloudResult) {
+                mLogFacility.v(LOG_TAG, "Uploaded image file " + imageFile.getAbsolutePath());
+                //TODO: update saving of picture file
+            } else {
+                mLogFacility.e(LOG_TAG, "Error uploading image file " + imageFile.getAbsolutePath());
+                break;
+            }
             cloudResult = cloudProvider.save(metadataFile);
-
-            // Record saving process progress
-            //TODO
+            if (cloudResult) {
+                mLogFacility.v(LOG_TAG, "Uploaded metadata file " + metadataFile.getAbsolutePath());
+                //TODO: update saving of metadata file
+            } else {
+                mLogFacility.e(LOG_TAG, "Error uploading metadata file " + metadataFile.getAbsolutePath());
+                break;
+            }
         }
+    }
+
+    /**
+     * Checks all configured providers, searching if it is possible to save files
+     * in at least one of them
+     * @return
+     */
+    public boolean isCloudSavePossible() {
+        for (BaseCloudProvider cloudProvider : mCloudProviders) {
+            if (cloudProvider.isSavePossible()) return true;
+        }
+        return false;
     }
 }

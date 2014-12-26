@@ -65,10 +65,17 @@ public class TwitterScraperTest extends AndroidTestCase {
     */
 
     public void testSanitizeText() {
-        assertEquals("Saniteze didn't work",
+        assertNull("Sanitizer didn't work",
+                mTwitterScraper.sanitizeText(null));
+        assertEquals("Sanitizer didn't work",
+                "",
+                mTwitterScraper.sanitizeText(""));
+        assertNull("Sanitizer didn't work",
+                mTwitterScraper.sanitizeText("http://www.test.com/image.jpg"));
+        assertEquals("Sanitizer didn't work",
                 "Alucinante! esto es realmente una foto, no dos.",
                 mTwitterScraper.sanitizeText("Alucinante! esto es realmente una foto, no dos. http://t.co/7ME1v7N7Gr"));
-        assertEquals("Saniteze didn't work",
+        assertEquals("Sanitizer didn't work",
                 "Alucinante! esto es realmente una foto, no dos.",
                 mTwitterScraper.sanitizeText("Alucinante! esto es realmente una foto, no dos. http://t.co/7ME1v7N7Gr  "));
     }

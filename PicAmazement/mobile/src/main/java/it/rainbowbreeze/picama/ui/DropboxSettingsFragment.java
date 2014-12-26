@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.dropbox.chooser.android.DbxChooser;
@@ -36,6 +37,7 @@ public class DropboxSettingsFragment extends Fragment {
     @Inject AppPrefsManager mAppPrefsManager;
     private DbxChooser mChooser;
     private Context mAppContext;
+    private CheckBox mChkSaveEnabled;
     private Button mBtnAuthorize;
     private View mLayParameters;
     private TextView mLblSavePath;
@@ -48,6 +50,15 @@ public class DropboxSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fra_dropbox_settings, container, false);
+
+        mChkSaveEnabled = (CheckBox) rootView.findViewById(R.id.dropboxsettings_chkSaveToThisStorage);
+        mChkSaveEnabled.setChecked(mAppPrefsManager.isDropboxEnabled());
+        mChkSaveEnabled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAppPrefsManager.setDropboxEnabled(mChkSaveEnabled.isChecked());
+            }
+        });
         mLayParameters = rootView.findViewById(R.id.dropboxsettings_layParameters);
         mBtnAuthorize = (Button) rootView.findViewById(R.id.dropboxsettings_btnStartAuth);
         mBtnAuthorize.setOnClickListener(new View.OnClickListener() {

@@ -145,8 +145,9 @@ public class AndroidModule {
     @Provides @Singleton
     public CloudStorageManager provideCloudStorageManager(
             ILogFacility logFacility,
-            PictureDiskManager pictureDiskManager) {
-        return new CloudStorageManager(logFacility, pictureDiskManager);
+            PictureDiskManager pictureDiskManager,
+            DropboxCloudProvider dropboxCloudProvider) {
+        return new CloudStorageManager(logFacility, pictureDiskManager, dropboxCloudProvider);
     }
 
     @Provides @Singleton

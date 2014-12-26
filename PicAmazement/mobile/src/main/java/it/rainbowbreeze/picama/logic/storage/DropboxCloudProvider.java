@@ -1,6 +1,7 @@
 package it.rainbowbreeze.picama.logic.storage;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -36,6 +37,7 @@ public class DropboxCloudProvider extends BaseCloudProvider {
 
     public void initDropboxApi() {
         if (mIsInitialed) return;
+        mLogFacility.v(LOG_TAG, "Initializing internal Dropbox object");
         AppKeyPair appKeys = new AppKeyPair(Bag.DROPBOX_APP_KEY, Bag.DROPBOX_APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys, ACCESS_TYPE);
         if (mAppPrefsManager.isDropboxAuthorized()) {
@@ -96,14 +98,50 @@ public class DropboxCloudProvider extends BaseCloudProvider {
         }
     }
 
-    public void uploadFile(File file) throws FileNotFoundException, DropboxException {
-        FileInputStream inputStream = new FileInputStream(file);
-        DropboxAPI.Entry response = mDBApi.putFile("/magnum-opus.txt", inputStream,
-                file.length(), null, null);
-        mLogFacility.v(LOG_TAG, "The uploaded file's rev is: " + response.rev);
-    }
-
     public boolean isAuthRequired() {
         return !mAppPrefsManager.isDropboxAuthorized();
     }
+
+    @Override
+    public String getName() {
+        return "Dropbox";
+    }
+
+    @Override
+    public boolean isSavePossible() {
+        return mAppPrefsManager.isDropboxEnabled() && mAppPrefsManager.isDropboxAuthorized();
+    }
+
+    @Override
+    public boolean save(File dataFile) {
+        // Just in case...
+        initDropboxApi();
+
+        mLogFacility.v(LOG_TAG, "Saving to Dropbox file " + dataFile.getAbsolutePath());
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(dataFile);
+        } catch (FileNotFoundException e) {
+            mLogFacility.e(LOG_TAG, "Cannot open the file to upload", e);
+            return false;
+        }
+
+        String uploadFileName = dataFile.getName();
+        if (!TextUtils.isEmpty(mAppPrefsManager.getDropboxSavePath()) &&
+                mAppPrefsManager.getDropboxSavePath() != "null") {
+            File uploadFile = new File(mAppPrefsManager.getDropboxSavePath(), uploadFileName);
+            uploadFileName = uploadFile.getAbsolutePath();
+        }
+        DropboxAPI.Entry response = null;
+        try {
+            response = mDBApi.putFile("/" + uploadFileName, inputStream,
+                    dataFile.length(), null, null);
+        } catch (DropboxException e) {
+            mLogFacility.e(LOG_TAG, "Cannot upload file to Dropbox", e);
+            return false;
+        }
+        mLogFacility.v(LOG_TAG, "File upload to path " + uploadFileName + " with review " + response.rev);
+        return true;
+    }
+
 }

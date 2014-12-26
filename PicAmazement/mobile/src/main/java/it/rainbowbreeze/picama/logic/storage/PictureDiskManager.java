@@ -8,6 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
@@ -104,11 +107,18 @@ public class PictureDiskManager {
                 generateMetadataFileName(picture),
                 "metadata");
         if (null == metadataFile || metadataFile.exists()) {
+            mLogFacility.v(LOG_TAG, "File already exists on disk or is null");
             return metadataFile;
         }
 
-        //TODO
-        //FileOutputStream fout = new FileOutputStream(metadataFile, true);
+        try {
+            String json = picture.toJson().toString();
+            PrintStream out = new PrintStream(new FileOutputStream(metadataFile));
+            out.print(json);
+        } catch (FileNotFoundException e) {
+            mLogFacility.e(LOG_TAG, "Error saving metadata to file", e);
+            return null;
+        }
         mLogFacility.v(LOG_TAG, "Saved picture metadata to file on local storage");
         return metadataFile;
     }

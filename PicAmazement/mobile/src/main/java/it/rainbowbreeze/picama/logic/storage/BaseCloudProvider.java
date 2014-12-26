@@ -5,17 +5,19 @@ import java.io.File;
 /**
  * Created by alfredomorresi on 01/12/14.
  */
-public class BaseCloudProvider {
-
-    public boolean isEnable() {
-        return false;
-    }
+public abstract class BaseCloudProvider {
 
     /**
-     * Transfer the given files to the cloud storage
+     * Returns if is possible to save files in the given cloud provider
+     * @return
+     */
+    public abstract boolean isSavePossible();
+
+    /**
+     * Transfer the given file to the cloud storage
      * @param dataFile
      */
-    public boolean save(File dataFile) {
-        return false;
-    }
+    public abstract boolean save(File dataFile);
+
+    public abstract String getName();
 }
