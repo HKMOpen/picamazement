@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
+import it.rainbowbreeze.picama.logic.LogicManager;
 import it.rainbowbreeze.picama.shared.BuildConfig;
 
 /**
@@ -39,8 +40,8 @@ import it.rainbowbreeze.picama.shared.BuildConfig;
  */
 public class MyApp extends Application {
     private ObjectGraph mObjectGraph;
-    @Inject
-    AppPrefsManager mAppPreferences;
+    @Inject AppPrefsManager mAppPreferences;
+    @Inject LogicManager mLogicManager;
 
     @Override
     public void onCreate() {
@@ -53,6 +54,9 @@ public class MyApp extends Application {
 
         inject(this);
         mAppPreferences.setDefaultValues();
+
+        //TODO: fix the issue with broadcast receiver onboot, in the meantime workaround
+        mLogicManager.schedulePicturesRefresh(this);
     }
 
     /**
