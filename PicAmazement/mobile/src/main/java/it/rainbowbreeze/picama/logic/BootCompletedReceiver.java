@@ -17,8 +17,8 @@ import it.rainbowbreeze.picama.data.AppPrefsManager;
  *
  * Created by alfredomorresi on 05/12/14.
  */
-public class RefreshPictureReceiver extends BroadcastReceiver {
-    private static final String LOG_TAG = RefreshPictureReceiver.class.getSimpleName();
+public class BootCompletedReceiver extends BroadcastReceiver {
+    private static final String LOG_TAG = BootCompletedReceiver.class.getSimpleName();
 
     @Inject ILogFacility mLogFacility;
     @Inject LogicManager mLogicManager;
