@@ -29,10 +29,9 @@ public class MobileModule {
      * @return
      */
     @Provides @Singleton public PictureScraperManagerConfig providePictureScraperManagerConfig (
-            ILogFacility logFacility) {
-        // Creates Twitter Scraper
-        TwitterScraperConfig twitterConfig = new TwitterScraperConfig();
-        TwitterScraper twitterScraper = new TwitterScraper(logFacility, twitterConfig);
+            ILogFacility logFacility,
+            TwitterScraperConfig twitterScraperConfig) {
+        TwitterScraper twitterScraper = new TwitterScraper(logFacility, twitterScraperConfig);
 
         PictureScraperManagerConfig config = new PictureScraperManagerConfig(
                 twitterScraper
@@ -41,8 +40,12 @@ public class MobileModule {
         return config;
     }
 
-   @Provides @Singleton
-   FileDownloaderHelper provideFileDownloaderHelper(ILogFacility logFacility) {
-       return new FileDownloaderHelper(logFacility);
-   }
+    @Provides @Singleton public TwitterScraperConfig provideTwitterScraperConfig() {
+        return new TwitterScraperConfig();
+    }
+
+    @Provides @Singleton
+    FileDownloaderHelper provideFileDownloaderHelper(ILogFacility logFacility) {
+        return new FileDownloaderHelper(logFacility);
+    }
 }

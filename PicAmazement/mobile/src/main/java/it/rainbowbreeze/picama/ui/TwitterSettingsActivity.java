@@ -2,8 +2,6 @@ package it.rainbowbreeze.picama.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import it.rainbowbreeze.picama.R;
 
