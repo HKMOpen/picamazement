@@ -168,38 +168,38 @@ public class PictureSelection extends AbstractSelection<PictureSelection> {
         return this;
     }
 
-    public PictureSelection saveasked(boolean value) {
-        addEquals(PictureColumns.SAVEASKED, toObjectArray(value));
+    public PictureSelection uploadasked(boolean value) {
+        addEquals(PictureColumns.UPLOADASKED, toObjectArray(value));
         return this;
     }
 
-    public PictureSelection savefinished(int... value) {
-        addEquals(PictureColumns.SAVEFINISHED, toObjectArray(value));
+    public PictureSelection uploadprogress(int... value) {
+        addEquals(PictureColumns.UPLOADPROGRESS, toObjectArray(value));
         return this;
     }
 
-    public PictureSelection savefinishedNot(int... value) {
-        addNotEquals(PictureColumns.SAVEFINISHED, toObjectArray(value));
+    public PictureSelection uploadprogressNot(int... value) {
+        addNotEquals(PictureColumns.UPLOADPROGRESS, toObjectArray(value));
         return this;
     }
 
-    public PictureSelection savefinishedGt(int value) {
-        addGreaterThan(PictureColumns.SAVEFINISHED, value);
+    public PictureSelection uploadprogressGt(int value) {
+        addGreaterThan(PictureColumns.UPLOADPROGRESS, value);
         return this;
     }
 
-    public PictureSelection savefinishedGtEq(int value) {
-        addGreaterThanOrEquals(PictureColumns.SAVEFINISHED, value);
+    public PictureSelection uploadprogressGtEq(int value) {
+        addGreaterThanOrEquals(PictureColumns.UPLOADPROGRESS, value);
         return this;
     }
 
-    public PictureSelection savefinishedLt(int value) {
-        addLessThan(PictureColumns.SAVEFINISHED, value);
+    public PictureSelection uploadprogressLt(int value) {
+        addLessThan(PictureColumns.UPLOADPROGRESS, value);
         return this;
     }
 
-    public PictureSelection savefinishedLtEq(int value) {
-        addLessThanOrEquals(PictureColumns.SAVEFINISHED, value);
+    public PictureSelection uploadprogressLtEq(int value) {
+        addLessThanOrEquals(PictureColumns.UPLOADPROGRESS, value);
         return this;
     }
 }

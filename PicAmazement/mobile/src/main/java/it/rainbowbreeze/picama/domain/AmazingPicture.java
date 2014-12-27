@@ -11,26 +11,31 @@ import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
  * Created by alfredomorresi on 09/11/14.
  */
 public class AmazingPicture extends BaseAmazingPicture {
-    private boolean mSaveAsked;
-    private int mSaveFinished;
+    public static final int UPLOAD_DONE_NONE = 0;
+    public static final int UPLOAD_DONE_IMAGE = 1;
+    public static final int UPLOAD_DONE_METADATA = 2;
+    public static final int UPLOAD_DONE_ALL = UPLOAD_DONE_IMAGE + UPLOAD_DONE_METADATA;
+
+    private boolean mUploadAsked;
+    private int mUploadProgress = UPLOAD_DONE_NONE;
 
     public AmazingPicture() {
         super();
     }
 
-    public boolean getSaveAsked() {
-        return mSaveAsked;
+    public boolean getUploadAsked() {
+        return mUploadAsked;
     }
-    public AmazingPicture setSaveAsked(boolean newValue) {
-        mSaveAsked = newValue;
+    public AmazingPicture setUploadAsked(boolean newValue) {
+        mUploadAsked = newValue;
         return this;
     }
 
-    public int getSaveFinished() {
-        return mSaveFinished;
+    public int getUploadProgress() {
+        return mUploadProgress;
     }
-    public AmazingPicture setSaveFinished(int newValue) {
-        mSaveFinished = newValue;
+    public AmazingPicture setUploadProgress(int newValue) {
+        mUploadProgress = newValue;
         return this;
     }
 
@@ -64,8 +69,8 @@ public class AmazingPicture extends BaseAmazingPicture {
 
     public AmazingPicture fromCursor(PictureCursor c) {
         this
-                .setSaveAsked(c.getSaveasked())
-                .setSaveFinished(c.getSavefinished())
+                .setUploadAsked(c.getUploadasked())
+                .setUploadProgress(c.getUploadprogress())
                 .setId(c.getId())
                 .setUrl(c.getUrl())
                 .setTitle(c.getTitle())
@@ -78,13 +83,32 @@ public class AmazingPicture extends BaseAmazingPicture {
 
     public void fillContentValues(PictureContentValues values) {
         values
-                .putSaveasked(getSaveAsked())
-                .putSavefinished(getSaveFinished())
+                .putUploadasked(getUploadAsked())
+                .putUploadprogress(getUploadProgress())
                 .putUrl(getUrl())
                 .putTitle(getTitle())
                 .putDesc(getDesc())
                 .putSource(getSource())
                 .putAuthor(getAuthor())
                 .putDate(getDate());
+    }
+
+    /**
+     * Returns true if the picture image need to be saved on cloud storage
+     * @return
+     */
+    public boolean isUploadOfImageRequired() {
+        return (mUploadProgress & UPLOAD_DONE_IMAGE) != UPLOAD_DONE_IMAGE;
+    }
+    /**
+     * Returns true if the picture metadata need to be saved on cloud storage
+     * @return
+     */
+    public boolean isUploadOfMetadataRequired() {
+        return (mUploadProgress & UPLOAD_DONE_METADATA) != UPLOAD_DONE_METADATA;
+    }
+
+    public boolean isUploadDone() {
+        return (mUploadProgress & UPLOAD_DONE_ALL) == UPLOAD_DONE_ALL;
     }
 }

@@ -99,13 +99,20 @@ public class MainActivity extends ActionBarActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PicturesListFragment.newInstance(position + 1);
+            int queryType = 0;
+
+            if (0 == position) {
+                queryType = PicturesListFragment.QUERY_VISIBLE_NOT_UPLOADED;
+            } else if (1 == position) {
+                queryType = PicturesListFragment.QUERY_UPLOADED;
+            }
+            return PicturesListFragment.newInstance(queryType);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 1;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override

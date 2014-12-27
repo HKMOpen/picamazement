@@ -89,15 +89,15 @@ public class PictureContentValues extends AbstractContentValues {
 
 
 
-    public PictureContentValues putSaveasked(boolean value) {
-        mContentValues.put(PictureColumns.SAVEASKED, value);
+    public PictureContentValues putUploadasked(boolean value) {
+        mContentValues.put(PictureColumns.UPLOADASKED, value);
         return this;
     }
 
 
 
-    public PictureContentValues putSavefinished(int value) {
-        mContentValues.put(PictureColumns.SAVEFINISHED, value);
+    public PictureContentValues putUploadprogress(int value) {
+        mContentValues.put(PictureColumns.UPLOADPROGRESS, value);
         return this;
     }
 

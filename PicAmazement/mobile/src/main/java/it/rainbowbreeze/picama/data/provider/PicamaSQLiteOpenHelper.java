@@ -33,8 +33,8 @@ public class PicamaSQLiteOpenHelper extends SQLiteOpenHelper {
             + PictureColumns.SOURCE + " TEXT NOT NULL, "
             + PictureColumns.DATE + " INTEGER NOT NULL, "
             + PictureColumns.VISIBLE + " INTEGER NOT NULL DEFAULT '1', "
-            + PictureColumns.SAVEASKED + " INTEGER NOT NULL DEFAULT '0', "
-            + PictureColumns.SAVEFINISHED + " INTEGER NOT NULL DEFAULT '0' "
+            + PictureColumns.UPLOADASKED + " INTEGER NOT NULL DEFAULT '0', "
+            + PictureColumns.UPLOADPROGRESS + " INTEGER NOT NULL DEFAULT '0' "
             + " );";
 
     // @formatter:on

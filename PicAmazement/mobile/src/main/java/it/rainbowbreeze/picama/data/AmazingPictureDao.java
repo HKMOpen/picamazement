@@ -100,31 +100,64 @@ public class AmazingPictureDao {
     }
 
     /**
-     * Get latest pictures, sorted by date, from most recent
+     * Get latest pictures, visible and not uploaded to cloud storage,
+     * sorted by date, from most recent
      * @param limit max number of pictures to get
      * @return
      */
-    public Cursor getLatest(int limit) {
+    public Cursor getLatestVisibleAndNotUploaded(int limit) {
         //TODO implement limit
         PictureSelection where = new PictureSelection();
-        where.visible(true);
+        where.visible(true).and().uploadprogressNot(AmazingPicture.UPLOAD_DONE_ALL);
         Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,
                 where.sel(), where.args(), PictureColumns.DATE + " DESC");
         return c;
     }
 
     /**
-     * Hides a particular picture from the list
-     * @param pictureId
+     * Get latest pictures, visible and not uploaded to cloud storage,
+     * sorted by date, from most recent
+     * @param limit max number of pictures to get
+     * @return
      */
-    public void hideById(long pictureId) {
-        PictureContentValues values = new PictureContentValues();
-        values.putVisible(false);
+    public Cursor getLatestUploaded(int limit) {
+        //TODO implement limit
+        PictureSelection where = new PictureSelection();
+        where.visible(true).and().uploadprogress(AmazingPicture.UPLOAD_DONE_ALL);
+        Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,
+                where.sel(), where.args(), PictureColumns.DATE + " DESC");
+        return c;
+    }
+
+    private int updateById(long pictureId, PictureContentValues values) {
         Uri pictureUri = Uri.parse(PictureColumns.CONTENT_URI + "/" + pictureId);
-        mAppContext.getContentResolver().update(
+        return mAppContext.getContentResolver().update(
                 pictureUri,
                 values.values(),
                 null,
                 null);
+    }
+
+    /**
+     * Hides a particular picture from the list
+     * @param pictureId
+     */
+    public int hideById(long pictureId) {
+        PictureContentValues values = new PictureContentValues();
+        values.putVisible(false);
+        return updateById(pictureId, values);
+    }
+
+    public int setUploadOfImageDone(long pictureId, int prevValue) {
+        return setUploadProgress(pictureId, prevValue | AmazingPicture.UPLOAD_DONE_IMAGE);
+    }
+    public int setUploadOfMetadataDone(long pictureId, int prevValue) {
+        return setUploadProgress(pictureId, prevValue | AmazingPicture.UPLOAD_DONE_METADATA);
+    }
+    private int setUploadProgress(long pictureId, int newValue) {
+        PictureContentValues values = new PictureContentValues();
+        values.putUploadprogress(newValue);
+        updateById(pictureId, values);
+        return newValue;
     }
 }

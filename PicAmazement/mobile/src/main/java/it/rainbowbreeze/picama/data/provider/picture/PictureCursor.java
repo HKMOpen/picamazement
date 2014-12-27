@@ -75,16 +75,16 @@ public class PictureCursor extends AbstractCursor {
     }
 
     /**
-     * Get the {@code saveasked} value.
+     * Get the {@code uploadasked} value.
      */
-    public boolean getSaveasked() {
-        return getBoolean(PictureColumns.SAVEASKED);
+    public boolean getUploadasked() {
+        return getBoolean(PictureColumns.UPLOADASKED);
     }
 
     /**
-     * Get the {@code savefinished} value.
+     * Get the {@code uploadprogress} value.
      */
-    public int getSavefinished() {
-        return getIntegerOrNull(PictureColumns.SAVEFINISHED);
+    public int getUploadprogress() {
+        return getIntegerOrNull(PictureColumns.UPLOADPROGRESS);
     }
 }

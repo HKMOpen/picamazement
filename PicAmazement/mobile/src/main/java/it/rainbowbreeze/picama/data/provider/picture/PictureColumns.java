@@ -20,8 +20,8 @@ public class PictureColumns implements BaseColumns {
     public static final String SOURCE = new String("source");
     public static final String DATE = new String("date");
     public static final String VISIBLE = new String("visible");
-    public static final String SAVEASKED = new String("saveasked");
-    public static final String SAVEFINISHED = new String("savefinished");
+    public static final String UPLOADASKED = new String("uploadasked");
+    public static final String UPLOADPROGRESS = new String("uploadprogress");
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
     
@@ -35,8 +35,8 @@ public class PictureColumns implements BaseColumns {
             SOURCE,
             DATE,
             VISIBLE,
-            SAVEASKED,
-            SAVEFINISHED
+            UPLOADASKED,
+            UPLOADPROGRESS
     };
     // @formatter:on
 
@@ -51,8 +51,8 @@ public class PictureColumns implements BaseColumns {
             if (c == SOURCE) return true;
             if (c == DATE) return true;
             if (c == VISIBLE) return true;
-            if (c == SAVEASKED) return true;
-            if (c == SAVEFINISHED) return true;
+            if (c == UPLOADASKED) return true;
+            if (c == UPLOADPROGRESS) return true;
         }
         return false;
     }
@@ -66,8 +66,8 @@ public class PictureColumns implements BaseColumns {
         if (columnName == SOURCE) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
         if (columnName == DATE) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
         if (columnName == VISIBLE) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
-        if (columnName == SAVEASKED) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
-        if (columnName == SAVEFINISHED) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
+        if (columnName == UPLOADASKED) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
+        if (columnName == UPLOADPROGRESS) return TABLE_NAME + "." + columnName + " AS " + TABLE_NAME + "__" + columnName;
         return null;
     }
 
@@ -79,8 +79,8 @@ public class PictureColumns implements BaseColumns {
         if (columnName == SOURCE) return TABLE_NAME + "__" + columnName;
         if (columnName == DATE) return TABLE_NAME + "__" + columnName;
         if (columnName == VISIBLE) return TABLE_NAME + "__" + columnName;
-        if (columnName == SAVEASKED) return TABLE_NAME + "__" + columnName;
-        if (columnName == SAVEFINISHED) return TABLE_NAME + "__" + columnName;
+        if (columnName == UPLOADASKED) return TABLE_NAME + "__" + columnName;
+        if (columnName == UPLOADPROGRESS) return TABLE_NAME + "__" + columnName;
         return null;
     }
 }

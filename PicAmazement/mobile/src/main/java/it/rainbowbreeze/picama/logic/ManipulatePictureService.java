@@ -63,7 +63,7 @@ public class ManipulatePictureService extends IntentService {
                 return;
             }
             mLogFacility.v(LOG_TAG, "Saving picture with id " + pictureId);
-            mCloudStorageManager.saveToCloudStorages(pictureId);
+            mCloudStorageManager.saveToCloudStorages(pictureId, true);
 
         } else {
             mLogFacility.e(LOG_TAG, "Cannot process the requested action");

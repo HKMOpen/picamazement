@@ -34,21 +34,24 @@ public class PicturesListFragment extends Fragment {
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
+    private int mQueryType;
     private Context mAppContext;
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_QUERY_TYPE = "query_type";
+    public static final int QUERY_VISIBLE_NOT_UPLOADED = 1;  // Pictures visible and still not uploaded
+    public static final int QUERY_UPLOADED = 2;  // Pictures uploaded to cloud storage
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PicturesListFragment newInstance(int sectionNumber) {
+    public static PicturesListFragment newInstance(int queryType) {
         PicturesListFragment fragment = new PicturesListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        args.putInt(ARG_QUERY_TYPE, queryType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +63,7 @@ public class PicturesListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mQueryType = getArguments().getInt(ARG_QUERY_TYPE, QUERY_VISIBLE_NOT_UPLOADED);
     }
 
     @Override
@@ -68,9 +72,6 @@ public class PicturesListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fra_pictures_list, container, false);
 
         ListView lst = (ListView) rootView.findViewById(R.id.list_lstItems);
-        Cursor c = mAmazingPictureDao.getLatest(100);
-        lst.setAdapter(new PicturesAdapter(mAppContext, c, true));
-
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -79,18 +80,24 @@ public class PicturesListFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        lst.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                mActionsManager.hidePicture()
-                        .setPictureId(id)
-                        .executeAsync();
-                return true;
-            }
-        });
+        Cursor c = null;
+        if (QUERY_VISIBLE_NOT_UPLOADED == mQueryType) {
+            c = mAmazingPictureDao.getLatestVisibleAndNotUploaded(100);
+            lst.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    mActionsManager.hidePicture()
+                            .setPictureId(id)
+                            .executeAsync();
+                    return true;
+                }
+            });
+        } else if (QUERY_UPLOADED == mQueryType) {
+            c = mAmazingPictureDao.getLatestUploaded(100);
+        }
+        lst.setAdapter(new PicturesAdapter(mAppContext, c, true));
 
         //TODO manage cursor closing while onPause etc, or using a loader
-
         return rootView;
     }
 
@@ -105,6 +112,15 @@ public class PicturesListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.pictures_list, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (QUERY_UPLOADED == mQueryType) {
+            MenuItem menuItem = menu.findItem(R.id.piclist_mnuHideHelp);
+            menuItem.setVisible(false);
+        }
+        super.onPrepareOptionsMenu(menu);
     }
 
     @Override
