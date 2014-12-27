@@ -2,6 +2,7 @@
 <resources>
     <string name="pref_storage_title">Storages</string>
     <string name="pref_storage_summary">Login to different cloud storage, so picture can be saved in the cloud</string>
+    <string name="pref_dropbox_title">Dropbox</string>
 
     <string name="pref_sync_title">Sync</string>
     <string name="pref_sync_summary">Automatic discovering of new amazing pictures for you</string>
@@ -25,6 +26,8 @@
     <string name="pref_syncFrequency_default">12</string>
 
 
-    <string name="pref_dropbox_title">Dropbox</string>
-    <string name="pref_googledrive_title">Google Drive</string>
+    <string name="pref_source_title">Image sources</string>
+    <string name="pref_source_summary">Configure the different sources for the images</string>
+    <string name="pref_twitter_title">Twitter</string>
+
 </resources>
