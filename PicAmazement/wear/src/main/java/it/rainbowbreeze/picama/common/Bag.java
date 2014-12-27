@@ -10,17 +10,20 @@ import java.lang.ref.WeakReference;
 public class Bag extends SharedBag {
     public static final int NOTIFICATION_ID_NEWIMAGE = 100;
 
-    private static WeakReference<Bitmap> mPictureBitmap;
+    //private static WeakReference<Bitmap> mPictureBitmap;
+    private static Bitmap mPictureBitmap;
     public static void putPictureBitmap(Bitmap pictureBitmap) {
-        if (null != mPictureBitmap) {
-            mPictureBitmap.clear();
-        }
-        mPictureBitmap = new WeakReference<Bitmap>(pictureBitmap);
+        //if (null != mPictureBitmap) {
+        //    mPictureBitmap.clear();
+        //}
+        //mPictureBitmap = new WeakReference<Bitmap>(pictureBitmap);
+        mPictureBitmap = pictureBitmap;
     }
     public static Bitmap getPictureBitmap() {
-        if (null == mPictureBitmap) {
-            return null;
-        }
-        return mPictureBitmap.get();
+        //if (null == mPictureBitmap) {
+        //    return null;
+        //}
+        //return mPictureBitmap.get();
+        return mPictureBitmap;
     }
 }
