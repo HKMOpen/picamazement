@@ -31,6 +31,9 @@
     <string name="dropboxsettings_btnSelectSaveDir">Select save path</string>
     <string name="dropboxsettings_btnAuthDone">Dropbox connected</string>
 
-    <string name="gdrivesettings_actTitle">Google Drive Settings</string>
+    <string name="twittersettings_actTitle">Twitter Settings</string>
+    <string name="twittersettings_lblAccounts">Twitter account where fetching images</string>
+    <string name="twittersettings_btnRemoveAccount">Remove selected</string>
+    <string name="twittersettings_btnAddAccount">Add account</string>
 
 </resources>

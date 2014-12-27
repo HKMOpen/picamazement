@@ -1,0 +1,53 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="it.rainbowbreeze.picama.ui.TwitterSettingsFragment"
+>
+
+    <TextView
+        android:id="@+id/twittersettings_lblAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="@string/twittersettings_lblAccounts"
+    />
+
+    <LinearLayout
+        android:id="@+id/twittersettings_layAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+    >
+        <Button
+            android:id="@+id/twittersettings_btnRemoveAccount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/twittersettings_btnRemoveAccount"
+        />
+        <Button
+            android:id="@+id/twittersettings_btnAddAccount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/twittersettings_btnAddAccount"
+        />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/twittersettings_lstAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/twittersettings_lblAccounts"
+        android:layout_above="@id/twittersettings_layAccounts"
+    />
+
+</RelativeLayout>
