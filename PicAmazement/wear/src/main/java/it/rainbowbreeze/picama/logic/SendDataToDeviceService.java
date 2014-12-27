@@ -15,7 +15,6 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
-import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -65,7 +64,7 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
         final String action = intent.getAction();
         long pictureId = intent.getLongExtra(Bag.INTENT_EXTRA_PICTUREID, Bag.ID_NOT_SET);
         int notificationId = intent.getIntExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, 0);
-        if (Bag.INTENT_ACTION_SAVEPICTURE.equals(action)) {
+        if (Bag.INTENT_ACTION_UPLOADPICTURE.equals(action)) {
             sendDataMessageForDevice(Bag.WEAR_PATH_SAVEPICTURE, pictureId, notificationId);
 
         } else if (Bag.INTENT_ACTION_REMOVEPICTURE.equals(action)) {

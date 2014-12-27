@@ -66,7 +66,7 @@ public class ReceiveDataFromWearService extends WearableListenerService {
                 if (Bag.WEAR_PATH_SAVEPICTURE.equals(path)) {
                     if (Bag.ID_NOT_SET != pictureId) {
                         mLogFacility.v(LOG_TAG, "Saving picture with id " + pictureId);
-                        mActionsManager.savePicture()
+                        mActionsManager.uploadPicture()
                                 .setPictureId(pictureId)
                                 .executeAsync();
                     } else {

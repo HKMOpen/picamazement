@@ -17,7 +17,7 @@ public abstract class SharedBag {
 
     // Also registered for the service
     public final static String INTENT_ACTION_REMOVEPICTURE = "it.rainbowbreeze.picama.Action.Picture.Remove";
-    public static final String INTENT_ACTION_SAVEPICTURE = "it.rainbowbreeze.picama.Action.Picture.Save";
+    public static final String INTENT_ACTION_UPLOADPICTURE = "it.rainbowbreeze.picama.Action.Picture.Upload";
     public static final String INTENT_ACTION_OPENONDEVICE = "it.rainbowbreeze.picama.Action.Picture.OpenOnDevice";
     public final static String INTENT_EXTRA_PICTUREID = "Extra.PictureId";
     public final static String INTENT_EXTRA_NOTIFICATIONID = "Extra.NotificationId";

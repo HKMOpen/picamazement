@@ -171,13 +171,13 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 removePicPendingIntent);
 
         // Action to save the picture of the stream
-        Intent savePicIntent = new Intent(Bag.INTENT_ACTION_SAVEPICTURE);
-        savePicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
-        savePicIntent.putExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, Bag.NOTIFICATION_ID_NEWIMAGE);
+        Intent uploadPicIntent = new Intent(Bag.INTENT_ACTION_UPLOADPICTURE);
+        uploadPicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
+        uploadPicIntent.putExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, Bag.NOTIFICATION_ID_NEWIMAGE);
         PendingIntent savePicPendingIntent = PendingIntent.getService(
                 appContext,
                 0,
-                savePicIntent,
+                uploadPicIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Action savePicAction = new Notification.Action(
                 R.drawable.ic_action_save,

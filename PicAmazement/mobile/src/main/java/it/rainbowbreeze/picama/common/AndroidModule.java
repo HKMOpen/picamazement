@@ -13,6 +13,7 @@ import it.rainbowbreeze.picama.logic.BootCompletedReceiver;
 import it.rainbowbreeze.picama.logic.LogicManager;
 import it.rainbowbreeze.picama.logic.ManipulatePictureService;
 import it.rainbowbreeze.picama.logic.RefreshPicturesService;
+import it.rainbowbreeze.picama.logic.UploadPictureService;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 import it.rainbowbreeze.picama.logic.storage.DropboxCloudProvider;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
@@ -48,6 +49,7 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
 
                 SendDataToWearService.class,
                 ManipulatePictureService.class,
+                UploadPictureService.class,
                 ReceiveDataFromWearService.class,
                 RefreshPicturesService.class,
 

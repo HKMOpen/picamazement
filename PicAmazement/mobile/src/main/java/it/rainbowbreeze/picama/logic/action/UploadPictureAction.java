@@ -6,20 +6,21 @@ import android.content.Intent;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.logic.ManipulatePictureService;
+import it.rainbowbreeze.picama.logic.UploadPictureService;
 
 /**
  * Created by alfredomorresi on 16/11/14.
  */
-public class SavePictureAction extends BasePictureAction {
-    private static final String LOG_TAG = SavePictureAction.class.getSimpleName();
+public class UploadPictureAction extends BasePictureAction {
+    private static final String LOG_TAG = UploadPictureAction.class.getSimpleName();
     private long mPictureId;
 
-    public SavePictureAction(Context appContext, ILogFacility logFacility, ActionsManager actionsManager) {
+    public UploadPictureAction(Context appContext, ILogFacility logFacility, ActionsManager actionsManager) {
         super(appContext, logFacility, actionsManager);
         mPictureId = Bag.ID_NOT_SET;
     }
 
-    public SavePictureAction setPictureId(long pictureId) {
+    public UploadPictureAction setPictureId(long pictureId) {
         mPictureId = pictureId;
         return this;
     }
@@ -47,9 +48,9 @@ public class SavePictureAction extends BasePictureAction {
     @Override
     protected void doYourStuff() {
         mLogFacility.v(LOG_TAG, "Saving picture with id " + mPictureId);
-        Intent intent = new Intent(mAppContext, ManipulatePictureService.class);
-        intent.setAction(ManipulatePictureService.ACTION_SAVE_PICTURE);
-        intent.putExtra(ManipulatePictureService.EXTRA_PARAM_PICTURE_ID, mPictureId);
+        Intent intent = new Intent(mAppContext, UploadPictureService.class);
+        intent.setAction(UploadPictureService.ACTION_UPLOAD_PICTURE);
+        intent.putExtra(UploadPictureService.EXTRA_PARAM_PICTURE_ID, mPictureId);
         mAppContext.startService(intent);
     }
 }

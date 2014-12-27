@@ -88,7 +88,11 @@
         <service android:name=".logic.ManipulatePictureService" >
             <intent-filter>
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Hide" />
-                <action android:name="it.rainbowbreeze.picama.Action.Picture.Save" />
+            </intent-filter>
+        </service>
+        <service android:name=".logic.UploadPictureService" >
+            <intent-filter>
+                <action android:name="it.rainbowbreeze.picama.Action.Picture.Upload" />
             </intent-filter>
         </service>
         <service android:name=".logic.wearable.ReceiveDataFromWearService" >

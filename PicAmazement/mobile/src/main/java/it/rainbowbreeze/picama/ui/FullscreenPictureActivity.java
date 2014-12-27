@@ -4,7 +4,6 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
-import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
@@ -146,18 +145,18 @@ public class FullscreenPictureActivity extends Activity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        Button btnSave = (Button) findViewById(R.id.fullscreen_btnSave);
-        btnSave.setOnTouchListener(mDelayHideTouchListener);
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        Button btnUpload = (Button) findViewById(R.id.fullscreen_btnSave);
+        btnUpload.setOnTouchListener(mDelayHideTouchListener);
+        btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mActionsManager.savePicture()
+                mActionsManager.uploadPicture()
                         .setPictureId(pictureId)
                         .execute();
                 finish();
             }
         });
-        btnSave.setEnabled(mCloudStorageManager.isCloudSavePossible());
+        btnUpload.setEnabled(mCloudStorageManager.isCloudSavePossible());
 
         Button btnHide = (Button) findViewById(R.id.fullscreen_btnDelete);
         btnHide.setOnTouchListener(mDelayHideTouchListener);
