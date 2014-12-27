@@ -9,7 +9,7 @@ public abstract class SharedBag {
 
     public final static String WEAR_PATH_AMAZINGPICTURE = "/AmazingPicture";
     public final static String WEAR_PATH_REMOVEPICTURE = "/RemovePicture";
-    public final static String WEAR_PATH_SAVEPICTURE = "/SavePicture";
+    public final static String WEAR_PATH_UPLOADPICTURE = "/UploadPicture";
     public final static String WEAR_PATH_OPENPICTURE = "/OpenPicture";
 
     public final static String WEAR_DATAMAPITEM_PICTUREID = "PictureId";

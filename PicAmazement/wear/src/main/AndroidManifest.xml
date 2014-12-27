@@ -46,7 +46,7 @@
             android:exported="false"
         >
             <intent-filter>
-                <action android:name="it.rainbowbreeze.picama.Action.Picture.Save" />
+                <action android:name="it.rainbowbreeze.picama.Action.Picture.Upload" />
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Remove" />
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.OpenOnDevice" />
             </intent-filter>

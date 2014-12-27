@@ -63,7 +63,7 @@ public class ReceiveDataFromWearService extends WearableListenerService {
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
                 long pictureId = dataMapItem.getDataMap().getLong(Bag.WEAR_DATAMAPITEM_PICTUREID, Bag.ID_NOT_SET);
 
-                if (Bag.WEAR_PATH_SAVEPICTURE.equals(path)) {
+                if (Bag.WEAR_PATH_UPLOADPICTURE.equals(path)) {
                     if (Bag.ID_NOT_SET != pictureId) {
                         mLogFacility.v(LOG_TAG, "Saving picture with id " + pictureId);
                         mActionsManager.uploadPicture()

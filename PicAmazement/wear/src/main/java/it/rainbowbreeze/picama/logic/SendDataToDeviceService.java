@@ -60,12 +60,12 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
 
     @Override
     public void doYourStuff(Intent intent) {
-        // All the valid checks are performed on the super method
+        // All the validity checks are performed on the super method
         final String action = intent.getAction();
         long pictureId = intent.getLongExtra(Bag.INTENT_EXTRA_PICTUREID, Bag.ID_NOT_SET);
         int notificationId = intent.getIntExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, 0);
         if (Bag.INTENT_ACTION_UPLOADPICTURE.equals(action)) {
-            sendDataMessageForDevice(Bag.WEAR_PATH_SAVEPICTURE, pictureId, notificationId);
+            sendDataMessageForDevice(Bag.WEAR_PATH_UPLOADPICTURE, pictureId, notificationId);
 
         } else if (Bag.INTENT_ACTION_REMOVEPICTURE.equals(action)) {
             sendDataMessageForDevice(Bag.WEAR_PATH_REMOVEPICTURE, pictureId, notificationId);

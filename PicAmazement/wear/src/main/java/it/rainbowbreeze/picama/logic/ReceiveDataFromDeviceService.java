@@ -92,7 +92,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                  *
                  * So, ignoring the events triggered by this device.
                  */
-                if (Bag.WEAR_PATH_REMOVEPICTURE.equals(path) || Bag.WEAR_PATH_SAVEPICTURE.equals(path) || Bag.WEAR_PATH_OPENPICTURE.equals(path)) {
+                if (Bag.WEAR_PATH_REMOVEPICTURE.equals(path) || Bag.WEAR_PATH_UPLOADPICTURE.equals(path) || Bag.WEAR_PATH_OPENPICTURE.equals(path)) {
                     continue;
                 }
 
@@ -137,20 +137,21 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
         fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_TITLE, picture.getTitle());
         fullscreenIntent.putExtra(PictureActivity.INTENT_EXTRA_IMAGEASSET, picture.getAssetPicture());
         fullscreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(
+        PendingIntent fullscreenPendingIntent = PendingIntent.getActivity(
                 appContext,
                 0,
                 fullscreenIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+        // Page to display the picture in fullscreen
+        Notification fullscreenPage = new Notification.WearableExtender()
+                .setDisplayIntent(fullscreenPendingIntent)
+                .setCustomSizePreset(Notification.WearableExtender.SIZE_FULL_SCREEN)
+                        //.setGravity(Gravity.CENTER)
+                .extend(new Notification.Builder(appContext))
+                .build();
 
         // And starts the activity
         //appContext.startActivity(startIntent);
-
-        // Page to display information about the picture
-        Notification infoPage = new Notification.Builder(appContext)
-                .setContentTitle(picture.getTitle())
-                .setContentText(picture.getDesc())
-                .build();
 
         // Action to remove the picture from the stream
         Intent removePicIntent = new Intent(Bag.INTENT_ACTION_REMOVEPICTURE);
@@ -174,15 +175,15 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
         Intent uploadPicIntent = new Intent(Bag.INTENT_ACTION_UPLOADPICTURE);
         uploadPicIntent.putExtra(Bag.INTENT_EXTRA_PICTUREID, picture.getId());
         uploadPicIntent.putExtra(Bag.INTENT_EXTRA_NOTIFICATIONID, Bag.NOTIFICATION_ID_NEWIMAGE);
-        PendingIntent savePicPendingIntent = PendingIntent.getService(
+        PendingIntent uploadPicPendingIntent = PendingIntent.getService(
                 appContext,
                 0,
                 uploadPicIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification.Action savePicAction = new Notification.Action(
+        Notification.Action uploadPicAction = new Notification.Action(
                 R.drawable.ic_action_save,
                 appContext.getString(R.string.common_savePicture),
-                savePicPendingIntent);
+                uploadPicPendingIntent);
 
         // Action to open the picture on the phone
         Intent openPicIntent = new Intent(Bag.INTENT_ACTION_OPENONDEVICE);
@@ -198,19 +199,30 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 appContext.getString(R.string.common_open_on_phone),
                 openPicPendingIntent);
 
-        Notification.WearableExtender wearableExtender = new Notification.WearableExtender()
-                .setDisplayIntent(fullScreenPendingIntent)
-                .setCustomSizePreset(Notification.WearableExtender.SIZE_FULL_SCREEN)
-                        //.setGravity(Gravity.CENTER)
-                        //.setHintShowBackgroundOnly(true) // Boh?
+
+        /*
+        // Page to display the picture in fullscreen, if the picture perfectly
+        //  fits the screen
+        Notification infoPage = new Notification.WearableExtender()
                 .setBackground(pictureBitmap)
-                .addPage(infoPage);
+                .setHintShowBackgroundOnly(true)
+                .extend(new Notification.Builder(appContext))
+                .build();
+        */
+
+        // Adds the fullscreen page to the notification, plus some attributes
+        // of the Wear notification, like the background (with parallax effect)
+        Notification.WearableExtender wearableExtender = new Notification.WearableExtender()
+                .setBackground(pictureBitmap)
+                .addPage(fullscreenPage);
+
         Notification.Builder notificationBuilder = new Notification.Builder(appContext)
                 //.setOngoing(true)  // Notification cannot be swiped right
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(picture.getTitle())
+                .setContentText(picture.getDesc())
                 .addAction(removePicAction)
-                .addAction(savePicAction)
+                .addAction(uploadPicAction)
                 .addAction(openPicAction)
                 .extend(wearableExtender);
         NotificationManager nm = ((NotificationManager) appContext.getSystemService(Context.NOTIFICATION_SERVICE));
