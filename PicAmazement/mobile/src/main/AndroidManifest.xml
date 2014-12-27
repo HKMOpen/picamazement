@@ -97,7 +97,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".logic.RefreshPictureService"
+            android:name=".logic.RefreshPicturesService"
             android:exported="false"
         >
             <intent-filter>

@@ -90,8 +90,8 @@ public class LogicManager {
     }
 
     private PendingIntent createSyncPendingIntent(Context appContext) {
-        Intent intent = new Intent(appContext, RefreshPictureService.class);
-        intent.setAction(RefreshPictureService.ACTION_REFRESH_PICTURES);
+        Intent intent = new Intent(appContext, RefreshPicturesService.class);
+        intent.setAction(RefreshPicturesService.ACTION_REFRESH_PICTURES);
         //TODO check flags and other parameters
         return PendingIntent.getService(appContext, 100, intent, 0);
     }

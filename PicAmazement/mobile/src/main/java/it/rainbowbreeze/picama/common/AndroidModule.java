@@ -11,7 +11,7 @@ import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.logic.LogicManager;
 import it.rainbowbreeze.picama.logic.RefreshPictureReceiver;
-import it.rainbowbreeze.picama.logic.RefreshPictureService;
+import it.rainbowbreeze.picama.logic.RefreshPicturesService;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 import it.rainbowbreeze.picama.logic.storage.DropboxCloudProvider;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
@@ -49,7 +49,7 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
                 SendDataToWearService.class,
                 UpdatePictureFieldsService.class,
                 ReceiveDataFromWearService.class,
-                RefreshPictureService.class,
+                RefreshPicturesService.class,
 
                 RefreshPictureReceiver.class,
         },

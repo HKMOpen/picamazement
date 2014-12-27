@@ -18,8 +18,8 @@ import it.rainbowbreeze.picama.logic.action.ActionsManager;
  * a service on a separate handler thread.
  * <p/>
  */
-public class RefreshPictureService extends IntentService {
-    private static final String LOG_TAG = RefreshPictureService.class.getSimpleName();
+public class RefreshPicturesService extends IntentService {
+    private static final String LOG_TAG = RefreshPicturesService.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject PictureScraperManager mPictureScraperManager;
     @Inject ActionsManager mActionsManager;
@@ -28,8 +28,8 @@ public class RefreshPictureService extends IntentService {
 
     public static final String ACTION_REFRESH_PICTURES = "it.rainbowbreeze.picama.Action.Picture.Refresh";
 
-    public RefreshPictureService() {
-        super(RefreshPictureService.class.getSimpleName());
+    public RefreshPicturesService() {
+        super(RefreshPicturesService.class.getSimpleName());
     }
 
     @Override
