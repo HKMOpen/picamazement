@@ -15,8 +15,8 @@ import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 /**
  * Created by alfredomorresi on 15/11/14.
  */
-public class UpdatePictureFieldsService extends IntentService {
-    private static final String LOG_TAG = UpdatePictureFieldsService.class.getSimpleName();
+public class ManipulatePictureService extends IntentService {
+    private static final String LOG_TAG = ManipulatePictureService.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject AmazingPictureDao mAmazingPictureDao;
     @Inject CloudStorageManager mCloudStorageManager;
@@ -26,8 +26,8 @@ public class UpdatePictureFieldsService extends IntentService {
     public static final String ACTION_REMOVE_ALL_PICTURES = "it.rainbowbreeze.picama.Action.Picture.RemoveAll";
     public static final String EXTRA_PARAM_PICTURE_ID = Bag.INTENT_EXTRA_PICTUREID;
 
-    public UpdatePictureFieldsService() {
-        super(UpdatePictureFieldsService.class.getSimpleName());
+    public ManipulatePictureService() {
+        super(ManipulatePictureService.class.getSimpleName());
     }
 
     @Override

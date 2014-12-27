@@ -85,7 +85,7 @@
             android:name=".logic.wearable.SendDataToWearService"
             android:exported="false" >
         </service>
-        <service android:name=".logic.UpdatePictureFieldsService" >
+        <service android:name=".logic.ManipulatePictureService" >
             <intent-filter>
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Hide" />
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Save" />

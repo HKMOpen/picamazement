@@ -25,7 +25,6 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.GoogleApiClientBaseService;
-import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -43,7 +42,7 @@ public class SendDataToWearService extends GoogleApiClientBaseService {
     public static final String EXTRA_PICTUREID = "Param.PictureId";
 
     public SendDataToWearService() {
-        super(UpdatePictureFieldsService.class.getSimpleName());
+        super(SendDataToWearService.class.getSimpleName());
     }
 
     @Override

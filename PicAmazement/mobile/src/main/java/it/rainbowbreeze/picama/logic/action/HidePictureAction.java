@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.logic.UpdatePictureFieldsService;
+import it.rainbowbreeze.picama.logic.ManipulatePictureService;
 
 /**
  * Created by alfredomorresi on 16/11/14.
@@ -47,9 +47,9 @@ public class HidePictureAction extends BasePictureAction {
     @Override
     protected void doYourStuff() {
         mLogFacility.v(LOG_TAG, "Hiding picture with id " + mPictureId);
-        Intent intent = new Intent(mAppContext, UpdatePictureFieldsService.class);
-        intent.setAction(UpdatePictureFieldsService.ACTION_REMOVE_PICTURE_FROM_LIST);
-        intent.putExtra(UpdatePictureFieldsService.EXTRA_PARAM_PICTURE_ID, mPictureId);
+        Intent intent = new Intent(mAppContext, ManipulatePictureService.class);
+        intent.setAction(ManipulatePictureService.ACTION_REMOVE_PICTURE_FROM_LIST);
+        intent.putExtra(ManipulatePictureService.EXTRA_PARAM_PICTURE_ID, mPictureId);
         mAppContext.startService(intent);
     }
 }
