@@ -4,6 +4,9 @@
 
     <uses-feature android:name="android.hardware.type.watch" />
 
+    <!-- Check if it's really necessary to have a vibrating notification -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".common.MyApp"
         android:allowBackup="true"

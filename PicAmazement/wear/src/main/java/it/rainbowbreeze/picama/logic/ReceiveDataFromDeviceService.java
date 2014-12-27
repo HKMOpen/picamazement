@@ -221,6 +221,9 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(picture.getTitle())
                 .setContentText(picture.getDesc())
+                //.setVibrate(new long[]{0, 500, 250, 500});
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+//                .setDefaults(Notification.DEFAULT_ALL)  // Default characteristics of a notification like sound and vibration
                 .addAction(removePicAction)
                 .addAction(uploadPicAction)
                 .addAction(openPicAction)
