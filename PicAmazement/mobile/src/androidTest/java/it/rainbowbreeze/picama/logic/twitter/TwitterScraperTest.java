@@ -2,8 +2,6 @@ package it.rainbowbreeze.picama.logic.twitter;
 
 import android.test.AndroidTestCase;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -11,9 +9,6 @@ import dagger.Module;
 import dagger.ObjectGraph;
 import dagger.Provides;
 import it.rainbowbreeze.picama.common.AndroidModule;
-import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.domain.AmazingPicture;
-import twitter4j.conf.ConfigurationBuilder;
 
 /**
  * Created by alfredomorresi on 19/10/14.
@@ -41,7 +36,7 @@ public class TwitterScraperTest extends AndroidTestCase {
         ObjectGraph
                 .create(
                     new TestModule(),
-                    new AndroidModule((MyApp) getContext().getApplicationContext()))
+                    new AndroidModule(getContext()))
                 .inject(this);
     }
 
@@ -70,7 +65,8 @@ public class TwitterScraperTest extends AndroidTestCase {
         assertEquals("Sanitizer didn't work",
                 "",
                 mTwitterScraper.sanitizeText(""));
-        assertNull("Sanitizer didn't work",
+        assertEquals("Sanitizer didn't work",
+                "",
                 mTwitterScraper.sanitizeText("http://www.test.com/image.jpg"));
         assertEquals("Sanitizer didn't work",
                 "Alucinante! esto es realmente una foto, no dos.",

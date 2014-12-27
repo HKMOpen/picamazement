@@ -4,7 +4,6 @@ import android.content.Context;
 import android.test.AndroidTestCase;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
@@ -50,7 +49,11 @@ public class PictureDiskManagerTest extends AndroidTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        ObjectGraph.create(TestModule.class, new AndroidModule(getContext())).inject(this);
+        ObjectGraph
+                .create(
+                        new TestModule(),
+                        new AndroidModule(getContext()))
+                .inject(this);
     }
 
     @Override

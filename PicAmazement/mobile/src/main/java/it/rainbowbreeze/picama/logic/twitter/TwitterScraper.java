@@ -112,7 +112,7 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
         if (TextUtils.isEmpty(sourceDesc)) return sourceDesc;
         int posIni = sourceDesc.lastIndexOf("http://");
         if (0 == posIni) {
-            return null;
+            return "";
         } else if (posIni > 0) {
             return sourceDesc.substring(0, posIni - 1).trim();
         } else {
