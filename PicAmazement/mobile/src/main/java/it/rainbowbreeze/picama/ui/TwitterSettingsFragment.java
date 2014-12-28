@@ -43,19 +43,9 @@ public class TwitterSettingsFragment extends Fragment {
 
         Button btn;
         btn = (Button) rootView.findViewById(R.id.twittersettings_btnAddAccount);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(TwitterSettingsFragment.this.getActivity(), "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        btn.setEnabled(false);
         btn = (Button) rootView.findViewById(R.id.twittersettings_btnRemoveAccount);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(TwitterSettingsFragment.this.getActivity(), "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        btn.setEnabled(false);
 
         List<String> userNames = mTwitterScraperConfig.getUserNames();
         ArrayAdapter<String> itemsAdapter =

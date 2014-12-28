@@ -37,9 +37,8 @@ public class LogicManager {
 
         // Checks last sync time
         long lastSyncTime = mAppPrefsManager.getLastSyncTime();
-        //long syncIntervalInPref = 24 / Integer.parseInt(mAppPrefsManager.getSyncFrequency())
-        //        * 3600 * 1000L; // milliseconds
-        long syncIntervalInPref = 5 * 60000L;
+        long syncIntervalInPref = 24 / Integer.parseInt(mAppPrefsManager.getSyncFrequency())
+                * 3600 * 1000L; // milliseconds
         long currentTime = Calendar.getInstance().getTimeInMillis();
         long nextSyncInterval = 0;
 
@@ -62,8 +61,7 @@ public class LogicManager {
 
         if (nextSyncInterval <= 0) {
             //ok... add some more seconds, useful during reboot, for example...
-            //nextSyncInterval = 130000L;
-            nextSyncInterval = 5000;
+            nextSyncInterval = 60000L;
         }
 
         PendingIntent pendingIntent = createSyncPendingIntent(appContext);

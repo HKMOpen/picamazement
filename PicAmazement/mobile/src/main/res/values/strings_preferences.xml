@@ -16,12 +16,14 @@
         <item>Twice a day</item>
         <item>Every 2 hours</item>
         <item>Every hour</item>
+        <item>Every half of hour</item>
     </string-array>
     <string-array name="pref_syncFrequency_entryValues">
         <item>1</item>
         <item>2</item>
         <item>12</item>
         <item>24</item>
+        <item>48</item>
     </string-array>
     <string name="pref_syncFrequency_default">12</string>
 
