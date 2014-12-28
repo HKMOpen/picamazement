@@ -74,5 +74,8 @@ public class TwitterScraperTest extends AndroidTestCase {
         assertEquals("Sanitizer didn't work",
                 "Alucinante! esto es realmente una foto, no dos.",
                 mTwitterScraper.sanitizeText("Alucinante! esto es realmente una foto, no dos. http://t.co/7ME1v7N7Gr  "));
+        assertEquals("Sanitizer didn't work",
+                "These Parents Apparently Failed at Parenting, Does Our Generation Is Lost..?",
+                mTwitterScraper.sanitizeText("These Parents Apparently Failed at Parenting, Does Our Generation Is Lost..? http://goo.gl/P3MJd8"));
     }
 }
