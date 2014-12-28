@@ -145,7 +145,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
      * Default is 30.
      * @return
      */
-    protected int getMaxConnectionTime() {
+    protected long getMaxConnectionTime() {
         return 30;
     }
 
