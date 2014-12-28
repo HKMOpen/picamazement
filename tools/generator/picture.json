@@ -1,0 +1,52 @@
+{
+    "fields": [
+        {
+            "name": "url",
+            "type": "String",
+            "nullable": false,
+        },
+        {
+            "name": "title",
+            "type": "String",
+            "nullable": false,
+        },
+        {
+            "name": "desc",
+            "type": "String",
+            "nullable": false,
+        },
+        {
+            "name": "author",
+            "type": "String",
+            "nullable": true,
+        },
+        {
+            "name": "source",
+            "type": "String",
+            "nullable": false,
+        },
+        {
+            "name": "date",
+            "type": "Date",
+            "nullable": false,
+        },
+        {
+            "name": "visible",
+            "type": "Boolean",
+            "nullable": false,
+            "defaultValue": 1,
+        },
+        {
+            "name": "uploadAsked",
+            "type": "Boolean",
+            "nullable": false,
+            "defaultValue": 0,
+        },
+        {
+            "name": "uploadProgress",
+            "type": "Integer",
+            "nullable": false,
+            "defaultValue": 0,
+        },
+    ]
+}

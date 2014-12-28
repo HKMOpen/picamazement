@@ -1,0 +1,12 @@
+{
+    "syntaxVersion": "1.7",
+    "projectPackageId": "it.rainbowbreeze.picama",
+    "authority": "it.rainbowbreeze.picama.provider",
+    "providerJavaPackage": "it.rainbowbreeze.picama.data.provider",
+    "providerClassName": "PictureProvider",
+    "sqliteOpenHelperClassName": "PicamaSQLiteOpenHelper",
+    "sqliteOpenHelperCallbacksClassName": "PicamaSQLiteOpenHelperCallbacks",
+    "databaseFileName": "picama.db",
+    "databaseVersion": 1,
+    "enableForeignKeys": true,
+}
