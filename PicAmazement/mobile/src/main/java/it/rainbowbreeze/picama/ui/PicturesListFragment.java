@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,20 +32,19 @@ import it.rainbowbreeze.picama.logic.action.ActionsManager;
  * http://3.bp.blogspot.com/-YJSE-iQngrw/U3bLHPnB1YI/AAAAAAAABWs/CD03Kp6O-zM/s1600/fragmentlifecycle.png
  *
  */
-public class PicturesListFragment extends Fragment {
+public class PicturesListFragment
+        extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = PicturesListFragment.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
-    private int mQueryType;
     private Context mAppContext;
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
+
     private static final String ARG_QUERY_TYPE = "query_type";
     public static final int QUERY_VISIBLE_NOT_UPLOADED = 1;  // Pictures visible and still not uploaded
     public static final int QUERY_UPLOADED = 2;  // Pictures uploaded to cloud storage
+    private PicturesAdapter mPicturesAdapter;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -63,7 +65,13 @@ public class PicturesListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mQueryType = getArguments().getInt(ARG_QUERY_TYPE, QUERY_VISIBLE_NOT_UPLOADED);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mAppContext = activity.getApplicationContext();
+        ((MyApp) mAppContext).inject(this);
     }
 
     @Override
@@ -80,9 +88,12 @@ public class PicturesListFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        Cursor c = null;
-        if (QUERY_VISIBLE_NOT_UPLOADED == mQueryType) {
-            c = mAmazingPictureDao.getLatestVisibleAndNotUploaded(100);
+        mPicturesAdapter = new PicturesAdapter(mAppContext, null, true);
+        lst.setAdapter(mPicturesAdapter);
+        int queryType = getArguments().getInt(ARG_QUERY_TYPE, QUERY_VISIBLE_NOT_UPLOADED);
+        getLoaderManager().initLoader(queryType, null, this);
+
+        if (QUERY_VISIBLE_NOT_UPLOADED == queryType) {
             lst.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,20 +103,9 @@ public class PicturesListFragment extends Fragment {
                     return true;
                 }
             });
-        } else if (QUERY_UPLOADED == mQueryType) {
-            c = mAmazingPictureDao.getLatestUploaded(100);
         }
-        lst.setAdapter(new PicturesAdapter(mAppContext, c, true));
 
-        //TODO manage cursor closing while onPause etc, or using a loader
         return rootView;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mAppContext = activity.getApplicationContext();
-        ((MyApp) mAppContext).inject(this);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class PicturesListFragment extends Fragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (QUERY_UPLOADED == mQueryType) {
+        if (QUERY_UPLOADED == getArguments().getInt(ARG_QUERY_TYPE, QUERY_VISIBLE_NOT_UPLOADED)) {
             MenuItem menuItem = menu.findItem(R.id.piclist_mnuHideHelp);
             menuItem.setVisible(false);
         }
@@ -149,4 +149,26 @@ public class PicturesListFragment extends Fragment {
         return value;
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader cl = null;
+        if (QUERY_VISIBLE_NOT_UPLOADED == id) {
+            cl = mAmazingPictureDao.getLatestVisibleAndNotUploaded(100);
+        } else if (QUERY_UPLOADED == id) {
+            cl = mAmazingPictureDao.getLatestUploaded(100);
+        } else {
+            mLogFacility.v(LOG_TAG, "Strange, no query type for creating a CursorLoader");
+        }
+        return cl;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mPicturesAdapter.changeCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mPicturesAdapter.changeCursor(null);
+    }
 }

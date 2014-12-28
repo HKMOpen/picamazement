@@ -3,6 +3,7 @@ package it.rainbowbreeze.picama.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.content.CursorLoader;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.data.provider.picture.PictureColumns;
@@ -105,13 +106,20 @@ public class AmazingPictureDao {
      * @param limit max number of pictures to get
      * @return
      */
-    public Cursor getLatestVisibleAndNotUploaded(int limit) {
+    public CursorLoader getLatestVisibleAndNotUploaded(int limit) {
         //TODO implement limit
         PictureSelection where = new PictureSelection();
         where.visible(true).and().uploadprogressNot(AmazingPicture.UPLOAD_DONE_ALL);
-        Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,
-                where.sel(), where.args(), PictureColumns.DATE + " DESC");
-        return c;
+        CursorLoader cursorLoader = new CursorLoader(
+                mAppContext,
+                PictureColumns.CONTENT_URI,
+                null,
+                where.sel(),
+                where.args(),
+                PictureColumns.DATE + " DESC");
+        //Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,
+        //        where.sel(), where.args(), PictureColumns.DATE + " DESC");
+        return cursorLoader;
     }
 
     /**
@@ -120,13 +128,20 @@ public class AmazingPictureDao {
      * @param limit max number of pictures to get
      * @return
      */
-    public Cursor getLatestUploaded(int limit) {
+    public CursorLoader getLatestUploaded(int limit) {
         //TODO implement limit
         PictureSelection where = new PictureSelection();
         where.visible(true).and().uploadprogress(AmazingPicture.UPLOAD_DONE_ALL);
-        Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,
-                where.sel(), where.args(), PictureColumns.DATE + " DESC");
-        return c;
+        CursorLoader cursorLoader = new CursorLoader(
+                mAppContext,
+                PictureColumns.CONTENT_URI,
+                null,
+                where.sel(),
+                where.args(),
+                PictureColumns.DATE + " DESC");
+        //Cursor c = mAppContext.getContentResolver().query(PictureColumns.CONTENT_URI, null,
+        //        where.sel(), where.args(), PictureColumns.DATE + " DESC");
+        return cursorLoader;
     }
 
     private int updateById(long pictureId, PictureContentValues values) {
