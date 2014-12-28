@@ -27,6 +27,9 @@ public class LogicManager {
 
     /**
      * Schedules a new picture refresh, if needed
+     *
+     *  AlarmManager and setInexactRepeating(..)
+     * http://www.accella.net/scheduling-code-execution-on-android/pote
      */
     public void schedulePicturesRefresh(Context appContext) {
         // First, checks if the picture refresh have to be scheduled

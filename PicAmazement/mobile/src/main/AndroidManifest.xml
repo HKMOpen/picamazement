@@ -105,6 +105,7 @@
             android:exported="false"
         >
             <intent-filter>
+                <action android:name="it.rainbowbreeze.picama.Action.Picture.ScheduleRefresh" />
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Refresh" />
             </intent-filter>
         </service>
