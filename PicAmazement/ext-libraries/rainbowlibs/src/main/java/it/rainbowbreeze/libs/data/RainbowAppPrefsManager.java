@@ -53,12 +53,14 @@ public abstract class RainbowAppPrefsManager {
         if (!hasDefaultValuesBeenSet() || force) {
             mLogFacility.v(LOG_TAG, "Setting default preference values");
             // This call sets also the system flag
-            PreferenceManager.setDefaultValues(
-                    mAppContext,
-                    mPrefsFileName,
-                    Context.MODE_PRIVATE,
-                    mDefaultValueResId,
-                    force);
+            if (mDefaultValueResId > 0) {
+                PreferenceManager.setDefaultValues(
+                        mAppContext,
+                        mPrefsFileName,
+                        Context.MODE_PRIVATE,
+                        mDefaultValueResId,
+                        force);
+            }
             // Adds customized values
             setBatchSave();
             setDefaultValuesInternal();
