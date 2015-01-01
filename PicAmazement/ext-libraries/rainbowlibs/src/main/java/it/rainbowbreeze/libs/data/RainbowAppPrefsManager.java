@@ -1,10 +1,10 @@
-package it.rainbowbreeze.picama.data;
+package it.rainbowbreeze.libs.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import it.rainbowbreeze.picama.common.ILogFacility;
+import it.rainbowbreeze.libs.common.IRainbowLogFacility;
 
 /**
  *
@@ -16,7 +16,7 @@ import it.rainbowbreeze.picama.common.ILogFacility;
 public abstract class RainbowAppPrefsManager {
     private static final String LOG_TAG = RainbowAppPrefsManager.class.getSimpleName();
 
-    protected final ILogFacility mLogFacility;
+    private final IRainbowLogFacility mLogFacility;
 
     public final String mPrefsFileName;  // File name where values are saved
     private final int mDefaultValueResId;  // XML resource for dafault values
@@ -29,7 +29,7 @@ public abstract class RainbowAppPrefsManager {
             Context appContext,
             String prefsFileName,
             int defaultValueResId,
-            ILogFacility logFacility) {
+            IRainbowLogFacility logFacility) {
         mAppContext = appContext;
         mLogFacility = logFacility;
         mPrefsFileName = prefsFileName;

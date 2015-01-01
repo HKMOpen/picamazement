@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.Calendar;
 
+import it.rainbowbreeze.libs.data.RainbowAppPrefsManager;
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.ILogFacility;
 
@@ -17,11 +18,13 @@ import it.rainbowbreeze.picama.common.ILogFacility;
 public class AppPrefsManager extends RainbowAppPrefsManager {
     private static final String LOG_TAG = AppPrefsManager.class.getSimpleName();
 
+    private final ILogFacility mLogFacility;
     public static final String PREFS_FILE_NAME = "PicAmazementPrefs";
     private static final String NULL_STRING = "null";
 
     public AppPrefsManager(Context appContext, ILogFacility logFacility) {
         super(appContext, PREFS_FILE_NAME, R.xml.pref_general, logFacility);
+        mLogFacility = logFacility;
     }
 
     @Override
