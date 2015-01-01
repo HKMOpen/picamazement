@@ -4,13 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import javax.inject.Inject;
-
-import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.data.AppPrefsManager;
-import it.rainbowbreeze.picama.logic.wearable.SendDataToWearService;
-
 /**
  * Created by alfredomorresi on 05/12/14.
  */

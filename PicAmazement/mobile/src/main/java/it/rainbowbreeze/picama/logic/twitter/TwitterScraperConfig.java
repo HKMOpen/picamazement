@@ -14,6 +14,7 @@ public class TwitterScraperConfig extends IPictureScraperConfig {
         usernames.add("EarthBeauties");
         usernames.add("_Paisajes_");
         usernames.add("HighFromAbove");
+        usernames.add("HistoryInPics");
         return usernames;
     }
 }
