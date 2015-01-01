@@ -1,8 +1,6 @@
 package it.rainbowbreeze.picama.data;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import java.util.Calendar;
 
