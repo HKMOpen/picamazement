@@ -53,7 +53,7 @@ public class MyApp extends Application {
         mObjectGraph = ObjectGraph.create(getModules().toArray());
 
         inject(this);
-        mAppPreferences.setDefaultValues();
+        mAppPreferences.setDefaultValues(false);
 
         //TODO: fix the issue with broadcast receiver onboot, in the meantime workaround
         mLogicManager.schedulePicturesRefresh(this);

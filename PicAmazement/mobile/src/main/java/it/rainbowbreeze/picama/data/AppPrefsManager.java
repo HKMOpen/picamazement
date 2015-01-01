@@ -13,48 +13,23 @@ import it.rainbowbreeze.picama.common.ILogFacility;
  *
  * Remember: Key names have to be equal to the ones in the xml file, otherwise two different
  *  settings are managed
+ *
  * Created by alfredomorresi on 05/12/14.
  */
-public class AppPrefsManager {
+public class AppPrefsManager extends RainbowAppPrefsManager {
     private static final String LOG_TAG = AppPrefsManager.class.getSimpleName();
-
-    private final ILogFacility mLogFacility;
 
     public static final String PREFS_FILE_NAME = "PicAmazementPrefs";
     private static final String NULL_STRING = "null";
 
-    private final Context mAppContext;
-    private final SharedPreferences mAppPreferences;
-    private boolean mSaveInBatch;
-    private SharedPreferences.Editor mSharedEditor;
-
     public AppPrefsManager(Context appContext, ILogFacility logFacility) {
-        mAppContext = appContext;
-        mLogFacility = logFacility;
-        mAppPreferences = appContext.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
+        super(appContext, PREFS_FILE_NAME, R.xml.pref_general, logFacility);
     }
 
-    private boolean hasDefaultValuesBeenSet() {
-        // See http://developer.android.com/reference/android/preference/PreferenceManager.html#KEY_HAS_SET_DEFAULT_VALUES
-        SharedPreferences appPreferences = mAppContext.getSharedPreferences(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, Context.MODE_PRIVATE);
-        boolean defaultValuesSet = appPreferences.getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false);
-        return defaultValuesSet;
-    }
-
-    /**
-     * Sets default values for the preferences, given the XML file
-     */
-    public void setDefaultValues() {
-        if (!hasDefaultValuesBeenSet()) {
-            mLogFacility.v(LOG_TAG, "Setting default preference values");
-            // This call sets also the system flag
-            PreferenceManager.setDefaultValues(mAppContext, PREFS_FILE_NAME, Context.MODE_PRIVATE, R.xml.pref_general, false);
-            // Adds customized values
-            setBatchSave()
-                    .setDropboxEnabled(false)
-                    .setDropboxAuthToken(NULL_STRING)
-                    .save();
-        }
+    @Override
+    protected void setDefaultValuesInternal() {
+        setDropboxEnabled(false);
+        setDropboxAuthToken(NULL_STRING);
     }
 
     private static final String PREF_LASTSYNCTIME = "pref_lastSyncTime";
@@ -144,45 +119,4 @@ public class AppPrefsManager {
     public String getSyncFrequency() {
         return mAppPreferences.getString(PREF_SYNCFREQUENCY, "0");
     }
-
-
-    /**
-     * Set batch save mode. When set, remember to call {@link #save()} at the end of your changes.
-     * @return
-     */
-    public AppPrefsManager setBatchSave() {
-        mSaveInBatch = true;
-        return this;
-    }
-    public boolean save() {
-        boolean result = mSharedEditor.commit();
-        if (result) {
-            mSaveInBatch = false;
-            mSharedEditor = null;
-        }
-        return result;
-    }
-    public AppPrefsManager cancelBatchSave() {
-        mSaveInBatch = false;
-        mSharedEditor = null;
-        return this;
-    }
-
-
-    private void openSharedEditor() {
-        if (null == mSharedEditor) {
-            mSharedEditor = mAppPreferences.edit();
-        }
-    }
-
-    /**
-     * Do not save while in batch edit mode, otherwise saves preferences
-     * @return
-     */
-    private boolean saveIfNeeded() {
-        return mSaveInBatch
-                ? false
-                : save();
-    }
-
 }
