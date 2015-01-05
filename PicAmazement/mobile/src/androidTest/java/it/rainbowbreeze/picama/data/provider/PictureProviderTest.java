@@ -29,7 +29,7 @@ public class PictureProviderTest extends ProviderTestCase2<PictureProvider> {
         int pictures = 0;
         while (c.moveToNext()) {
             pictures++;
-            AmazingPicture picture = new AmazingPicture().fromCursor(c);
+            AmazingPicture picture = AmazingPicture.fromCursor(c);
             Log.v("PicAmazement", picture.getId() + " - " + picture.getDesc());
         }
         c.close();

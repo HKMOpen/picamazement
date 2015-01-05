@@ -93,7 +93,7 @@ public class AmazingPictureDao {
                 PictureColumns.DATE + " DESC");
         AmazingPicture picture = null;
         while (c.moveToNext()) {
-            picture = new AmazingPicture().fromCursor(c);
+            picture = AmazingPicture.fromCursor(c);
             break;
         }
         c.close();

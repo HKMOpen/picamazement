@@ -67,8 +67,9 @@ public class AmazingPicture extends BaseAmazingPicture {
         }
     }
 
-    public AmazingPicture fromCursor(PictureCursor c) {
-        this
+    public static AmazingPicture fromCursor(PictureCursor c) {
+        AmazingPicture picture = new AmazingPicture();
+        picture
                 .setUploadAsked(c.getUploadasked())
                 .setUploadProgress(c.getUploadprogress())
                 .setId(c.getId())
@@ -78,7 +79,7 @@ public class AmazingPicture extends BaseAmazingPicture {
                 .setSource(c.getSource())
                 .setAuthor(c.getAuthor())
                 .setDate(c.getDate());
-        return this;
+        return picture;
     }
 
     public void fillContentValues(PictureContentValues values) {
