@@ -133,9 +133,8 @@ public class AndroidModule {
     public ActionsManager provideActionsManager(
             @ForApplication Context appContext,
             ILogFacility logFacility,
-            AmazingPictureDao amazingPictureDao,
             PictureScraperManager pictureScraperManager) {
-        return new ActionsManager(appContext, logFacility, amazingPictureDao, pictureScraperManager);
+        return new ActionsManager(appContext, logFacility, pictureScraperManager);
     }
 
     @Provides @Singleton
