@@ -59,6 +59,11 @@ public class SendDataToDeviceService extends GoogleApiClientBaseService {
     }
 
     @Override
+    protected String[] getValidIntentActions() {
+        return null;  // No action required
+    }
+
+    @Override
     public void doYourStuff(Intent intent) {
         // All the validity checks are performed on the super method
         final String action = intent.getAction();

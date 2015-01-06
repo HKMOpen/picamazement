@@ -42,7 +42,7 @@ public class SendDataToWearService extends GoogleApiClientBaseService {
     public static final String EXTRA_PICTUREID = "Param.PictureId";
 
     public SendDataToWearService() {
-        super(SendDataToWearService.class.getSimpleName());
+        super(LOG_TAG);
     }
 
     @Override
@@ -66,6 +66,11 @@ public class SendDataToWearService extends GoogleApiClientBaseService {
         // Class in not null after the call to {@link #onCreate} method, where Dagger
         // injects what's required
         return mLogFacility;
+    }
+
+    @Override
+    protected String[] getValidIntentActions() {
+        return new String[] {ACTION_SENDPICTURE};
     }
 
     @Override

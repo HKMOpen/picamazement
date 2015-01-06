@@ -59,6 +59,12 @@ public abstract class GoogleApiClientBaseService extends IntentService {
     protected abstract ILogFacility getLogFacility();
 
     /**
+     * Returns the list of valid intent actions. Null if an action is not required
+     * @return
+     */
+    protected abstract String[] getValidIntentActions();
+
+    /**
      * Executes the real service code. Is called inside the {@link android.app.IntentService#onHandleIntent(android.content.Intent)}
      * method.<p/>
      * All the required checks (Intent not null, API available) have been already done once
@@ -72,7 +78,7 @@ public abstract class GoogleApiClientBaseService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         assignLogFacility();
-        if (!isValidIntent(intent)) {
+        if (!isValidIntent(intent, getValidIntentActions())) {
             mLogFacility.i(LOG_TAG, "Intent received is not valid, aborting");
             return;
         }
@@ -102,15 +108,25 @@ public abstract class GoogleApiClientBaseService extends IntentService {
 
     /**
      * Checks if given intent is valid and can be processed by {@link GoogleApiClientBaseService#onHandleIntent(android.content.Intent)}.
-     * Base implementation only checks for null intent
      *
      * Change this method and add your own custom validation logic
      *
      * @param intent
+     * @param allowedActions
      * @return true if the intent is valid, otherwise false
      */
-    protected boolean isValidIntent(Intent intent) {
-        return (null != intent);
+    protected boolean isValidIntent(Intent intent, String[] allowedActions) {
+        if (null == allowedActions) return true;
+
+        // If there are actions, intent cannot be null
+        if (null == intent) return false;
+        // Checks for actions
+        for (String action : allowedActions) {
+            if (action.equals(intent.getAction()))
+                return true;
+        }
+        // No actions match the one in the intent
+        return false;
     }
 
     /**
