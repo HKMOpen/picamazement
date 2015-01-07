@@ -54,9 +54,6 @@ public class MyApp extends Application {
 
         inject(this);
         mAppPreferences.setDefaultValues(false);
-
-        //TODO: fix the issue with broadcast receiver onboot, in the meantime workaround
-        mLogicManager.schedulePicturesRefresh(this);
     }
 
     /**
