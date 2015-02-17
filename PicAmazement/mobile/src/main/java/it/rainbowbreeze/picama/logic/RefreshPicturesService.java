@@ -29,7 +29,7 @@ public class RefreshPicturesService extends IntentService {
     @Inject AppPrefsManager mAppPrefsManager;
 
     public static final String ACTION_REFRESH_PICTURES = "it.rainbowbreeze.picama.Action.Picture.Refresh";
-    public static final String ACTION_SCHEDULE_REFRESH = "it.rainbowbreeze.picama.Action.Picture.ScheduleRefresh";
+    public static final String ACTION_SCHEDULE_REFRESH_AFTER_BOOT = "it.rainbowbreeze.picama.Action.Picture.ScheduleRefresh";
 
     public RefreshPicturesService() {
         super(RefreshPicturesService.class.getSimpleName());
@@ -60,8 +60,9 @@ public class RefreshPicturesService extends IntentService {
                             .execute();
             }
 
-        } else if (ACTION_SCHEDULE_REFRESH.equals(intent.getAction())) {
-            mLogFacility.v(LOG_TAG, "Scheduling pictures refresh");
+        } else if (ACTION_SCHEDULE_REFRESH_AFTER_BOOT.equals(intent.getAction())) {
+            mLogFacility.v(LOG_TAG, "Scheduling pictures refresh after a boot");
+            mLogFacility.v(LOG_TAG, "Resetting sync in progress flag");
             mAppPrefsManager.resetSyncStatus();  // In case a sync has been interrupted
             mLogicManager.schedulePicturesRefresh(getApplicationContext());
 

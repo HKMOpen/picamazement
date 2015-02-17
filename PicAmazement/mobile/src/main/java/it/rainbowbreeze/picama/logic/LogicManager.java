@@ -64,7 +64,7 @@ public class LogicManager {
 
         if (nextSyncInterval <= 0) {
             //ok... add some more seconds, useful during reboot, for example...
-            nextSyncInterval = 60000L;
+            //nextSyncInterval = 60000L;
         }
 
         PendingIntent pendingIntent = createSyncPendingIntent(appContext);

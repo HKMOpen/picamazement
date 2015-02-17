@@ -12,7 +12,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             Intent newIntent = new Intent(context, RefreshPicturesService.class);
-            intent.setAction(RefreshPicturesService.ACTION_SCHEDULE_REFRESH);
+            intent.setAction(RefreshPicturesService.ACTION_SCHEDULE_REFRESH_AFTER_BOOT);
             context.startService(newIntent);
         }
     }
