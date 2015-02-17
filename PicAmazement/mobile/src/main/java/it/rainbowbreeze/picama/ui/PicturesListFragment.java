@@ -59,7 +59,7 @@ public class PicturesListFragment
         return fragment;
     }
 
-    private PicturesListFragment() {
+    public PicturesListFragment() {
     }
 
     @Override
