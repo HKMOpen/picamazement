@@ -35,5 +35,6 @@
     <string name="twittersettings_lblAccounts">Twitter account where fetching images</string>
     <string name="twittersettings_btnRemoveAccount">Remove selected</string>
     <string name="twittersettings_btnAddAccount">Add account</string>
+    <string name="piclist_mnuHideAllVisibleNotUploaded">Hide all pics</string>
 
 </resources>

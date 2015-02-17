@@ -144,6 +144,23 @@ public class AmazingPictureDao {
         return cursorLoader;
     }
 
+    /**
+     * Mass hiding of all the visible pictures, not uploaded to the cloud
+     */
+    public void HideAllVisibleAndNotUploaded() {
+        mLogFacility.v(LOG_TAG, "Hiding all visible pictures, not uploaded to the cloud");
+        PictureSelection pictureSelection = new PictureSelection();
+        pictureSelection.visible(true).and().uploadprogress(AmazingPicture.UPLOAD_DONE_NONE);
+        PictureCursor c = pictureSelection.query(mAppContext.getContentResolver(),
+                new String[] {PictureColumns._ID},
+                PictureColumns.DATE + " DESC");
+        while (c.moveToNext()) {
+            long id = c.getId();
+            hideById(id);
+        }
+        c.close();
+    }
+
     private int updateById(long pictureId, PictureContentValues values) {
         Uri pictureUri = Uri.parse(PictureColumns.CONTENT_URI + "/" + pictureId);
         return mAppContext.getContentResolver().update(
@@ -175,4 +192,5 @@ public class AmazingPictureDao {
         updateById(pictureId, values);
         return newValue;
     }
+
 }

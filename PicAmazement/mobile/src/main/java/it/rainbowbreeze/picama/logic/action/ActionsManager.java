@@ -4,7 +4,6 @@ import android.content.Context;
 
 import it.rainbowbreeze.libs.logic.RainbowActionsManager;
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 
 /**
@@ -43,6 +42,10 @@ public class ActionsManager extends RainbowActionsManager {
 
     public UploadPictureAction uploadPicture() {
         return new UploadPictureAction(mAppContext, mLogFacility, this);
+    }
+
+    public HideAllVisibleNotUploadedPicturesAction hideAllVisibleNotUploadedPictures() {
+        return new HideAllVisibleNotUploadedPicturesAction(mAppContext, mLogFacility, this);
     }
 
 }

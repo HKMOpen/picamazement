@@ -119,6 +119,8 @@ public class PicturesListFragment
         if (QUERY_UPLOADED == getArguments().getInt(ARG_QUERY_TYPE, QUERY_VISIBLE_NOT_UPLOADED)) {
             MenuItem menuItem = menu.findItem(R.id.piclist_mnuHideHelp);
             menuItem.setVisible(false);
+            menuItem = menu.findItem(R.id.piclist_mnuHideAllVisibleNotUploaded);
+            menuItem.setVisible(false);
         }
         super.onPrepareOptionsMenu(menu);
     }
@@ -142,6 +144,10 @@ public class PicturesListFragment
                 break;
             case R.id.piclist_mnuHideHelp:
                 Toast.makeText(mAppContext, "Long click to hide a picture", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.piclist_mnuHideAllVisibleNotUploaded:
+                mActionsManager.hideAllVisibleNotUploadedPictures()
+                        .executeAsync();
                 break;
             default:
                 value = super.onOptionsItemSelected(item);

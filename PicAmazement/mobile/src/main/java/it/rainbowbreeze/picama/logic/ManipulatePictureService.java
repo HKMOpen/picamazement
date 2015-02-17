@@ -23,6 +23,7 @@ public class ManipulatePictureService extends IntentService {
 
     public static final String ACTION_REMOVE_PICTURE_FROM_LIST = Bag.INTENT_ACTION_REMOVEPICTURE;
     public static final String ACTION_REMOVE_ALL_PICTURES = "it.rainbowbreeze.picama.Action.Picture.RemoveAll";
+    public static final String ACTION_HIDE_ALL_VISIBLE_NOT_UPLOADED_PICTURES = "it.rainbowbreeze.picama.Action.Picture.HideAllVisibleNotUploaded";
     public static final String EXTRA_PARAM_PICTURE_ID = Bag.INTENT_EXTRA_PICTUREID;
 
     public ManipulatePictureService() {
@@ -54,6 +55,10 @@ public class ManipulatePictureService extends IntentService {
         } else if (ACTION_REMOVE_ALL_PICTURES.equals(intent.getAction())) {
             mLogFacility.v(LOG_TAG, "Removing all pictures from the list");
             mAmazingPictureDao.removeAll();
+
+        } else if (ACTION_HIDE_ALL_VISIBLE_NOT_UPLOADED_PICTURES.equals(intent.getAction())) {
+            mLogFacility.v(LOG_TAG, "Hiding all visible but not uploaded pictures from the list");
+            mAmazingPictureDao.HideAllVisibleAndNotUploaded();
 
         } else {
             mLogFacility.e(LOG_TAG, "Cannot process the requested action");
