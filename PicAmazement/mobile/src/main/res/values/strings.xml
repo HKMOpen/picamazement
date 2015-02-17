@@ -10,6 +10,9 @@
     <string name="main_mnuAbout">About</string>
 
     <string name="common_app_name">Pic Amazement</string>
+    <string name="common_lblAreYouSure">Are you sure?</string>
+    <string name="common_btnYes">Yes</string>
+    <string name="common_btnCancel">Cancel</string>
 
     <string name="piclist_mnuDeleteAll">Delete All</string>
     <string name="piclist_mnuRefresh">Refresh</string>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -58,7 +59,7 @@ public class PicturesListFragment
         return fragment;
     }
 
-    public PicturesListFragment() {
+    private PicturesListFragment() {
     }
 
     @Override
@@ -133,21 +134,35 @@ public class PicturesListFragment
         int id = item.getItemId();
 
         boolean value = true;
+        DialogFragment newFragment;
         switch (id) {
-            case R.id.piclist_mnuDeleteAll:
-                mActionsManager.deleteAllPictures()
-                        .executeAsync();
-                break;
             case R.id.piclist_mnuRefresh:
                 mActionsManager.searchForNewImages()
                         .executeAsync();
                 break;
+
+            case R.id.piclist_mnuDeleteAll:
+                newFragment = new AskForConfirmationDialog(new AskForConfirmationDialog.DialogAction() {
+                    public void onDialogButtonClick(DialogFragment dialog) {
+                        mActionsManager.deleteAllPictures()
+                                .executeAsync();
+                    }
+                }, null);
+                newFragment.show(getFragmentManager(), "DeleteAllPictures");
+                break;
+
             case R.id.piclist_mnuHideHelp:
                 Toast.makeText(mAppContext, "Long click to hide a picture", Toast.LENGTH_SHORT).show();
                 break;
+
             case R.id.piclist_mnuHideAllVisibleNotUploaded:
-                mActionsManager.hideAllVisibleNotUploadedPictures()
-                        .executeAsync();
+                newFragment = new AskForConfirmationDialog(new AskForConfirmationDialog.DialogAction() {
+                    public void onDialogButtonClick(DialogFragment dialog) {
+                        mActionsManager.hideAllVisibleNotUploadedPictures()
+                                .executeAsync();
+                    }
+                }, null);
+                newFragment.show(getFragmentManager(), "HideAllVisibleNotUploadedPictures");
                 break;
             default:
                 value = super.onOptionsItemSelected(item);
