@@ -43,6 +43,8 @@ public class AskForConfirmationDialog extends DialogFragment {
                         mLogFacility.v(LOG_TAG, "Clicked on the positive button of the dialog, executing the relative action");
                         // Send the positive button event back to the host activity
                         // Wondering why?
+                        //  http://stackoverflow.com/questions/13238959/how-to-get-button-clicks-in-host-fragment-from-dialog-fragment
+                        //  or
                         //  http://stackoverflow.com/questions/10905312/receive-result-from-dialogfragment
                         //  http://stackoverflow.com/questions/13733304/callback-to-a-fragment-from-a-dialogfragment
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
