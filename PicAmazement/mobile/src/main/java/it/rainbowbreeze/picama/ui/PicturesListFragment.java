@@ -37,6 +37,8 @@ public class PicturesListFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = PicturesListFragment.class.getSimpleName();
+    private static final int REQUEST_DELETE_ALL_PICTURES = 100;
+    private static final int REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES = 101;
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
@@ -142,12 +144,8 @@ public class PicturesListFragment
                 break;
 
             case R.id.piclist_mnuDeleteAll:
-                newFragment = new AskForConfirmationDialog(new AskForConfirmationDialog.DialogAction() {
-                    public void onDialogButtonClick(DialogFragment dialog) {
-                        mActionsManager.deleteAllPictures()
-                                .executeAsync();
-                    }
-                }, null);
+                newFragment = AskForConfirmationDialog.newInstance();
+                newFragment.setTargetFragment(this, REQUEST_DELETE_ALL_PICTURES);
                 newFragment.show(getFragmentManager(), "DeleteAllPictures");
                 break;
 
@@ -156,12 +154,8 @@ public class PicturesListFragment
                 break;
 
             case R.id.piclist_mnuHideAllVisibleNotUploaded:
-                newFragment = new AskForConfirmationDialog(new AskForConfirmationDialog.DialogAction() {
-                    public void onDialogButtonClick(DialogFragment dialog) {
-                        mActionsManager.hideAllVisibleNotUploadedPictures()
-                                .executeAsync();
-                    }
-                }, null);
+                newFragment = AskForConfirmationDialog.newInstance();
+                newFragment.setTargetFragment(this, REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES);
                 newFragment.show(getFragmentManager(), "HideAllVisibleNotUploadedPictures");
                 break;
             default:
@@ -184,6 +178,31 @@ public class PicturesListFragment
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mLogFacility.v(LOG_TAG, "onActivityResult with request code " + requestCode + " and result code " + resultCode);
+        switch (requestCode) {
+            case REQUEST_DELETE_ALL_PICTURES:
+                if (Activity.RESULT_OK == resultCode) {
+                    mActionsManager.deleteAllPictures()
+                        .executeAsync();
+                }
+                break;
+
+            case REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES:
+                if (Activity.RESULT_OK == resultCode) {
+                    mActionsManager.hideAllVisibleNotUploadedPictures()
+                            .executeAsync();
+                }
+                break;
+
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
+
+    }
+
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mPicturesAdapter.changeCursor(data);
     }
@@ -192,4 +211,6 @@ public class PicturesListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         mPicturesAdapter.changeCursor(null);
     }
+
+
 }

@@ -20,8 +20,6 @@ import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 public class MainActivity extends ActionBarActivity {
-    @Inject ActionsManager mActionsManager;
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -51,7 +49,6 @@ public class MainActivity extends ActionBarActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
     }
 
 

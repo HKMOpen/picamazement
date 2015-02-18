@@ -101,7 +101,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 cal.setTimeInMillis(lastSyncTime);
                 // http://developer.android.com/reference/java/text/SimpleDateFormat.html
                 //SimpleDateFormat ft = new SimpleDateFormat("yyyy.MM.dd 'at' hh:mm:ss a zzz");
-                SimpleDateFormat ft = new SimpleDateFormat("yyyy.MM.dd',' kk:mm:ss");
+                SimpleDateFormat ft = new SimpleDateFormat("yyyy.MM.dd',' HH:mm:ss");
                 finalText += String.format(
                         getString(R.string.pref_syncFrequency_lastSync),
                         ft.format(cal.getTime()));

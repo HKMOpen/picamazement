@@ -19,27 +19,17 @@ import it.rainbowbreeze.picama.common.MyApp;
  */
 public class AskForConfirmationDialog extends DialogFragment {
     private static final String LOG_TAG = AskForConfirmationDialog.class.getSimpleName();
+    private static final String ARG_QUESTION_TYPE = "question_type";
 
     @Inject ILogFacility mLogFacility;
 
     /**
-     * The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it.
+     * Returns a new instance of this fragment for the given section
+     * number.
      */
-    public interface DialogAction {
-        public void onDialogButtonClick(DialogFragment dialog);
-    }
-
-    private final DialogAction mPositiveAction;
-    private final DialogAction mNegativeAction;
-
-    public AskForConfirmationDialog(DialogAction positiveAction, DialogAction negativeAction) {
-        if (null == positiveAction) {
-            throw new IllegalArgumentException("The action passed cannot be null");
-        }
-        mPositiveAction = positiveAction;
-        mNegativeAction = negativeAction;
+    public static AskForConfirmationDialog newInstance() {
+        AskForConfirmationDialog fragment = new AskForConfirmationDialog();
+        return fragment;
     }
 
 
@@ -51,14 +41,17 @@ public class AskForConfirmationDialog extends DialogFragment {
                 .setPositiveButton(R.string.common_btnYes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mLogFacility.v(LOG_TAG, "Clicked on the positive button of the dialog, executing the relative action");
-                        mPositiveAction.onDialogButtonClick(AskForConfirmationDialog.this);
+                        // Send the positive button event back to the host activity
+                        // Wondering why?
+                        //  http://stackoverflow.com/questions/10905312/receive-result-from-dialogfragment
+                        //  http://stackoverflow.com/questions/13733304/callback-to-a-fragment-from-a-dialogfragment
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
                     }
                 })
                 .setNegativeButton(R.string.common_btnCancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (null != mNegativeAction) {
-                            mNegativeAction.onDialogButtonClick(AskForConfirmationDialog.this);
-                        }
+                        // Send the negative button event back to the host activity
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
                     }
                 });
         // Create the AlertDialog object and return it

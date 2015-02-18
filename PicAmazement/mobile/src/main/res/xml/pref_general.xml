@@ -6,12 +6,8 @@
         android:title="@string/pref_source_title"
         android:summary="@string/pref_source_summary"
         >
-        <Preference
-            android:title="@string/pref_twitter_title"
-            >
-            <intent
-                android:action="action_StartTwitterSettings"
-                />
+        <Preference android:title="@string/pref_twitter_title" >
+            <intent android:action="action_StartTwitterSettings" />
         </Preference>
     </PreferenceScreen>
 
@@ -19,12 +15,8 @@
         android:title="@string/pref_storage_title"
         android:summary="@string/pref_storage_summary"
     >
-        <Preference
-            android:title="@string/pref_dropbox_title"
-        >
-            <intent
-                android:action="action_StartDropboxSettings"
-            />
+        <Preference android:title="@string/pref_dropbox_title">
+            <intent android:action="action_StartDropboxSettings" />
         </Preference>
     </PreferenceScreen>
 
