@@ -29,7 +29,7 @@ public class AppPrefsManager extends RainbowAppPrefsManager {
 
     @Override
     protected void setDefaultValuesInternal() {
-        mLogFacility.v(LOG_TAG, "Setting default values of preferences");
+        mLogFacility.v(LOG_TAG, "Setting default values for the preferences");
         setDropboxEnabled(false);
         setDropboxAuthToken(NULL_STRING);
     }
