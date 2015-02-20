@@ -39,5 +39,6 @@
     <string name="twittersettings_btnRemoveAccount">Remove selected</string>
     <string name="twittersettings_btnAddAccount">Add account</string>
     <string name="piclist_mnuHideAllVisibleNotUploaded">Hide all pics</string>
+    <string name="twittersettings_msgSelectAccountFirst">First, select an account to delete</string>
 
 </resources>

@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
 import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
@@ -20,28 +21,6 @@ import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
 public class MobileModule {
     @Provides @Singleton public ILogFacility provideLogFacility () {
         return new LogFacility();
-    }
-
-    /**
-     * There is a provide method because the class have to be configure
-     * before working. Otherwise a simple Inject the requiring class
-     * could have been used.
-     * @return
-     */
-    @Provides @Singleton public PictureScraperManagerConfig providePictureScraperManagerConfig (
-            ILogFacility logFacility,
-            TwitterScraperConfig twitterScraperConfig) {
-        TwitterScraper twitterScraper = new TwitterScraper(logFacility, twitterScraperConfig);
-
-        PictureScraperManagerConfig config = new PictureScraperManagerConfig(
-                twitterScraper
-        );
-
-        return config;
-    }
-
-    @Provides @Singleton public TwitterScraperConfig provideTwitterScraperConfig() {
-        return new TwitterScraperConfig();
     }
 
     @Provides @Singleton

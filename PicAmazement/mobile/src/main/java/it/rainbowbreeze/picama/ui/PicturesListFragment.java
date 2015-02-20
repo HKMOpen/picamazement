@@ -199,7 +199,6 @@ public class PicturesListFragment
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
         }
-
     }
 
     @Override

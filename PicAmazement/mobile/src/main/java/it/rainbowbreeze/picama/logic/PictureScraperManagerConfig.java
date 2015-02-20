@@ -15,10 +15,6 @@ import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
 public class PictureScraperManagerConfig {
     public final List<IPictureScraper> mPictureScrapers;
 
-    public PictureScraperManagerConfig(List<IPictureScraper> pictureScrapers) {
-        this.mPictureScrapers = pictureScrapers;
-    }
-
     public PictureScraperManagerConfig(IPictureScraper... pictureScrapers) {
         List<IPictureScraper> scrapers;
         scrapers = new ArrayList<IPictureScraper>();

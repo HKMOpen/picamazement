@@ -1,9 +1,11 @@
 package it.rainbowbreeze.picama.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +14,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.data.AppPrefsManager;
+import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
 
 /**
@@ -27,10 +33,14 @@ import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
 */
 public class TwitterSettingsFragment extends Fragment {
     private static final String LOG_TAG = TwitterSettingsFragment.class.getSimpleName();
+    private static final int REQUEST_DELETE_ACCOUNT = 100;
 
     @Inject ILogFacility mLogFacility;
-    @Inject AppPrefsManager mAppPrefsManager;
     @Inject TwitterScraperConfig mTwitterScraperConfig;
+    @Inject PictureScraperManager mPictureScraperManager;
+    private ArrayAdapter<String> mItemsAdapter;
+    List<String> mUserNames;
+    private ListView mList;
     private Context mAppContext;
 
     public TwitterSettingsFragment() {
@@ -41,21 +51,39 @@ public class TwitterSettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fra_twitter_settings, container, false);
 
-        Button btn;
-        btn = (Button) rootView.findViewById(R.id.twittersettings_btnAddAccount);
-        btn.setEnabled(false);
-        btn = (Button) rootView.findViewById(R.id.twittersettings_btnRemoveAccount);
-        btn.setEnabled(false);
+        mUserNames = new ArrayList<>(mTwitterScraperConfig.getUserNames());
+        mItemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, mUserNames);
+        mList = (ListView) rootView.findViewById(R.id.twittersettings_lstAccounts);
+        mList.setAdapter(mItemsAdapter);
+        mList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        List<String> userNames = mTwitterScraperConfig.getUserNames();
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, userNames);
-        ListView lst = (ListView) rootView.findViewById(R.id.twittersettings_lstAccounts);
-        lst.setAdapter(itemsAdapter);
+        Button button;
+        button = (Button) rootView.findViewById(R.id.twittersettings_btnAddAccount);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                askAndAddNewAccount(mItemsAdapter);
+            }
+        });
+        button = (Button) rootView.findViewById(R.id.twittersettings_btnRemoveAccount);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                askToRemoveUserName();
+            }
+        });
 
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Set<String> userNames = new TreeSet<>();
+        for(String userName : mUserNames) {
+            userNames.add(userName);
+        }
+        mTwitterScraperConfig.setUserNames(userNames);
+        mPictureScraperManager.updatePictureScraperConfig(mTwitterScraperConfig);
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -63,4 +91,42 @@ public class TwitterSettingsFragment extends Fragment {
         mAppContext = activity.getApplicationContext();
         ((MyApp) mAppContext).inject(this);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_DELETE_ACCOUNT:
+                if (Activity.RESULT_OK == resultCode) {
+                    int pos = mList.getCheckedItemPosition();
+                    mUserNames.remove(pos);
+                    mItemsAdapter.notifyDataSetChanged();
+                    mList.setItemChecked(0, false);
+                }
+                break;
+
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
+    }
+
+    private void askAndAddNewAccount(ArrayAdapter<String> mItemsAdapter) {
+        mUserNames.add("Test " + new Date().getTime());
+        mItemsAdapter.notifyDataSetChanged();
+    }
+
+    private void askToRemoveUserName() {
+        int pos = mList.getCheckedItemPosition();
+        // Checks the sizes because, after deleting an item, the list still store the index of the deleted
+        // item as checked item, but without any visual clue
+        if (-1 == pos || pos >= mUserNames.size()) {
+            Toast.makeText(this.getActivity(), R.string.twittersettings_msgSelectAccountFirst, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DialogFragment newFragment = AskForConfirmationDialog.newInstance();
+        newFragment.setTargetFragment(this, REQUEST_DELETE_ACCOUNT);
+        newFragment.show(getFragmentManager(), "DeleteAccount");
+    }
+
 }

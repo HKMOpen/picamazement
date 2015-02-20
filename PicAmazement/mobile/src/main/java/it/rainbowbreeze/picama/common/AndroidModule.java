@@ -20,6 +20,8 @@ import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
 import it.rainbowbreeze.picama.logic.storage.PictureDiskManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
+import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
+import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
 import it.rainbowbreeze.picama.logic.wearable.SendDataToWearService;
 import it.rainbowbreeze.picama.logic.wearable.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
@@ -86,16 +88,6 @@ public class AndroidModule {
     }
 
     /**
-     * The application context can be read from the local app or passing it a parameters
-     * TODO: remove this class
-     * @return
-     */
-    @Provides @Singleton
-    LocationManager provideLocationManager() {
-        return (LocationManager) mAppContent.getSystemService(Context.LOCATION_SERVICE);
-    }
-
-    /**
      * It works because {@link it.rainbowbreeze.picama.common.ILogFacility} is provided
      * by another modules, included by this one
      * @param logFacility
@@ -106,6 +98,31 @@ public class AndroidModule {
             @ForApplication Context appContext,
             ILogFacility logFacility) {
         return new WearManager(appContext, logFacility);
+    }
+
+    /**
+     * There is a provide method because the class have to be configure
+     * before working. Otherwise a simple Inject the requiring class
+     * could have been used.
+     * @return
+     */
+    @Provides @Singleton public PictureScraperManagerConfig providePictureScraperManagerConfig (
+            ILogFacility logFacility,
+            TwitterScraperConfig twitterScraperConfig) {
+        TwitterScraper twitterScraper = new TwitterScraper(logFacility, twitterScraperConfig);
+
+        PictureScraperManagerConfig config = new PictureScraperManagerConfig(
+                twitterScraper
+        );
+
+        return config;
+    }
+
+    @Provides @Singleton public TwitterScraperConfig provideTwitterScraperConfig(
+            @ForApplication Context appContext,
+            ILogFacility logFacility
+    ) {
+        return new TwitterScraperConfig(appContext, logFacility);
     }
 
     /**
@@ -122,10 +139,13 @@ public class AndroidModule {
             ILogFacility logFacility,
             PictureScraperManagerConfig pictureScraperManagerConfig,
             AmazingPictureDao amazingPictureDao,
-            AppPrefsManager appPrefsManager) {
+            AppPrefsManager appPrefsManager
+    ) {
         return new PictureScraperManager(
-                logFacility, pictureScraperManagerConfig,
-                amazingPictureDao, appPrefsManager);
+                logFacility,
+                pictureScraperManagerConfig,
+                amazingPictureDao,
+                appPrefsManager);
     }
 
     /**
