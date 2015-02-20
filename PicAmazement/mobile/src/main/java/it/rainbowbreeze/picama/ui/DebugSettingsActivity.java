@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 
 import it.rainbowbreeze.picama.R;
 
-public class TwitterSettingsActivity extends FragmentActivity {
+public class DebugSettingsActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,7 +13,7 @@ public class TwitterSettingsActivity extends FragmentActivity {
         setContentView(R.layout.act_generic_settings);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new TwitterSettingsFragment())
+                    .add(R.id.container, new DebugSettingsFragment())
                     .commit();
         }
     }

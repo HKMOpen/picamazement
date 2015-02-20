@@ -60,6 +60,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.DebugSettingsActivity"
+            android:label="@string/debugsettings_actTitle" >
+            <intent-filter>
+                <action android:name="action_StartDebugSettings" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.dropbox.client2.android.AuthActivity"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask" >
