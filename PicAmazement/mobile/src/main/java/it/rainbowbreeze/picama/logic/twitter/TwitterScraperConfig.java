@@ -38,12 +38,14 @@ public class TwitterScraperConfig implements IPictureScraperConfig {
 
         @Override
         protected void setDefaultValuesInternal() {
-            Set<String> twitterUserNames = new TreeSet<>();
-            twitterUserNames.add("EarthBeauties");
-            twitterUserNames.add("_Paisajes_");
-            twitterUserNames.add("HighFromAbove");
-            twitterUserNames.add("HistoryInPics");
-            setTwitterUserNames(twitterUserNames);
+            Set<String> userNames = new TreeSet<>();
+            userNames.add("EarthBeauties");
+            //userNames.add("_Paisajes_");
+            userNames.add("HighFromAbove");
+            userNames.add("HistoryInPics");
+            userNames.add("LuoghiDalMondo");
+            userNames.add("FotoFavolose");
+            setTwitterUserNames(userNames);
         }
 
         private static final String PREF_TWITTERUSERNAMES = "pref_twitterUserNames";
