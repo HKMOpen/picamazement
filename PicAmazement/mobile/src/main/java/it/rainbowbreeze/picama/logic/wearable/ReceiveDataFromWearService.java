@@ -107,13 +107,13 @@ public class ReceiveDataFromWearService extends WearableListenerService {
     @Override
     public void onPeerConnected(Node peer) {
         super.onPeerConnected(peer);
-        mLogFacility.v(LOG_TAG, "New node has connected: " + peer.getId() + " / " + peer.getDisplayName());
+        //mLogFacility.v(LOG_TAG, "New node has connected: " + peer.getId() + " / " + peer.getDisplayName());
         Bag.wearAvailable = true;
     }
     @Override
     public void onPeerDisconnected(Node peer) {
         super.onPeerDisconnected(peer);
-        mLogFacility.v(LOG_TAG, "Node has disconnected: " + peer.getId() + " / " + peer.getDisplayName());
+        //mLogFacility.v(LOG_TAG, "Node has disconnected: " + peer.getId() + " / " + peer.getDisplayName());
         Bag.wearAvailable = false;
     }
 }
