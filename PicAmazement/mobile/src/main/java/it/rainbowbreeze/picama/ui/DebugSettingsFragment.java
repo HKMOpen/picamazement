@@ -2,24 +2,14 @@ package it.rainbowbreeze.picama.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -27,8 +17,7 @@ import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
-import it.rainbowbreeze.picama.logic.PictureScraperManager;
-import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
+import it.rainbowbreeze.picama.logic.LogicManager;
 
 /**
 * Created by alfredomorresi on 05/12/14.
@@ -38,6 +27,7 @@ public class DebugSettingsFragment extends Fragment {
 
     @Inject ILogFacility mLogFacility;
     @Inject AppPrefsManager mAppPrefsManager;
+    @Inject LogicManager mLogicManager;
     TextView mLblSyncInProgress;
     private Context mAppContext;
 
@@ -48,6 +38,15 @@ public class DebugSettingsFragment extends Fragment {
 
         mLblSyncInProgress = (TextView) rootView.findViewById(R.id.debugsettings_lblSyncInProgress);
         updateSyncInProgressValue();
+        TextView lbl = (TextView) rootView.findViewById(R.id.debugsettings_lblLastSyncAt);
+        lbl.setText("Last sync at " +
+                mLogicManager.getFormattedDate(mAppPrefsManager.getLastSyncTime()));
+        lbl = (TextView) rootView.findViewById(R.id.debugsettings_lblNextSyncAt);
+        lbl.setText("First repeating sync scheduled at:  " +
+                mLogicManager.getFormattedDate(mAppPrefsManager.getRepeatingSyncTime()));
+        lbl = (TextView) rootView.findViewById(R.id.debugsettings_lblPendingIntentExists);
+        lbl.setText("Pending intent for scheduled sync exists:  " + mLogicManager.isSyncPendingIntentActive(mAppContext));
+
         Button button;
         button = (Button) rootView.findViewById(R.id.debugsettings_btnResetSyncInProgress);
         button.setOnClickListener(new View.OnClickListener() {

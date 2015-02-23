@@ -12,10 +12,25 @@
 >
 
     <TextView
-        android:id="@+id/debugsettings_lblSyncInProgress"
+        android:id="@+id/debugsettings_lblLastSyncAt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />
+    <TextView
+        android:id="@+id/debugsettings_lblNextSyncAt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    />
+    <TextView
+        android:id="@+id/debugsettings_lblPendingIntentExists"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    />
+    <TextView
+        android:id="@+id/debugsettings_lblSyncInProgress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
     <Button
         android:id="@+id/debugsettings_btnResetSyncInProgress"
         android:layout_width="fill_parent"

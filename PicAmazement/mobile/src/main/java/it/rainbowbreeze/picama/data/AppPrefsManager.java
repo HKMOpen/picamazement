@@ -45,6 +45,20 @@ public class AppPrefsManager extends RainbowAppPrefsManager {
         return this;
     }
 
+    private static final String PREF_REPEATINGSYNCTIME = "pref_repeatingSyncTime";
+    public long getRepeatingSyncTime() {
+        return mAppPreferences.getLong(PREF_REPEATINGSYNCTIME, 0);
+    }
+    public AppPrefsManager setRepeatingSyncTime(long newValue) {
+        openSharedEditor();
+        mSharedEditor.putLong(PREF_REPEATINGSYNCTIME, newValue);
+        saveIfNeeded();
+        return this;
+    }
+    public AppPrefsManager resetRepeatingSyncTime() {
+        return setRepeatingSyncTime(0);
+    }
+
     // Is refreshing picture list
     private static final String PREF_ISSYNCING = "pref_isSyncing";
     public boolean isSyncing() {
@@ -53,6 +67,7 @@ public class AppPrefsManager extends RainbowAppPrefsManager {
     public AppPrefsManager resetSyncStatus() {
         openSharedEditor();
         mSharedEditor.putBoolean(PREF_ISSYNCING, false);
+        mSharedEditor.putLong(PREF_REPEATINGSYNCTIME, 0);
         saveIfNeeded();
         return this;
     }
