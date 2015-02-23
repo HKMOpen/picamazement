@@ -3,17 +3,25 @@ package it.rainbowbreeze.picama.logic;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+
+import it.rainbowbreeze.picama.common.SharedBag;
 
 /**
  * Created by alfredomorresi on 05/12/14.
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
+    private static final String LOG_TAG = BootCompletedReceiver.class.getSimpleName();
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            Log.v(SharedBag.APP_NAME_LOG, "[" + LOG_TAG + "] Receiver started, launch sync check");
             Intent newIntent = new Intent(context, RefreshPicturesService.class);
-            intent.setAction(RefreshPicturesService.ACTION_SCHEDULE_REFRESH_AFTER_BOOT);
+            newIntent.setAction(RefreshPicturesService.ACTION_SCHEDULE_REFRESH_AFTER_BOOT);
             context.startService(newIntent);
+        } else {
+            Log.v(SharedBag.APP_NAME_LOG, "[" + LOG_TAG + "] Receiver started, but with unrecognized action " + intent.getAction());
         }
     }
 }
