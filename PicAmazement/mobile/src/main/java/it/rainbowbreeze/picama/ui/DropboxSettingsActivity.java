@@ -1,11 +1,11 @@
 package it.rainbowbreeze.picama.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 import it.rainbowbreeze.picama.R;
 
-public class DropboxSettingsActivity extends FragmentActivity {
+public class DropboxSettingsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

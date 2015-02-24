@@ -8,9 +8,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-
 import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
