@@ -45,6 +45,7 @@ public class TwitterScraperConfig implements IPictureScraperConfig {
             userNames.add("HistoryInPics");
             userNames.add("LuoghiDalMondo");
             userNames.add("FotoFavolose");
+            userNames.add("planetepics");
             setTwitterUserNames(userNames);
         }
 
