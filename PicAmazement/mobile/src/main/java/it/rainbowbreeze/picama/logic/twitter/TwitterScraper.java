@@ -41,10 +41,10 @@ public class TwitterScraper extends PictureScraper<TwitterScraperConfig> {
     private OAuth2Token mTwitterToken;
     private Set<String> mUserNames;
 
-    @Inject
     public TwitterScraper (ILogFacility logFacility, TwitterScraperConfig config) {
-        mLogFacility = logFacility;
+        super(config);
 
+        mLogFacility = logFacility;
         mLogFacility.v(LOG_TAG, "Initializing...");
 
         //TODO: move to DI
@@ -54,8 +54,6 @@ public class TwitterScraper extends PictureScraper<TwitterScraperConfig> {
                 .setOAuthConsumerKey(Bag.TWITTER_CONSUMER_KEY)
                 .setOAuthConsumerSecret(Bag.TWITTER_CONSUMER_SECRET);
         mTwitter = new TwitterFactory(cb.build()).getInstance();
-
-        applyConfig(config);
     }
 
     @Override
@@ -67,7 +65,6 @@ public class TwitterScraper extends PictureScraper<TwitterScraperConfig> {
     protected void applyConfigInternal(TwitterScraperConfig newConfig) {
         mUserNames = newConfig.getUserNames();
     }
-
 
     @Override
     public List<AmazingPicture> getNewPictures() {
@@ -89,7 +86,6 @@ public class TwitterScraper extends PictureScraper<TwitterScraperConfig> {
                         AmazingPicture pic = new AmazingPicture();
                         pic
                                 .setUrl(mediaEntity.getMediaURL())
-                                .setDate(status.getCreatedAt())
                                 .setTitle(userName)
                                 .setDesc(sanitizeText(status.getText()))
                                 .setSource(getSourceName())

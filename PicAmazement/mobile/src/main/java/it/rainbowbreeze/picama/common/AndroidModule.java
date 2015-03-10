@@ -14,6 +14,8 @@ import it.rainbowbreeze.picama.logic.LogicManager;
 import it.rainbowbreeze.picama.logic.ManipulatePictureService;
 import it.rainbowbreeze.picama.logic.RefreshPicturesService;
 import it.rainbowbreeze.picama.logic.UploadPictureService;
+import it.rainbowbreeze.picama.logic.onebigphoto.OneBigPhotoScraper;
+import it.rainbowbreeze.picama.logic.onebigphoto.OneBigPhotoScraperConfig;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 import it.rainbowbreeze.picama.logic.storage.DropboxCloudProvider;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
@@ -110,11 +112,14 @@ public class AndroidModule {
      */
     @Provides @Singleton public PictureScraperManagerConfig providePictureScraperManagerConfig (
             ILogFacility logFacility,
-            TwitterScraperConfig twitterScraperConfig) {
+            TwitterScraperConfig twitterScraperConfig,
+            OneBigPhotoScraperConfig oneBigPhotoScraperConfig) {
         TwitterScraper twitterScraper = new TwitterScraper(logFacility, twitterScraperConfig);
+        OneBigPhotoScraper oneBigPhotoScraper = new OneBigPhotoScraper(logFacility, oneBigPhotoScraperConfig);
 
         PictureScraperManagerConfig config = new PictureScraperManagerConfig(
-                twitterScraper
+                //twitterScraper,
+                oneBigPhotoScraper
         );
 
         return config;
@@ -125,6 +130,11 @@ public class AndroidModule {
             ILogFacility logFacility
     ) {
         return new TwitterScraperConfig(appContext, logFacility);
+    }
+
+    @Provides @Singleton public OneBigPhotoScraperConfig provideOneBigPhotoScraperConfig(
+    ) {
+        return new OneBigPhotoScraperConfig();
     }
 
     /**
