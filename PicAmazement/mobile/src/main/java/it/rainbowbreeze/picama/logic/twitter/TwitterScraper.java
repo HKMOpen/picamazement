@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -11,6 +12,8 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.IPictureScraper;
+import it.rainbowbreeze.picama.logic.IPictureScraperConfig;
+import it.rainbowbreeze.picama.logic.PictureScraper;
 import it.rainbowbreeze.picama.shared.BuildConfig;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
@@ -30,18 +33,18 @@ import twitter4j.conf.ConfigurationBuilder;
  *
  * Created by alfredomorresi on 19/10/14.
  */
-public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
+public class TwitterScraper extends PictureScraper<TwitterScraperConfig> {
     private static final String LOG_TAG = TwitterScraper.class.getSimpleName();
 
     private final ILogFacility mLogFacility;
     private final Twitter mTwitter;
     private OAuth2Token mTwitterToken;
-    private List<String> mUserNames;
+    private Set<String> mUserNames;
 
-    @Inject
     public TwitterScraper (ILogFacility logFacility, TwitterScraperConfig config) {
-        mLogFacility = logFacility;
+        super(config);
 
+        mLogFacility = logFacility;
         mLogFacility.v(LOG_TAG, "Initializing...");
 
         //TODO: move to DI
@@ -51,8 +54,6 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
                 .setOAuthConsumerKey(Bag.TWITTER_CONSUMER_KEY)
                 .setOAuthConsumerSecret(Bag.TWITTER_CONSUMER_SECRET);
         mTwitter = new TwitterFactory(cb.build()).getInstance();
-
-        mUserNames = config.getUserNames();
     }
 
     @Override
@@ -61,8 +62,8 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
     }
 
     @Override
-    public String getLoggingParams() {
-        return "Twitter" + mUserNames.toString();
+    protected void applyConfigInternal(TwitterScraperConfig newConfig) {
+        mUserNames = newConfig.getUserNames();
     }
 
     @Override
@@ -85,7 +86,6 @@ public class TwitterScraper implements IPictureScraper<TwitterScraperConfig> {
                         AmazingPicture pic = new AmazingPicture();
                         pic
                                 .setUrl(mediaEntity.getMediaURL())
-                                .setDate(status.getCreatedAt())
                                 .setTitle(userName)
                                 .setDesc(sanitizeText(status.getText()))
                                 .setSource(getSourceName())

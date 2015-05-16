@@ -7,13 +7,13 @@ def DROPBOX_APP_KEY = '"' + PicAmazementDropboxAppKeyProp + '"' ?: '"Define Drop
 def DROPBOX_APP_SECRET = '"' + PicAmazementDropboxAppSecretProp + '"'  ?: '"Define Dropbox App secret"';
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "it.rainbowbreeze.picama"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -41,18 +41,18 @@ dependencies {
     compile project(':library')
     compile project(':ext-libraries:rainbowlibs')
     compile project(':ext-libraries:dropbox_sdk')
-
     compile 'com.google.android.gms:play-services-wearable:6.5.+'
-    compile 'com.android.support:support-v13:21.0.0'
-    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.android.support:support-v13:22.+'
+    compile 'com.android.support:appcompat-v7:22.+'
     compile 'com.android.support:cardview-v7:+'
     compile 'com.android.support:recyclerview-v7:+'
-
-    compile 'com.squareup.okhttp:okhttp:2.1.+'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.+'
-    compile 'com.squareup.picasso:picasso:2.4.+'
+    compile 'com.android.support:palette-v7:22.+'
+    compile 'com.squareup.okhttp:okhttp:2.2.+'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.+'
+    compile 'com.squareup.picasso:picasso:2.5.+'
     compile 'com.squareup.dagger:dagger:1.2.+'
     provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+    compile 'org.jsoup:jsoup:1.8.1'
 }
 
 android.buildTypes.each { type ->

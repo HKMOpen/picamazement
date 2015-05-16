@@ -44,18 +44,18 @@
             android:label="@string/settings_actTitle" >
         </activity>
         <activity
-            android:name=".ui.DropboxSettingsActivity"
-            android:label="@string/dropboxsettings_actTitle" >
+            android:name=".ui.GenericSettingsActivity"
+            android:label="@string/debugsettings_actTitle" >
             <intent-filter>
-                <action android:name="action_StartDropboxSettings" />
+                <action android:name="action_StartDebugSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.TwitterSettingsActivity"
-            android:label="@string/twittersettings_actTitle" >
             <intent-filter>
                 <action android:name="action_StartTwitterSettings" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="action_StartDropboxSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

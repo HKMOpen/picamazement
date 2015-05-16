@@ -2,23 +2,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
 >
 
-    <PreferenceScreen
-        android:title="@string/pref_source_title"
-        android:summary="@string/pref_source_summary"
-        >
-        <Preference android:title="@string/pref_twitter_title" >
-            <intent android:action="action_StartTwitterSettings" />
-        </Preference>
-    </PreferenceScreen>
-
-    <PreferenceScreen
-        android:title="@string/pref_storage_title"
-        android:summary="@string/pref_storage_summary"
+    <PreferenceCategory
+        android:title="@string/pref_image_title"
+        android:summary="@string/pref_image_summary"
     >
-        <Preference android:title="@string/pref_dropbox_title">
-            <intent android:action="action_StartDropboxSettings" />
-        </Preference>
-    </PreferenceScreen>
+        <PreferenceScreen
+            android:title="@string/pref_source_title"
+            android:summary="@string/pref_source_summary"
+            >
+            <Preference android:title="@string/pref_twitter_title" >
+                <intent android:action="action_StartTwitterSettings" />
+            </Preference>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/pref_storage_title"
+            android:summary="@string/pref_storage_summary"
+        >
+            <Preference android:title="@string/pref_dropbox_title">
+                <intent android:action="action_StartDropboxSettings" />
+            </Preference>
+        </PreferenceScreen>
+    </PreferenceCategory>
+
 
     <PreferenceCategory
         android:title="@string/pref_sync_title"
@@ -50,7 +56,19 @@
             android:entryValues="@array/pref_syncFrequency_entryValues"
             android:defaultValue="@string/pref_syncFrequency_default"
         />
-
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_debug_title"
+        android:summary="@string/pref_debug_summary"
+    >
+        <Preference
+            android:title="@string/pref_debug_section_title"
+            android:summary="@string/pref_debug_summary"
+        >
+            <intent android:action="action_StartDebugSettings" />
+        </Preference>
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

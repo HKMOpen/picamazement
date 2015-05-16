@@ -11,9 +11,12 @@ import it.rainbowbreeze.picama.ui.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.graphics.Palette;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -67,6 +71,7 @@ public class FullscreenPictureActivity extends Activity {
     @Inject ActionsManager mActionsManager;
     @Inject CloudStorageManager mCloudStorageManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
+    private View mLayBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +185,7 @@ public class FullscreenPictureActivity extends Activity {
                         .execute();
             }
         });
+        mLayBackground = findViewById(R.id.fullscreen_layBackground);
 
         AmazingPicture picture = mAmazingPictureDao.getById(pictureId);
         mLogFacility.v(LOG_TAG, "Loading picture at " + picture.getUrl());
@@ -195,7 +201,24 @@ public class FullscreenPictureActivity extends Activity {
                         //.error()
                 .fit()
                 .centerInside()
-                .into(contentImageView);
+                // http://blog.timbremer.com/using-palette-with-picasso-and-gridview/
+                .into(contentImageView, new Callback.EmptyCallback() {
+                    @Override
+                    public void onSuccess() {
+                        final Bitmap bitmap = ((BitmapDrawable) contentImageView.getDrawable()).getBitmap();
+                        Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+                            public void onGenerated(Palette palette) {
+                                if (null != palette) {
+                                    //Picasso wants a background color, otherwise it messed up and repeat the image
+                                    int color = palette.getLightVibrantColor(0xFFFFFF);
+                                    if (0xFFFFFF != color) mLayBackground.setBackgroundColor(palette.getLightVibrantColor(0xFFFFFF));
+                                } else {
+                                    mLogFacility.v(LOG_TAG, "Cannot generate palette");
+                                }
+                            }
+                        });
+                    }
+                });
 
         TextView lblDesc = (TextView) findViewById(R.id.fullscreen_lblDesc);
         lblDesc.setText(picture.getDesc());

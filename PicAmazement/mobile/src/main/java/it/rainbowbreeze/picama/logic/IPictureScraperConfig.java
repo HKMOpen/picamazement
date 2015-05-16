@@ -6,5 +6,5 @@ package it.rainbowbreeze.picama.logic;
  *
  * Created by alfredomorresi on 01/11/14.
  */
-public class IPictureScraperConfig {
+public interface IPictureScraperConfig {
 }

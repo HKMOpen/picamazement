@@ -19,7 +19,7 @@ public abstract class RainbowAppPrefsManager {
     private final IRainbowLogFacility mLogFacility;
 
     public final String mPrefsFileName;  // File name where values are saved
-    private final int mDefaultValueResId;  // XML resource for dafault values
+    private final int mDefaultValueResId;  // XML resource for default values
     private final Context mAppContext;
     protected final SharedPreferences mAppPreferences;
     protected SharedPreferences.Editor mSharedEditor;
@@ -39,8 +39,7 @@ public abstract class RainbowAppPrefsManager {
 
     private boolean hasDefaultValuesBeenSet() {
         // See http://developer.android.com/reference/android/preference/PreferenceManager.html#KEY_HAS_SET_DEFAULT_VALUES
-        SharedPreferences appPreferences = mAppContext.getSharedPreferences(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, Context.MODE_PRIVATE);
-        boolean defaultValuesSet = appPreferences.getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false);
+        boolean defaultValuesSet = mAppPreferences.getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false);
         return defaultValuesSet;
     }
 
@@ -49,7 +48,7 @@ public abstract class RainbowAppPrefsManager {
      *
      * @param force if true, forces to set again default values
      */
-    public void setDefaultValues(boolean force) {
+    public boolean setDefaultValues(boolean force) {
         if (!hasDefaultValuesBeenSet() || force) {
             mLogFacility.v(LOG_TAG, "Setting default preference values");
             // This call sets also the system flag
@@ -59,13 +58,20 @@ public abstract class RainbowAppPrefsManager {
                         mPrefsFileName,
                         Context.MODE_PRIVATE,
                         mDefaultValueResId,
-                        force);
+                        //always true, and not force, because of this android bug:
+                        // https://code.google.com/p/android/issues/detail?id=17420
+                        // A file is created shared_prefs/_has_set_default_values.xml
+                        //  so I need to manage a default flag by my own
+                        true);
             }
             // Adds customized values
+            openSharedEditor();
             setBatchSave();
+            mSharedEditor.putBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, true);
             setDefaultValuesInternal();
-            save();
+            return save();
         }
+        return true;
     }
 
     /**

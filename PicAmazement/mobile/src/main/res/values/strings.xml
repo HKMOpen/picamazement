@@ -39,5 +39,14 @@
     <string name="twittersettings_btnRemoveAccount">Remove selected</string>
     <string name="twittersettings_btnAddAccount">Add account</string>
     <string name="piclist_mnuHideAllVisibleNotUploaded">Hide all pics</string>
+    <string name="twittersettings_msgSelectAccountFirst">First, select an account to delete</string>
+    <string name="pref_debug_title">DEBUG</string>
+    <string name="pref_debug_summary">Debug options, generally you should ignore this section</string>
+    <string name="pref_debug_section_title">Open debug options</string>
+    <string name="pref_image_title">IMAGES</string>
+    <string name="pref_image_summary">Configure scrapers, storage etc.</string>
+    <string name="debugsettings_actTitle">Debug Options</string>
+    <string name="debugsettings_btnResetSyncInProgress">Reset sync in progress flag</string>
+    <string name="debugsettings_msgResetSyncStatus">Sync in progress flag resetted</string>
 
 </resources>

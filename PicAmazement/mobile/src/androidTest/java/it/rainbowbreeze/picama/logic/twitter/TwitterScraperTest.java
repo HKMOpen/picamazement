@@ -1,5 +1,6 @@
 package it.rainbowbreeze.picama.logic.twitter;
 
+import android.content.Context;
 import android.test.AndroidTestCase;
 
 import javax.inject.Inject;
@@ -9,6 +10,8 @@ import dagger.Module;
 import dagger.ObjectGraph;
 import dagger.Provides;
 import it.rainbowbreeze.picama.common.AndroidModule;
+import it.rainbowbreeze.picama.common.ForApplication;
+import it.rainbowbreeze.picama.common.ILogFacility;
 
 /**
  * Created by alfredomorresi on 19/10/14.
@@ -25,8 +28,11 @@ public class TwitterScraperTest extends AndroidTestCase {
             injects = TwitterScraperTest.class
     )
     protected class TestModule {
-       @Provides @Singleton TwitterScraperConfig provideTwitterScraperConfig() {
-           return new TwitterScraperConfig();
+       @Provides @Singleton TwitterScraper provideTwitterScraper(
+               ILogFacility logFacility,
+               TwitterScraperConfig twitterScraperConfig
+       ) {
+           return new TwitterScraper(logFacility, twitterScraperConfig);
        }
     }
 

@@ -20,24 +20,39 @@ import it.rainbowbreeze.picama.common.MyApp;
 public class AskForConfirmationDialog extends DialogFragment {
     private static final String LOG_TAG = AskForConfirmationDialog.class.getSimpleName();
     private static final String ARG_QUESTION_TYPE = "question_type";
+    private static final String ARG_QUESTION_RESOURCEID = "question_resourceId";
 
     @Inject ILogFacility mLogFacility;
 
     /**
-     * Returns a new instance of this fragment for the given section
-     * number.
+     * Returns a new instance of this dialog
      */
     public static AskForConfirmationDialog newInstance() {
+        return newInstance(R.string.common_lblAreYouSure);
+    }
+
+    /**
+     * Returns a new instance of this dialog, with a customized question message
+     *
+     * @param questionResourceId: resource id of the question to ask
+     */
+    public static AskForConfirmationDialog newInstance(int questionResourceId) {
         AskForConfirmationDialog fragment = new AskForConfirmationDialog();
+        Bundle args = new Bundle();
+        args.putInt(ARG_QUESTION_RESOURCEID, questionResourceId);
+        fragment.setArguments(args);
         return fragment;
     }
 
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        int questionResourceId = getArguments().getInt(ARG_QUESTION_RESOURCEID, R.string.common_lblAreYouSure);
+
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.common_lblAreYouSure)
+        builder
+                .setMessage(questionResourceId)
                 .setPositiveButton(R.string.common_btnYes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mLogFacility.v(LOG_TAG, "Clicked on the positive button of the dialog, executing the relative action");

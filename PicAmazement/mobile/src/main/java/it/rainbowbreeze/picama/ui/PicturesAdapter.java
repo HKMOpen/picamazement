@@ -2,6 +2,9 @@ package it.rainbowbreeze.picama.ui;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.support.v4.util.Pools;
+import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +12,9 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.data.provider.picture.PictureCursor;
@@ -48,7 +53,7 @@ public class PicturesAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder holder = (ViewHolder) view.getTag();
+        final ViewHolder holder = (ViewHolder) view.getTag();
         PictureCursor pictureCursor = new PictureCursor(cursor);
         holder.lblTitle.setText(pictureCursor.getTitle());
 
@@ -61,6 +66,26 @@ public class PicturesAdapter extends CursorAdapter {
                 //.fit()
                 //.centerCrop()
                 .into(holder.imgPicture);
+        /*
+        // See http://jakewharton.com/coercing-picasso-to-play-with-palette/
+        final PaletteTransformation paletteTransformation = PaletteTransformation.getInstance();
+        Picasso.with(holder.imgPicture.getContext())
+                .load(pictureCursor.getUrl())
+                        //.fit()
+                        //.centerCrop()
+                .transform(paletteTransformation)
+                .into(holder.imgPicture, new Callback.EmptyCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Palette palette = paletteTransformation.extractPaletteAndRelease();
+                        Palette.Swatch vibrant = palette.getVibrantSwatch();
+                        if (null != vibrant) {
+                            holder.lblTitle.setBackgroundColor(vibrant.getRgb());
+                            holder.lblTitle.setTextColor(vibrant.getTitleTextColor());
+                        }
+                    }
+                });
+        */
     }
 
     /**
@@ -73,6 +98,48 @@ public class PicturesAdapter extends CursorAdapter {
         private ViewHolder(TextView lblTitle, ImageView imgPicture) {
             this.lblTitle = lblTitle;
             this.imgPicture = imgPicture;
+        }
+    }
+
+    private static class PaletteTransformation implements Transformation {
+        private static final Pools.Pool<PaletteTransformation> POOL = new Pools.SynchronizedPool<>(5);
+
+        public static PaletteTransformation getInstance() {
+            PaletteTransformation instance = POOL.acquire();
+            return instance != null ? instance : new PaletteTransformation();
+        }
+
+        private Palette palette;
+
+        private PaletteTransformation() {}
+
+        public String key() {
+            return ""; // Stable key for all requests. An unfortunate requirement.
+        }
+
+        public Palette extractPaletteAndRelease() {
+            Palette palette = this.palette;
+            if (palette == null) {
+                throw new IllegalStateException("Transformation was not run.");
+            }
+            this.palette = null;
+            POOL.release(this);
+            return palette;
+        }
+
+        public Palette getPalette() {
+            if (palette == null) {
+                throw new IllegalStateException("Transformation was not run.");
+            }
+            return palette;
+        }
+
+        public Bitmap transform(Bitmap source) {
+            if (palette != null) {
+                throw new IllegalStateException("Instances may only be used once.");
+            }
+            palette = Palette.generate(source);
+            return source;
         }
     }
 }

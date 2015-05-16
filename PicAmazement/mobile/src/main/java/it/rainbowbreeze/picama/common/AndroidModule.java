@@ -1,7 +1,6 @@
 package it.rainbowbreeze.picama.common;
 
 import android.content.Context;
-import android.location.LocationManager;
 
 import javax.inject.Singleton;
 
@@ -13,24 +12,30 @@ import it.rainbowbreeze.picama.logic.BootCompletedReceiver;
 import it.rainbowbreeze.picama.logic.LogicManager;
 import it.rainbowbreeze.picama.logic.ManipulatePictureService;
 import it.rainbowbreeze.picama.logic.RefreshPicturesService;
+import it.rainbowbreeze.picama.logic.StatusChangeNotifier;
 import it.rainbowbreeze.picama.logic.UploadPictureService;
+import it.rainbowbreeze.picama.logic.onebigphoto.OneBigPhotoScraper;
+import it.rainbowbreeze.picama.logic.onebigphoto.OneBigPhotoScraperConfig;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 import it.rainbowbreeze.picama.logic.storage.DropboxCloudProvider;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
 import it.rainbowbreeze.picama.logic.storage.PictureDiskManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManager;
 import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
+import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
+import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
 import it.rainbowbreeze.picama.logic.wearable.SendDataToWearService;
 import it.rainbowbreeze.picama.logic.wearable.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService;
 import it.rainbowbreeze.picama.ui.AskForConfirmationDialog;
+import it.rainbowbreeze.picama.ui.GenericSettingsActivity;
+import it.rainbowbreeze.picama.ui.DebugSettingsFragment;
 import it.rainbowbreeze.picama.ui.DropboxSettingsFragment;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
 import it.rainbowbreeze.picama.ui.MainActivity;
 import it.rainbowbreeze.picama.ui.PicturesListFragment;
 import it.rainbowbreeze.picama.ui.SettingsFragment;
-import it.rainbowbreeze.picama.ui.TwitterSettingsActivity;
 import it.rainbowbreeze.picama.ui.TwitterSettingsFragment;
 import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
 
@@ -49,8 +54,10 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
                 FullscreenPictureActivity.class,
                 DropboxSettingsFragment.class,
                 TwitterSettingsFragment.class,
+                DebugSettingsFragment.class,
                 SettingsFragment.class,
                 AskForConfirmationDialog.class,
+                GenericSettingsActivity.class,
 
                 SendDataToWearService.class,
                 ManipulatePictureService.class,
@@ -86,16 +93,6 @@ public class AndroidModule {
     }
 
     /**
-     * The application context can be read from the local app or passing it a parameters
-     * TODO: remove this class
-     * @return
-     */
-    @Provides @Singleton
-    LocationManager provideLocationManager() {
-        return (LocationManager) mAppContent.getSystemService(Context.LOCATION_SERVICE);
-    }
-
-    /**
      * It works because {@link it.rainbowbreeze.picama.common.ILogFacility} is provided
      * by another modules, included by this one
      * @param logFacility
@@ -106,6 +103,39 @@ public class AndroidModule {
             @ForApplication Context appContext,
             ILogFacility logFacility) {
         return new WearManager(appContext, logFacility);
+    }
+
+    /**
+     * There is a provide method because the class have to be configure
+     * before working. Otherwise a simple Inject the requiring class
+     * could have been used.
+     * @return
+     */
+    @Provides @Singleton public PictureScraperManagerConfig providePictureScraperManagerConfig (
+            ILogFacility logFacility,
+            TwitterScraperConfig twitterScraperConfig,
+            OneBigPhotoScraperConfig oneBigPhotoScraperConfig) {
+        TwitterScraper twitterScraper = new TwitterScraper(logFacility, twitterScraperConfig);
+        OneBigPhotoScraper oneBigPhotoScraper = new OneBigPhotoScraper(logFacility, oneBigPhotoScraperConfig);
+
+        PictureScraperManagerConfig config = new PictureScraperManagerConfig(
+                twitterScraper,
+                oneBigPhotoScraper
+        );
+
+        return config;
+    }
+
+    @Provides @Singleton public TwitterScraperConfig provideTwitterScraperConfig(
+            @ForApplication Context appContext,
+            ILogFacility logFacility
+    ) {
+        return new TwitterScraperConfig(appContext, logFacility);
+    }
+
+    @Provides @Singleton public OneBigPhotoScraperConfig provideOneBigPhotoScraperConfig(
+    ) {
+        return new OneBigPhotoScraperConfig();
     }
 
     /**
@@ -122,10 +152,16 @@ public class AndroidModule {
             ILogFacility logFacility,
             PictureScraperManagerConfig pictureScraperManagerConfig,
             AmazingPictureDao amazingPictureDao,
-            AppPrefsManager appPrefsManager) {
+            AppPrefsManager appPrefsManager,
+            StatusChangeNotifier statusChangeNotifier
+    ) {
         return new PictureScraperManager(
-                logFacility, pictureScraperManagerConfig,
-                amazingPictureDao, appPrefsManager);
+                logFacility,
+                pictureScraperManagerConfig,
+                amazingPictureDao,
+                appPrefsManager,
+                statusChangeNotifier
+                );
     }
 
     /**
@@ -154,7 +190,11 @@ public class AndroidModule {
             PictureDiskManager pictureDiskManager,
             AmazingPictureDao amazingPictureDao,
             DropboxCloudProvider dropboxCloudProvider) {
-        return new CloudStorageManager(logFacility, pictureDiskManager, amazingPictureDao, dropboxCloudProvider);
+        return new CloudStorageManager(
+                logFacility,
+                pictureDiskManager,
+                amazingPictureDao,
+                dropboxCloudProvider);
     }
 
     @Provides @Singleton
