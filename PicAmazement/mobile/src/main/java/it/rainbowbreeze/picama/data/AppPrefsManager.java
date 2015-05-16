@@ -81,7 +81,6 @@ public class AppPrefsManager extends RainbowAppPrefsManager {
         openSharedEditor();
         mSharedEditor.putBoolean(PREF_ISSYNCING, false);
         mSharedEditor.putLong(PREF_LASTSYNCTIME, Calendar.getInstance().getTimeInMillis());
-
         saveIfNeeded();
         return this;
     }

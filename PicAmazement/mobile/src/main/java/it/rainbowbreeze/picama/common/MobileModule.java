@@ -4,11 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import it.rainbowbreeze.picama.data.AppPrefsManager;
+import it.rainbowbreeze.picama.logic.StatusChangeNotifier;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
-import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
-import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
-import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
 
 /**
  * Dagger modules for classes that don't need an Application context
@@ -27,4 +24,10 @@ public class MobileModule {
     FileDownloaderHelper provideFileDownloaderHelper(ILogFacility logFacility) {
         return new FileDownloaderHelper(logFacility);
     }
+
+    @Provides @Singleton
+    public StatusChangeNotifier provideStatusChangeNotifier(ILogFacility logFacility) {
+        return new StatusChangeNotifier(logFacility);
+    }
+
 }

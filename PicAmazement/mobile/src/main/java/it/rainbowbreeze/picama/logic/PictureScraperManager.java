@@ -22,14 +22,21 @@ public class PictureScraperManager {
     private final List<IPictureScraper> mPictureScrapers;
     private final AmazingPictureDao mAmazingPictureDao;
     private final AppPrefsManager mAppPrefsManager;
+    private final StatusChangeNotifier mStatusChangeNotifier;
 
-    public PictureScraperManager(ILogFacility logFacility, PictureScraperManagerConfig config,
-                                 AmazingPictureDao amazingPictureDao, AppPrefsManager appPrefsManager) {
+    public PictureScraperManager(
+            ILogFacility logFacility,
+            PictureScraperManagerConfig config,
+            AmazingPictureDao amazingPictureDao,
+            AppPrefsManager appPrefsManager,
+            StatusChangeNotifier statusChangeNotifier
+    ) {
         mLogFacility = logFacility;
         mConfig = config;
         mAppPrefsManager = appPrefsManager;
         mPictureScrapers = mConfig.getPictureScrapers();
         mAmazingPictureDao = amazingPictureDao;
+        mStatusChangeNotifier = statusChangeNotifier;
     }
 
     /**
@@ -45,13 +52,14 @@ public class PictureScraperManager {
             return false;
         }
 
-        mAppPrefsManager.startSync();
-
         if (!NetworkUtils.isNetworkAvailable(appContext)) {
             mLogFacility.v(LOG_TAG, "Aborting the search because the network is not available");
-            mAppPrefsManager.stopSync();
             return false;
         }
+
+        mAppPrefsManager.startSync();
+        mStatusChangeNotifier.refreshPicturesStarted();
+
         boolean foundNewPictures = false;
         for (IPictureScraper scraper : mPictureScrapers) {
             mLogFacility.v(LOG_TAG, "Start to scrape from provider " + scraper.getSourceName());
@@ -61,6 +69,7 @@ public class PictureScraperManager {
             foundNewPictures = foundNewPictures || addOnlyNewPictures(newPictures);
         }
         mAppPrefsManager.stopSync();
+        mStatusChangeNotifier.refreshPicturesFinished();
         return foundNewPictures;
     }
 

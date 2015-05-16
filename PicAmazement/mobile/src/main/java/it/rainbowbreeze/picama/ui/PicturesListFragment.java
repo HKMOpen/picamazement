@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +29,7 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
+import it.rainbowbreeze.picama.logic.StatusChangeNotifier;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 /**
@@ -35,19 +38,27 @@ import it.rainbowbreeze.picama.logic.action.ActionsManager;
  */
 public class PicturesListFragment
         extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+        implements
+                LoaderManager.LoaderCallbacks<Cursor>,
+                StatusChangeNotifier.StatusChangerListener
+
+{
     private static final String LOG_TAG = PicturesListFragment.class.getSimpleName();
     private static final int REQUEST_DELETE_ALL_PICTURES = 100;
     private static final int REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES = 101;
+    private static final String STATUS_LISTENER_ID = LOG_TAG;
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
+    @Inject StatusChangeNotifier mStatusChangeNotifier;
     private Context mAppContext;
 
     private static final String ARG_QUERY_TYPE = "query_type";
     public static final int QUERY_VISIBLE_NOT_UPLOADED = 1;  // Pictures visible and still not uploaded
     public static final int QUERY_UPLOADED = 2;  // Pictures uploaded to cloud storage
     private PicturesAdapter mPicturesAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private int mQueryListType;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -82,7 +93,7 @@ public class PicturesListFragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fra_pictures_list, container, false);
 
-        ListView lst = (ListView) rootView.findViewById(R.id.list_lstItems);
+        ListView lst = (ListView) rootView.findViewById(R.id.piclist_lstItems);
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -93,10 +104,18 @@ public class PicturesListFragment
         });
         mPicturesAdapter = new PicturesAdapter(mAppContext, null, true);
         lst.setAdapter(mPicturesAdapter);
-        int queryType = getArguments().getInt(ARG_QUERY_TYPE, QUERY_VISIBLE_NOT_UPLOADED);
-        getLoaderManager().initLoader(queryType, null, this);
 
-        if (QUERY_VISIBLE_NOT_UPLOADED == queryType) {
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.piclist_laySwipe);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                launchPicturesRefresh();
+            }
+        });
+        mQueryListType = getArguments().getInt(ARG_QUERY_TYPE, QUERY_VISIBLE_NOT_UPLOADED);
+        getLoaderManager().initLoader(mQueryListType, null, this);
+
+        if (QUERY_VISIBLE_NOT_UPLOADED == mQueryListType) {
             lst.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -107,6 +126,7 @@ public class PicturesListFragment
                 }
             });
         }
+        setSwipeLayoutState();
 
         return rootView;
     }
@@ -139,8 +159,7 @@ public class PicturesListFragment
         DialogFragment newFragment;
         switch (id) {
             case R.id.piclist_mnuRefresh:
-                mActionsManager.searchForNewImages()
-                        .executeAsync();
+                launchPicturesRefresh();
                 break;
 
             case R.id.piclist_mnuDeleteAll:
@@ -162,19 +181,6 @@ public class PicturesListFragment
                 value = super.onOptionsItemSelected(item);
         }
         return value;
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader cl = null;
-        if (QUERY_VISIBLE_NOT_UPLOADED == id) {
-            cl = mAmazingPictureDao.getLatestVisibleAndNotUploaded(100);
-        } else if (QUERY_UPLOADED == id) {
-            cl = mAmazingPictureDao.getLatestUploaded(100);
-        } else {
-            mLogFacility.v(LOG_TAG, "Strange, no query type for creating a CursorLoader");
-        }
-        return cl;
     }
 
     @Override
@@ -202,6 +208,31 @@ public class PicturesListFragment
     }
 
     @Override
+    public void onPause() {
+        mStatusChangeNotifier.unregisterListener(STATUS_LISTENER_ID);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mStatusChangeNotifier.registerListener(STATUS_LISTENER_ID, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader cl = null;
+        if (QUERY_VISIBLE_NOT_UPLOADED == id) {
+            cl = mAmazingPictureDao.getLatestVisibleAndNotUploaded(100);
+        } else if (QUERY_UPLOADED == id) {
+            cl = mAmazingPictureDao.getLatestUploaded(100);
+        } else {
+            mLogFacility.v(LOG_TAG, "Strange, no query type for creating a CursorLoader");
+        }
+        return cl;
+    }
+
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mPicturesAdapter.changeCursor(data);
     }
@@ -211,5 +242,32 @@ public class PicturesListFragment
         mPicturesAdapter.changeCursor(null);
     }
 
+    @Override
+    public void OnStatusChanges(String statusKey) {
+        if (StatusChangeNotifier.STATUSKEY_REFRESHPICTURES.equals(statusKey)) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    setSwipeLayoutState();
+                }
+            });
+        }
+    }
+
+    private void launchPicturesRefresh() {
+        mActionsManager.searchForNewImages()
+                .executeAsync();
+    }
+
+
+    private void setSwipeLayoutState() {
+        // http://nlopez.io/swiperefreshlayout-with-listview-done-right/
+        if (mQueryListType == QUERY_UPLOADED) {
+            mSwipeRefreshLayout.setEnabled(false);
+        } else {
+            mSwipeRefreshLayout.setEnabled(true);
+            mSwipeRefreshLayout.setRefreshing(mStatusChangeNotifier.isRefreshPicturesInProgress());
+        }
+    }
 
 }
