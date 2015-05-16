@@ -19,7 +19,7 @@ import it.rainbowbreeze.picama.R;
 import it.rainbowbreeze.picama.common.MyApp;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends InjectableActivity {
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -38,7 +38,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyApp) getApplicationContext()).inject(this);
 
         setContentView(R.layout.act_main);
 

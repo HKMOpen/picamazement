@@ -25,16 +25,14 @@ import it.rainbowbreeze.picama.logic.action.ActionsManager;
 /**
 * Created by alfredomorresi on 05/12/14.
 */
-public class DebugSettingsFragment extends Fragment {
+public class DebugSettingsFragment extends InjectableFragment {
     private static final String LOG_TAG = DebugSettingsFragment.class.getSimpleName();
     private static final int REQUEST_DELETE_ALL_PICTURES = 100;
 
-    @Inject ILogFacility mLogFacility;
     @Inject AppPrefsManager mAppPrefsManager;
     @Inject LogicManager mLogicManager;
     @Inject ActionsManager mActionsManager;
     TextView mLblSyncInProgress;
-    private Context mAppContext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,13 +69,6 @@ public class DebugSettingsFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mAppContext = activity.getApplicationContext();
-        ((MyApp) mAppContext).inject(this);
     }
 
     @Override

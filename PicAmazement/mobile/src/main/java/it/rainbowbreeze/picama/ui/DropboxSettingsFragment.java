@@ -26,17 +26,15 @@ import it.rainbowbreeze.picama.logic.storage.DropboxCloudProvider;
 /**
 * Created by alfredomorresi on 05/12/14.
 */
-public class DropboxSettingsFragment extends Fragment {
+public class DropboxSettingsFragment extends InjectableFragment {
     private static final String LOG_TAG = DropboxSettingsFragment.class.getSimpleName();
 
     private static final int DBX_CHOOSER_REQUEST = 0;  // You can change this if needed
 
 
-    @Inject ILogFacility mLogFacility;
     @Inject DropboxCloudProvider mDropboxCloudProvider;
     @Inject AppPrefsManager mAppPrefsManager;
     private DbxChooser mChooser;
-    private Context mAppContext;
     private CheckBox mChkSaveEnabled;
     private Button mBtnAuthorize;
     private View mLayParameters;
@@ -107,9 +105,6 @@ public class DropboxSettingsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mAppContext = activity.getApplicationContext();
-        ((MyApp) mAppContext).inject(this);
-
         mDropboxCloudProvider.initDropboxApi();
     }
 

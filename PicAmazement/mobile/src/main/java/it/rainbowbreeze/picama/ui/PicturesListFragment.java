@@ -38,7 +38,7 @@ import it.rainbowbreeze.picama.logic.action.ActionsManager;
  *
  */
 public class PicturesListFragment
-        extends Fragment
+        extends InjectableFragment
         implements
                 LoaderManager.LoaderCallbacks<Cursor>,
                 StatusChangeNotifier.StatusChangerListener
@@ -46,11 +46,9 @@ public class PicturesListFragment
 {
     private static final String LOG_TAG = PicturesListFragment.class.getSimpleName();
     private static final int REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES = 100;
-    @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
     @Inject StatusChangeNotifier mStatusChangeNotifier;
-    private Context mAppContext;
     private final String mStatusListenerId;
 
     private static final String ARG_QUERY_TYPE = "query_type";
@@ -83,13 +81,6 @@ public class PicturesListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mAppContext = activity.getApplicationContext();
-        ((MyApp) mAppContext).inject(this);
     }
 
     @Override

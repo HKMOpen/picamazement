@@ -11,14 +11,12 @@ import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
 
-public class GenericSettingsActivity extends ActionBarActivity {
+public class GenericSettingsActivity extends InjectableActivity {
     private static final String LOG_TAG = GenericSettingsActivity.class.getSimpleName();
-    @Inject ILogFacility mLogFacility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyApp)getApplicationContext()).inject(this);
 
         mLogFacility.v(LOG_TAG, "Action invoked: " + getIntent().getAction());
 
