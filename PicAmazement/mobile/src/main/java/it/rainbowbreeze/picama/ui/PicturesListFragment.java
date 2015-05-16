@@ -45,8 +45,7 @@ public class PicturesListFragment
 
 {
     private static final String LOG_TAG = PicturesListFragment.class.getSimpleName();
-    private static final int REQUEST_DELETE_ALL_PICTURES = 100;
-    private static final int REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES = 101;
+    private static final int REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES = 100;
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
@@ -168,12 +167,6 @@ public class PicturesListFragment
                 launchPicturesRefresh();
                 break;
 
-            case R.id.piclist_mnuDeleteAll:
-                newFragment = AskForConfirmationDialog.newInstance();
-                newFragment.setTargetFragment(this, REQUEST_DELETE_ALL_PICTURES);
-                newFragment.show(getFragmentManager(), "DeleteAllPictures");
-                break;
-
             case R.id.piclist_mnuHideHelp:
                 Toast.makeText(mAppContext, "Long click to hide a picture", Toast.LENGTH_SHORT).show();
                 break;
@@ -193,13 +186,6 @@ public class PicturesListFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mLogFacility.v(LOG_TAG, "onActivityResult with request code " + requestCode + " and result code " + resultCode);
         switch (requestCode) {
-            case REQUEST_DELETE_ALL_PICTURES:
-                if (Activity.RESULT_OK == resultCode) {
-                    mActionsManager.deleteAllPictures()
-                        .executeAsync();
-                }
-                break;
-
             case REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES:
                 if (Activity.RESULT_OK == resultCode) {
                     mActionsManager.hideAllVisibleNotUploadedPictures()

@@ -30,12 +30,25 @@
         android:id="@+id/debugsettings_lblSyncInProgress"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        />
+    />
     <Button
         android:id="@+id/debugsettings_btnResetSyncInProgress"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/debugsettings_btnResetSyncInProgress"
     />
+
+    <android.support.v4.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+    />
+
+    <Button
+        android:id="@+id/debugsettings_btnClearDatabase"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/debugsettings_btnClearDatabase"
+    />
+
 
 </LinearLayout>

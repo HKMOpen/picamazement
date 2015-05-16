@@ -11,11 +11,6 @@
         app:showAsAction="withText|ifRoom"
         />
     <item
-        android:id="@+id/piclist_mnuDeleteAll"
-        android:title="@string/piclist_mnuDeleteAll"
-        app:showAsAction="never"
-    />
-    <item
         android:id="@+id/piclist_mnuSendToWatch"
         android:title="@string/piclist_mnuSendToWatch"
         app:showAsAction="never"

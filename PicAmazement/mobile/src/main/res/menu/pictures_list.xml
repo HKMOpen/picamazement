@@ -7,7 +7,7 @@
     <item
         android:id="@+id/piclist_mnuRefresh"
         android:title="@string/piclist_mnuRefresh"
-        app:showAsAction="withText|ifRoom"
+        app:showAsAction="never"
     />
     <item
         android:id="@+id/piclist_mnuHideHelp"
@@ -17,11 +17,6 @@
     <item
         android:id="@+id/piclist_mnuHideAllVisibleNotUploaded"
         android:title="@string/piclist_mnuHideAllVisibleNotUploaded"
-        app:showAsAction="never"
-        />
-    <item
-        android:id="@+id/piclist_mnuDeleteAll"
-        android:title="@string/piclist_mnuDeleteAll"
         app:showAsAction="never"
         />
 </menu>
