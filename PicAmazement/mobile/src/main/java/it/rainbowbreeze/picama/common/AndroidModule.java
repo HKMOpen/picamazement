@@ -119,8 +119,7 @@ public class AndroidModule {
         OneBigPhotoScraper oneBigPhotoScraper = new OneBigPhotoScraper(logFacility, oneBigPhotoScraperConfig);
 
         PictureScraperManagerConfig config = new PictureScraperManagerConfig(
-                //TODO remove comment to enable twitter
-                //twitterScraper,
+                twitterScraper,
                 oneBigPhotoScraper
         );
 

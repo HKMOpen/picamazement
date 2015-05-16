@@ -245,9 +245,10 @@ public class PicturesListFragment
     @Override
     public void OnStatusChanges(String statusKey) {
         if (StatusChangeNotifier.STATUSKEY_REFRESHPICTURES.equals(statusKey)) {
-            new Handler().post(new Runnable() {
+            getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    mLogFacility.v(LOG_TAG, "Changing picture refresh status to: " + mStatusChangeNotifier.isRefreshPicturesInProgress());
                     setSwipeLayoutState();
                 }
             });
