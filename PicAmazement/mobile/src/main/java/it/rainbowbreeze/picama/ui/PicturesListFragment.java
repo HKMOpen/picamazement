@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -21,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -46,12 +47,12 @@ public class PicturesListFragment
     private static final String LOG_TAG = PicturesListFragment.class.getSimpleName();
     private static final int REQUEST_DELETE_ALL_PICTURES = 100;
     private static final int REQUEST_HIDE_ALL_VISIBLE_NOT_UPLOAD_PICTURES = 101;
-    private static final String STATUS_LISTENER_ID = LOG_TAG;
     @Inject ILogFacility mLogFacility;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
     @Inject StatusChangeNotifier mStatusChangeNotifier;
     private Context mAppContext;
+    private final String mStatusListenerId;
 
     private static final String ARG_QUERY_TYPE = "query_type";
     public static final int QUERY_VISIBLE_NOT_UPLOADED = 1;  // Pictures visible and still not uploaded
@@ -73,6 +74,10 @@ public class PicturesListFragment
     }
 
     public PicturesListFragment() {
+        // If I use a fix Listener id, the last fragment of the same type that
+        //  registers to the notifier overriders all the others, so I need to
+        //  use a listener id that is unique for each instance of the class
+        mStatusListenerId = UUID.randomUUID().toString();
     }
 
     @Override
@@ -113,6 +118,7 @@ public class PicturesListFragment
             }
         });
         mQueryListType = getArguments().getInt(ARG_QUERY_TYPE, QUERY_VISIBLE_NOT_UPLOADED);
+        mLogFacility.v(LOG_TAG, "Query type: " + mQueryListType);
         getLoaderManager().initLoader(mQueryListType, null, this);
 
         if (QUERY_VISIBLE_NOT_UPLOADED == mQueryListType) {
@@ -209,14 +215,14 @@ public class PicturesListFragment
 
     @Override
     public void onPause() {
-        mStatusChangeNotifier.unregisterListener(STATUS_LISTENER_ID);
+        mStatusChangeNotifier.unregisterListener(mStatusListenerId);
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mStatusChangeNotifier.registerListener(STATUS_LISTENER_ID, this);
+        mStatusChangeNotifier.registerListener(mStatusListenerId, this);
     }
 
     @Override
@@ -263,7 +269,7 @@ public class PicturesListFragment
 
     private void setSwipeLayoutState() {
         // http://nlopez.io/swiperefreshlayout-with-listview-done-right/
-        if (mQueryListType == QUERY_UPLOADED) {
+        if (QUERY_UPLOADED == mQueryListType) {
             mSwipeRefreshLayout.setEnabled(false);
         } else {
             mSwipeRefreshLayout.setEnabled(true);
