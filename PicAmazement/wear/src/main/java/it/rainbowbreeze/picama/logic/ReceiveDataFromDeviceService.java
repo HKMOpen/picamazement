@@ -195,7 +195,7 @@ public class ReceiveDataFromDeviceService extends WearableListenerService {
                 openPicIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Action openPicAction = new Notification.Action(
-                android.support.wearable.R.drawable.go_to_phone_00156,
+                android.support.wearable.R.drawable.open_on_phone,
                 appContext.getString(R.string.common_open_on_phone),
                 openPicPendingIntent);
 
