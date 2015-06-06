@@ -1,11 +1,7 @@
 package it.rainbowbreeze.picama.ui;
 
-import java.util.Locale;
-
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -13,11 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import javax.inject.Inject;
-
 import it.rainbowbreeze.picama.R;
-import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.logic.action.ActionsManager;
 
 public class MainActivity extends InjectableActivity {
     /**
@@ -28,7 +20,7 @@ public class MainActivity extends InjectableActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -41,13 +33,16 @@ public class MainActivity extends InjectableActivity {
 
         setContentView(R.layout.act_main);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Create the adapter that will return a fragment for each sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), getBaseContext());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.main_slidingTabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
 
@@ -79,51 +74,4 @@ public class MainActivity extends InjectableActivity {
         }
         return value;
     }
-
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            int queryType = 0;
-
-            if (0 == position) {
-                queryType = PicturesListFragment.QUERY_VISIBLE_NOT_UPLOADED;
-            } else if (1 == position) {
-                queryType = PicturesListFragment.QUERY_UPLOADED;
-            }
-            return PicturesListFragment.newInstance(queryType);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 2 total pages.
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
-        }
-    }
-
 }

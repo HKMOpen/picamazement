@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="main_mnuSettings">Settings</string>
-    <string name="main_mnuAbout">About</string>
-
     <string name="common_app_name">Pic Amazement</string>
     <string name="common_lblAreYouSure">Are you sure?</string>
     <string name="common_btnYes">Yes</string>
     <string name="common_btnCancel">Cancel</string>
+
+    <string name="main_mnuSettings">Settings</string>
+    <string name="main_mnuAbout">About</string>
+    <string name="main_tabPictures">New Pictures</string>
+    <string name="main_tabSaved">Saved</string>
 
     <string name="piclist_mnuRefresh">Refresh</string>
     <string name="picList_mnuSettings">Settings</string>
@@ -50,5 +46,8 @@
     <string name="debugsettings_btnResetSyncInProgress">Reset sync in progress flag</string>
     <string name="debugsettings_msgResetSyncStatus">Sync in progress flag resetted</string>
     <string name="debugsettings_btnClearDatabase">Delete pictures database</string>
+    <string name="title_activity_main_container">MainContainerActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

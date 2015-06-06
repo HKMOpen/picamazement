@@ -41,18 +41,22 @@ dependencies {
     compile project(':library')
     compile project(':ext-libraries:rainbowlibs')
     compile project(':ext-libraries:dropbox_sdk')
+
     compile 'com.google.android.gms:play-services-wearable:6.5.+'
     compile 'com.android.support:support-v13:22.+'
     compile 'com.android.support:appcompat-v7:22.+'
     compile 'com.android.support:cardview-v7:+'
     compile 'com.android.support:recyclerview-v7:+'
     compile 'com.android.support:palette-v7:22.+'
+
     compile 'com.squareup.okhttp:okhttp:2.2.+'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.+'
     compile 'com.squareup.picasso:picasso:2.5.+'
     compile 'com.squareup.dagger:dagger:1.2.+'
     provided 'com.squareup.dagger:dagger-compiler:1.2.+'
     compile 'org.jsoup:jsoup:1.8.1'
+
+    compile 'com.android.support:design:22.2.0'
 }
 
 android.buildTypes.each { type ->
