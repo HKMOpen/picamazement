@@ -19,17 +19,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <!-- android:theme="@style/AppTheme" -->
-        <activity
-            android:name=".ui.old.PicturesRecyclerActivity"
-            android:label="@string/common_app_name" >
-        </activity>
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/common_app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,14 +42,17 @@
             android:label="@string/debugsettings_actTitle" >
             <intent-filter>
                 <action android:name="action_StartDebugSettings" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="action_StartTwitterSettings" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="action_StartDropboxSettings" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -78,8 +75,7 @@
         <provider
             android:name=".data.provider.PictureProvider"
             android:authorities="it.rainbowbreeze.picama.provider"
-            android:exported="false"
-        />
+            android:exported="false" />
 
         <service
             android:name=".logic.wearable.SendDataToWearService"
@@ -102,8 +98,7 @@
         </service>
         <service
             android:name=".logic.RefreshPicturesService"
-            android:exported="false"
-        >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.ScheduleRefresh" />
                 <action android:name="it.rainbowbreeze.picama.Action.Picture.Refresh" />

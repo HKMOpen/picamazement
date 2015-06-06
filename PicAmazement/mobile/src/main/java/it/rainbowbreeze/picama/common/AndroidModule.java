@@ -37,7 +37,6 @@ import it.rainbowbreeze.picama.ui.MainActivity;
 import it.rainbowbreeze.picama.ui.PicturesListFragment;
 import it.rainbowbreeze.picama.ui.SettingsFragment;
 import it.rainbowbreeze.picama.ui.TwitterSettingsFragment;
-import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
 
 /**
  * A Dagger module for Android-specific dependencies which require a {@link Context} or
@@ -49,7 +48,6 @@ import it.rainbowbreeze.picama.ui.old.PicturesRecyclerActivity;
         injects = {
                 MyApp.class,
                 MainActivity.class,
-                PicturesRecyclerActivity.class,
                 PicturesListFragment.class,
                 FullscreenPictureActivity.class,
                 DropboxSettingsFragment.class,
