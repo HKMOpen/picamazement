@@ -206,7 +206,9 @@ public class FullscreenPictureActivity extends Activity {
                     @Override
                     public void onSuccess() {
                         final Bitmap bitmap = ((BitmapDrawable) contentImageView.getDrawable()).getBitmap();
-                        Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+                        // New Palette builder pattern
+                        //  http://android-developers.blogspot.in/2015/04/android-support-library-221.html
+                        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                             public void onGenerated(Palette palette) {
                                 if (null != palette) {
                                     //Picasso wants a background color, otherwise it messed up and repeat the image
