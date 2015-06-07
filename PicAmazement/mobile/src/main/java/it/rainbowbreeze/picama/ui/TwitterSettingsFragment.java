@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.jsoup.helper.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +37,7 @@ import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
 public class TwitterSettingsFragment extends Fragment {
     private static final String LOG_TAG = TwitterSettingsFragment.class.getSimpleName();
     private static final int REQUEST_DELETE_ACCOUNT = 100;
+    private static final int REQUEST_ADD_ACCOUNT = 101;
 
     @Inject ILogFacility mLogFacility;
     @Inject TwitterScraperConfig mTwitterScraperConfig;
@@ -97,22 +101,63 @@ public class TwitterSettingsFragment extends Fragment {
         switch (requestCode) {
             case REQUEST_DELETE_ACCOUNT:
                 if (Activity.RESULT_OK == resultCode) {
-                    int pos = mList.getCheckedItemPosition();
-                    mUserNames.remove(pos);
-                    mItemsAdapter.notifyDataSetChanged();
-                    mList.setItemChecked(0, false);
+                    removeAccountFromList();
                 }
                 break;
 
+            case REQUEST_ADD_ACCOUNT:
+                if (Activity.RESULT_OK == resultCode) {
+                    addAccountFromList(data.getStringExtra(UserInputDialog.INTENT_EXTRA_USERINPUT));
+                }
             default:
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
         }
     }
 
-    private void askAndAddNewAccount(ArrayAdapter<String> mItemsAdapter) {
-        mUserNames.add("Test " + new Date().getTime());
+    /**
+     * Removes selected account from the list
+     */
+    private void removeAccountFromList() {
+        int pos = mList.getCheckedItemPosition();
+        mUserNames.remove(pos);
         mItemsAdapter.notifyDataSetChanged();
+        mList.setItemChecked(0, false);
+    }
+
+    /**
+     * Add a new account to the list
+     *
+     * @param newTwitterAccount
+     */
+    private void addAccountFromList(String newTwitterAccount) {
+        if (TextUtils.isEmpty(newTwitterAccount)) {
+            mLogFacility.v(LOG_TAG, "Empty account inputed by the user");
+            return;
+        }
+
+        newTwitterAccount = newTwitterAccount.trim();
+        // Checks for duplicates
+        for(String username : mUserNames) {
+            if (newTwitterAccount.equalsIgnoreCase(username)) {
+                Toast.makeText(getActivity(), R.string.twittersettings_msgDuplicatedAccount, Toast.LENGTH_LONG).show();
+                mLogFacility.v(LOG_TAG, "Duplicate account, no need to add");
+                return;
+            }
+        }
+
+        // Finally add the new account
+        mLogFacility.v(LOG_TAG, "Adding new account " + newTwitterAccount);
+        mUserNames.add(newTwitterAccount);
+        mItemsAdapter.notifyDataSetChanged();
+    }
+
+    private void askAndAddNewAccount(ArrayAdapter<String> mItemsAdapter) {
+        DialogFragment newDialog = UserInputDialog.newInstance(
+                R.string.twittersettings_msgAddAccountPrompt,
+                R.string.twittersettings_msgAddAccountTip);
+        newDialog.setTargetFragment(this, REQUEST_ADD_ACCOUNT);
+        newDialog.show(getFragmentManager(), "AddAccount");
     }
 
     private void askToRemoveUserName() {

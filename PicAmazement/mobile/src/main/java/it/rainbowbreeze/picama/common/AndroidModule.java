@@ -37,6 +37,7 @@ import it.rainbowbreeze.picama.ui.MainActivity;
 import it.rainbowbreeze.picama.ui.PicturesListFragment;
 import it.rainbowbreeze.picama.ui.SettingsFragment;
 import it.rainbowbreeze.picama.ui.TwitterSettingsFragment;
+import it.rainbowbreeze.picama.ui.UserInputDialog;
 
 /**
  * A Dagger module for Android-specific dependencies which require a {@link Context} or
@@ -55,6 +56,7 @@ import it.rainbowbreeze.picama.ui.TwitterSettingsFragment;
                 DebugSettingsFragment.class,
                 SettingsFragment.class,
                 AskForConfirmationDialog.class,
+                UserInputDialog.class,
                 GenericSettingsActivity.class,
 
                 SendDataToWearService.class,

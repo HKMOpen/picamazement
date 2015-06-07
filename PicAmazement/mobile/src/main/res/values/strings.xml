@@ -2,7 +2,10 @@
 <resources>
     <string name="common_app_name">Pic Amazement</string>
     <string name="common_lblAreYouSure">Are you sure?</string>
+    <string name="common_lblInputText">Input value</string>
+    <string name="common_lblInputTextTip">Your value here</string>
     <string name="common_btnYes">Yes</string>
+    <string name="common_btnOk">Ok</string>
     <string name="common_btnCancel">Cancel</string>
 
     <string name="main_mnuSettings">Settings</string>
@@ -35,6 +38,9 @@
     <string name="twittersettings_btnRemoveAccount">Remove selected</string>
     <string name="twittersettings_btnAddAccount">Add account</string>
     <string name="twittersettings_msgSelectAccountFirst">First, select an account to delete</string>
+    <string name="twittersettings_msgAddAccountPrompt">New account to add</string>
+    <string name="twittersettings_msgAddAccountTip">Enter a Twitter account</string>
+    <string name="twittersettings_msgDuplicatedAccount">Account already exists</string>
 
     <string name="pref_debug_title">DEBUG</string>
     <string name="pref_debug_summary">Debug options, generally you should ignore this section</string>
