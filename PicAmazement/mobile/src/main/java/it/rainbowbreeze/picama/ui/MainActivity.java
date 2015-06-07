@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -32,6 +33,11 @@ public class MainActivity extends InjectableActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.act_main);
+
+        // Toolbar help:
+        //  http://android-developers.blogspot.it/2014/10/appcompat-v21-material-design-for-pre.html
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
 
         // Create the adapter that will return a fragment for each sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), getBaseContext());
