@@ -22,7 +22,11 @@
          To see the image at original size, use center and don't use any resizing
           method in Picasso
     -->
-    <ImageView
+
+    <!--
+    https://github.com/sephiroth74/ImageViewZoom
+    -->
+    <it.sephiroth.android.library.imagezoom.ImageViewTouch
         android:id="@+id/fullscreen_imgPicture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
