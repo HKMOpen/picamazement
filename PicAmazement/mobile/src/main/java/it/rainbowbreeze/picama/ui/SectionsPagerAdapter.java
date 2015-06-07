@@ -17,10 +17,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     public SectionsPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        Locale l = Locale.getDefault();
         mTitles = new String[] {
-                context.getString(R.string.main_tabPictures).toUpperCase(l),
-                context.getString(R.string.main_tabSaved).toUpperCase(l)
+                context.getString(R.string.main_tabPictures),
+                context.getString(R.string.main_tabSaved)
         };
     }
 
