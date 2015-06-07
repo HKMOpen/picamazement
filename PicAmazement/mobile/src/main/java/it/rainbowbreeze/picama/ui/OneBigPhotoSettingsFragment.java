@@ -33,29 +33,13 @@ public class OneBigPhotoSettingsFragment extends InjectableFragment {
         View rootView = inflater.inflate(R.layout.fra_onebigpicture_settings, container, false);
 
         mChkEnabled = (CheckBox) rootView.findViewById(R.id.onebigpicturesettings_chkEnable);
-        mChkEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setViewsStatus(isChecked);
-            }
-        });
+        mChkEnabled.setChecked(mScraperConfig.isEnabled());
         return rootView;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Set<String> userNames = new TreeSet<>();
         mScraperConfig.setEnabled(mChkEnabled.isChecked());
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mChkEnabled.setChecked(mScraperConfig.isEnabled());
-    }
-
-    private void setViewsStatus(boolean enabled) {
-    }
-
 }

@@ -75,6 +75,10 @@ public class TwitterSettingsFragment extends InjectableFragment {
                 setViewsStatus(isChecked);
             }
         });
+        mChkEnabled.setChecked(mScraperConfig.isEnabled());
+        // Workaround, otherwise with the checkbox is set to NOT checked, the listener is not
+        //  called. Instead, when is checked, the listener is called... BOH :(
+        setViewsStatus(mScraperConfig.isEnabled());
 
         return rootView;
     }
@@ -88,12 +92,6 @@ public class TwitterSettingsFragment extends InjectableFragment {
         }
         mScraperConfig.setUserNames(userNames);
         mScraperConfig.setEnabled(mChkEnabled.isChecked());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mChkEnabled.setChecked(mScraperConfig.isEnabled());
     }
 
     @Override
@@ -175,6 +173,7 @@ public class TwitterSettingsFragment extends InjectableFragment {
     }
 
     private void setViewsStatus(boolean enabled) {
+        mLogFacility.v(LOG_TAG, "update triggered: " + enabled);
         mList.setEnabled(enabled);
         mBtnAddAccount.setEnabled(enabled);
         mBtnRemoveAccont.setEnabled(enabled);
