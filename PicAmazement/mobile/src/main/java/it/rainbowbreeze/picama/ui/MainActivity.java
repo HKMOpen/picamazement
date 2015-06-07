@@ -41,6 +41,7 @@ public class MainActivity extends InjectableActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         // Give the TabLayout the ViewPager
+        // https://github.com/codepath/android_guides/wiki/Google-Play-Style-Tabs-using-TabLayout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_slidingTabs);
         tabLayout.setupWithViewPager(mViewPager);
     }
