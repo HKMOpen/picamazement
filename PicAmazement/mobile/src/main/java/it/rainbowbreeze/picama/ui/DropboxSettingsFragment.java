@@ -37,8 +37,6 @@ public class DropboxSettingsFragment extends InjectableFragment {
     private DbxChooser mChooser;
     private CheckBox mChkSaveEnabled;
     private Button mBtnAuthorize;
-    private View mLayParameters;
-    private TextView mLblSavePath;
 
     public DropboxSettingsFragment() {
         mChooser = new DbxChooser(BuildConfig.DROPBOX_APP_KEY);
@@ -57,7 +55,6 @@ public class DropboxSettingsFragment extends InjectableFragment {
                 mAppPrefsManager.setDropboxEnabled(mChkSaveEnabled.isChecked());
             }
         });
-        mLayParameters = rootView.findViewById(R.id.dropboxsettings_layParameters);
         mBtnAuthorize = (Button) rootView.findViewById(R.id.dropboxsettings_btnStartAuth);
         mBtnAuthorize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,23 +62,6 @@ public class DropboxSettingsFragment extends InjectableFragment {
                 mDropboxCloudProvider.startDropboxAuthFlow(mAppContext);
             }
         });
-
-        Button button = (Button) rootView.findViewById(R.id.dropboxsettings_btnSelectSaveDir);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mChooser.forResultType(DbxChooser.ResultType.DIRECT_LINK)
-                        .launch(getActivity(), DBX_CHOOSER_REQUEST);
-                /*
-                 Uri selectedUri = Uri.parse(Environment.getExternalStorageDirectory() + "/myFolder/");
-                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                 intent.setDataAndType(selectedUri, "resource/folder");
-                 */
-            }
-        });
-
-        mLblSavePath = (TextView) rootView.findViewById(R.id.dropboxsettings_lblSaveDir);
-        mLblSavePath.setText(mAppPrefsManager.getDropboxSavePath());
 
         return rootView;
     }
@@ -93,7 +73,6 @@ public class DropboxSettingsFragment extends InjectableFragment {
                 DbxChooser.Result result = new DbxChooser.Result(data);
                 mLogFacility.v(LOG_TAG, "Link to selected file: " + result.getLink());
 
-                mLblSavePath.setText(result.getName().toString(), TextView.BufferType.NORMAL);
             } else {
                 // Failed or was cancelled by the user.
             }
@@ -120,10 +99,5 @@ public class DropboxSettingsFragment extends InjectableFragment {
             mBtnAuthorize.setText(R.string.dropboxsettings_btnAuthDone);
             mBtnAuthorize.setEnabled(false);
         }
-        mLayParameters.setVisibility(
-                mDropboxCloudProvider.isAuthRequired()
-                        ? View.GONE
-                        : View.VISIBLE
-        );
     }
 }

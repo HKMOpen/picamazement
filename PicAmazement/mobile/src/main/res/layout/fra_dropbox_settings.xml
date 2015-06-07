@@ -28,31 +28,4 @@
         android:text="@string/dropboxsettings_btnStartAuth"
     />
 
-
-    <LinearLayout
-        android:id="@+id/dropboxsettings_layParameters"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:orientation="vertical"
-    >
-        <TextView
-            android:id="@+id/dropboxsettings_lblSaveDirCaption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dropboxsettings_lblSaveDirCaption"
-        />
-        <TextView
-            android:id="@+id/dropboxsettings_lblSaveDir"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        />
-        <Button
-            android:id="@+id/dropboxsettings_btnSelectSaveDir"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dropboxsettings_btnSelectSaveDir"
-        />
-    </LinearLayout>
-
 </LinearLayout>
