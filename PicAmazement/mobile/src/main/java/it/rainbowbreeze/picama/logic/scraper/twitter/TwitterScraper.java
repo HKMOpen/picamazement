@@ -1,19 +1,14 @@
-package it.rainbowbreeze.picama.logic.twitter;
+package it.rainbowbreeze.picama.logic.scraper.twitter;
 
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
-import it.rainbowbreeze.picama.logic.IPictureScraper;
-import it.rainbowbreeze.picama.logic.IPictureScraperConfig;
-import it.rainbowbreeze.picama.logic.PictureScraper;
+import it.rainbowbreeze.picama.logic.scraper.BasePictureScraper;
 import it.rainbowbreeze.picama.shared.BuildConfig;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
@@ -33,13 +28,12 @@ import twitter4j.conf.ConfigurationBuilder;
  *
  * Created by alfredomorresi on 19/10/14.
  */
-public class TwitterScraper extends PictureScraper<TwitterScraperConfig> {
+public class TwitterScraper extends BasePictureScraper<TwitterScraperConfig> {
     private static final String LOG_TAG = TwitterScraper.class.getSimpleName();
 
     private final ILogFacility mLogFacility;
     private final Twitter mTwitter;
     private OAuth2Token mTwitterToken;
-    private Set<String> mUserNames;
 
     public TwitterScraper (ILogFacility logFacility, TwitterScraperConfig config) {
         super(config);
@@ -62,18 +56,13 @@ public class TwitterScraper extends PictureScraper<TwitterScraperConfig> {
     }
 
     @Override
-    protected void applyConfigInternal(TwitterScraperConfig newConfig) {
-        mUserNames = newConfig.getUserNames();
-    }
-
-    @Override
     public List<AmazingPicture> getNewPictures() {
         ArrayList<AmazingPicture> pictures = new ArrayList<AmazingPicture>();
 
         List<Status> statuses;
         initToken();
 
-        for (String userName : mUserNames) {
+        for (String userName : mConfig.getUserNames()) {
             mLogFacility.v(LOG_TAG, "Analyzing Twitter account " + userName);
             try {
                 statuses = mTwitter.getUserTimeline(userName);

@@ -31,5 +31,6 @@
     <string name="pref_source_title">Image sources</string>
     <string name="pref_source_summary">Configure the different sources for the images</string>
     <string name="pref_twitter_title">Twitter</string>
+    <string name="pref_onebigpicture_title">One Big Picture</string>
 
 </resources>

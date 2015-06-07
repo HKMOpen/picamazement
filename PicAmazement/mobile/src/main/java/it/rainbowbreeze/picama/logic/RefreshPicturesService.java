@@ -12,6 +12,7 @@ import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
+import it.rainbowbreeze.picama.logic.scraper.PictureScraperManager;
 
 
 /**
@@ -22,7 +23,8 @@ import it.rainbowbreeze.picama.logic.action.ActionsManager;
 public class RefreshPicturesService extends IntentService {
     private static final String LOG_TAG = RefreshPicturesService.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
-    @Inject PictureScraperManager mPictureScraperManager;
+    @Inject
+    PictureScraperManager mPictureScraperManager;
     @Inject ActionsManager mActionsManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
     @Inject LogicManager mLogicManager;

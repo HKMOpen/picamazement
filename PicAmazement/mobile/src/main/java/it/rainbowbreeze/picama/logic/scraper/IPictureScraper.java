@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.logic;
+package it.rainbowbreeze.picama.logic.scraper;
 
 import java.util.List;
 
@@ -16,15 +16,14 @@ public interface IPictureScraper <Config extends IPictureScraperConfig>{
     List<AmazingPicture> getNewPictures();
 
     /**
+     * Returns if the scraper is enabled or not
+     * @return
+     */
+    boolean isEnabled();
+
+    /**
      * Returns the scraper internal name, for example "Twitter", "OneBigPicture" ecc
      * @return
      */
     String getSourceName();
-
-    /**
-     * Apply a new config to the scraper
-     * @param newConfig
-     * @return false if the configuration is not appropriate for the scraper, otherwise true
-     */
-    boolean applyConfig(IPictureScraperConfig newConfig);
 }

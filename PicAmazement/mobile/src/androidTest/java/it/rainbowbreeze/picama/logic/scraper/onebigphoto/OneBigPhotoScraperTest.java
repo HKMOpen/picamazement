@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.logic.onebigphoto;
+package it.rainbowbreeze.picama.logic.scraper.onebigphoto;
 
 import android.test.AndroidTestCase;
 

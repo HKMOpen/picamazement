@@ -1,6 +1,5 @@
-package it.rainbowbreeze.picama.logic.twitter;
+package it.rainbowbreeze.picama.logic.scraper.twitter;
 
-import android.content.Context;
 import android.test.AndroidTestCase;
 
 import javax.inject.Inject;
@@ -10,7 +9,6 @@ import dagger.Module;
 import dagger.ObjectGraph;
 import dagger.Provides;
 import it.rainbowbreeze.picama.common.AndroidModule;
-import it.rainbowbreeze.picama.common.ForApplication;
 import it.rainbowbreeze.picama.common.ILogFacility;
 
 /**

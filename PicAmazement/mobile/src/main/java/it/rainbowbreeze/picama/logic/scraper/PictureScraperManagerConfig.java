@@ -1,15 +1,10 @@
-package it.rainbowbreeze.picama.logic;
+package it.rainbowbreeze.picama.logic.scraper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
-import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
-
 /**
- * Class to configure {@link it.rainbowbreeze.picama.logic.PictureScraperManager} class
+ * Class to configure {@link PictureScraperManager} class
  * Created by alfredomorresi on 01/11/14.
  */
 public class PictureScraperManagerConfig {

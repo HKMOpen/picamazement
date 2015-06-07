@@ -1,39 +1,40 @@
-package it.rainbowbreeze.picama.logic.twitter;
+package it.rainbowbreeze.picama.logic.scraper.twitter;
 
 import android.content.Context;
 
 import java.util.Set;
 import java.util.TreeSet;
 
-import it.rainbowbreeze.libs.data.RainbowAppPrefsManager;
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.logic.IPictureScraperConfig;
+import it.rainbowbreeze.picama.logic.scraper.BasePictureScraperConfig;
+import it.rainbowbreeze.picama.logic.scraper.BaseScraperPrefsManager;
 
 /**
  * Created by alfredomorresi on 01/11/14.
  */
-public class TwitterScraperConfig implements IPictureScraperConfig {
+public class TwitterScraperConfig extends BasePictureScraperConfig<TwitterScraperConfig.PrefsManager> {
     private static final String LOG_TAG = TwitterScraperConfig.class.getSimpleName();
-    private final TwitterPrefsManager mTwitterPrefsManager;
 
     public TwitterScraperConfig(Context appContext, ILogFacility logFacility) {
-        mTwitterPrefsManager = new TwitterPrefsManager(appContext, logFacility);
-        mTwitterPrefsManager.setDefaultValues(false);
+        super();
+        initPrefsManager(new PrefsManager(appContext, logFacility));
     }
 
     public Set<String> getUserNames() {
-        return mTwitterPrefsManager.getTwitterUserNames();
+        return mPrefsManager.getTwitterUserNames();
     }
-
     public void setUserNames(Set<String> userNames) {
-        mTwitterPrefsManager.setTwitterUserNames(userNames);
+        mPrefsManager.setTwitterUserNames(userNames);
     }
 
-    private class TwitterPrefsManager extends RainbowAppPrefsManager {
+    /**
+     * Manages Twitter specific configuration
+     */
+    protected class PrefsManager extends BaseScraperPrefsManager {
         private static final String PREF_FILENAME = "TwitterPrefs";
 
-        public TwitterPrefsManager(Context appContext, ILogFacility logFacility) {
-            super(appContext, PREF_FILENAME, 0, logFacility);
+        public PrefsManager(Context appContext, ILogFacility logFacility) {
+            super(appContext, PREF_FILENAME, logFacility);
         }
 
         @Override
@@ -47,6 +48,7 @@ public class TwitterScraperConfig implements IPictureScraperConfig {
             userNames.add("FotoFavolose");
             userNames.add("Globe_Pics");
             setTwitterUserNames(userNames);
+            setEnabled(true);
         }
 
         private static final String PREF_TWITTERUSERNAMES = "pref_twitterUserNames";
@@ -56,12 +58,11 @@ public class TwitterScraperConfig implements IPictureScraperConfig {
                     ? new TreeSet<String>()
                     : result;
         }
-        public TwitterPrefsManager setTwitterUserNames(Set<String> newValue) {
+        public PrefsManager setTwitterUserNames(Set<String> newValue) {
             openSharedEditor();
             mSharedEditor.putStringSet(PREF_TWITTERUSERNAMES, newValue);
             saveIfNeeded();
             return this;
         }
-
     }
 }

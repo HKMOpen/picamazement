@@ -14,22 +14,23 @@ import it.rainbowbreeze.picama.logic.ManipulatePictureService;
 import it.rainbowbreeze.picama.logic.RefreshPicturesService;
 import it.rainbowbreeze.picama.logic.StatusChangeNotifier;
 import it.rainbowbreeze.picama.logic.UploadPictureService;
-import it.rainbowbreeze.picama.logic.onebigphoto.OneBigPhotoScraper;
-import it.rainbowbreeze.picama.logic.onebigphoto.OneBigPhotoScraperConfig;
+import it.rainbowbreeze.picama.logic.scraper.onebigphoto.OneBigPhotoScraper;
+import it.rainbowbreeze.picama.logic.scraper.onebigphoto.OneBigPhotoScraperConfig;
 import it.rainbowbreeze.picama.logic.storage.CloudStorageManager;
 import it.rainbowbreeze.picama.logic.storage.DropboxCloudProvider;
 import it.rainbowbreeze.picama.logic.storage.FileDownloaderHelper;
 import it.rainbowbreeze.picama.logic.storage.PictureDiskManager;
-import it.rainbowbreeze.picama.logic.PictureScraperManager;
-import it.rainbowbreeze.picama.logic.PictureScraperManagerConfig;
-import it.rainbowbreeze.picama.logic.twitter.TwitterScraper;
-import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
+import it.rainbowbreeze.picama.logic.scraper.PictureScraperManager;
+import it.rainbowbreeze.picama.logic.scraper.PictureScraperManagerConfig;
+import it.rainbowbreeze.picama.logic.scraper.twitter.TwitterScraper;
+import it.rainbowbreeze.picama.logic.scraper.twitter.TwitterScraperConfig;
 import it.rainbowbreeze.picama.logic.wearable.SendDataToWearService;
 import it.rainbowbreeze.picama.logic.wearable.WearManager;
 import it.rainbowbreeze.picama.logic.action.ActionsManager;
 import it.rainbowbreeze.picama.logic.wearable.ReceiveDataFromWearService;
 import it.rainbowbreeze.picama.ui.AskForConfirmationDialog;
-import it.rainbowbreeze.picama.ui.GenericSettingsActivity;
+import it.rainbowbreeze.picama.ui.OneBigPhotoSettingsFragment;
+import it.rainbowbreeze.picama.ui.PlugSettingsActivity;
 import it.rainbowbreeze.picama.ui.DebugSettingsFragment;
 import it.rainbowbreeze.picama.ui.DropboxSettingsFragment;
 import it.rainbowbreeze.picama.ui.FullscreenPictureActivity;
@@ -53,11 +54,12 @@ import it.rainbowbreeze.picama.ui.UserInputDialog;
                 FullscreenPictureActivity.class,
                 DropboxSettingsFragment.class,
                 TwitterSettingsFragment.class,
+                OneBigPhotoSettingsFragment.class,
                 DebugSettingsFragment.class,
                 SettingsFragment.class,
                 AskForConfirmationDialog.class,
                 UserInputDialog.class,
-                GenericSettingsActivity.class,
+                PlugSettingsActivity.class,
 
                 SendDataToWearService.class,
                 ManipulatePictureService.class,
@@ -134,8 +136,10 @@ public class AndroidModule {
     }
 
     @Provides @Singleton public OneBigPhotoScraperConfig provideOneBigPhotoScraperConfig(
+            @ForApplication Context appContext,
+            ILogFacility logFacility
     ) {
-        return new OneBigPhotoScraperConfig();
+        return new OneBigPhotoScraperConfig(appContext, logFacility);
     }
 
     /**

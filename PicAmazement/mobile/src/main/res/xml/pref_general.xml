@@ -13,6 +13,9 @@
             <Preference android:title="@string/pref_twitter_title" >
                 <intent android:action="action_StartTwitterSettings" />
             </Preference>
+            <Preference android:title="@string/pref_onebigpicture_title" >
+                <intent android:action="action_StartOneBigPictureSettings" />
+            </Preference>
         </PreferenceScreen>
 
         <PreferenceScreen

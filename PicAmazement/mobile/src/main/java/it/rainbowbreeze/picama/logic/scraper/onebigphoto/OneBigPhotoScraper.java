@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.logic.onebigphoto;
+package it.rainbowbreeze.picama.logic.scraper.onebigphoto;
 
 import android.text.TextUtils;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.domain.AmazingPicture;
-import it.rainbowbreeze.picama.logic.PictureScraper;
+import it.rainbowbreeze.picama.logic.scraper.BasePictureScraper;
 
 /**
  * http://onebigphoto.com/
@@ -24,7 +24,7 @@ import it.rainbowbreeze.picama.logic.PictureScraper;
  *
  * Created by alfredomorresi on 01/11/14.
  */
-public class OneBigPhotoScraper extends PictureScraper<OneBigPhotoScraperConfig> {
+public class OneBigPhotoScraper extends BasePictureScraper<OneBigPhotoScraperConfig> {
     private static final String LOG_TAG = OneBigPhotoScraper.class.getSimpleName();
 
     private final ILogFacility mLogFacility;
@@ -36,10 +36,6 @@ public class OneBigPhotoScraper extends PictureScraper<OneBigPhotoScraperConfig>
 
         mLogFacility = logFacility;
         mLogFacility.v(LOG_TAG, "Initializing...");
-    }
-
-    @Override
-    protected void applyConfigInternal(OneBigPhotoScraperConfig newConfig) {
     }
 
     @Override

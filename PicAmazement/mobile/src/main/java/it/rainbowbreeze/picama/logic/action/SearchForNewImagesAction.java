@@ -3,7 +3,7 @@ package it.rainbowbreeze.picama.logic.action;
 import android.content.Context;
 
 import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.logic.PictureScraperManager;
+import it.rainbowbreeze.picama.logic.scraper.PictureScraperManager;
 
 /**
  * Created by alfredomorresi on 15/11/14.

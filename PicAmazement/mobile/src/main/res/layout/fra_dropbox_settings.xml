@@ -18,6 +18,8 @@
         android:text="@string/dropboxsettings_chkSaveToThisStorage"
     />
 
+    <Space style="@style/Space" />
+
     <Button
         android:id="@+id/dropboxsettings_btnStartAuth"
         android:layout_width="match_parent"

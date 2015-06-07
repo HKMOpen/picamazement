@@ -41,6 +41,10 @@
     <string name="twittersettings_msgAddAccountPrompt">New account to add</string>
     <string name="twittersettings_msgAddAccountTip">Enter a Twitter account</string>
     <string name="twittersettings_msgDuplicatedAccount">Account already exists</string>
+    <string name="twittersettings_chkEnable">Enable Twitter sources</string>
+
+    <string name="onebigpicturesettings_actTitle">One Big Picture Settings</string>
+    <string name="onebigpicturesettings_chkEnable">Enable OneBigPicture provider</string>
 
     <string name="pref_debug_title">DEBUG</string>
     <string name="pref_debug_summary">Debug options, generally you should ignore this section</string>

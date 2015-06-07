@@ -15,6 +15,7 @@ public class Bag extends SharedBag {
     public static final String ACTION_SETTINGS_DEBUG = "action_StartDebugSettings";
     public static final String ACTION_SETTINGS_DROPBOX = "action_StartDropboxSettings";
     public static final String ACTION_SETTINGS_TWITTER = "action_StartTwitterSettings";
+    public static final String ACTION_SETTINGS_ONEBIGPICTURE = "action_StartOneBigPictureSettings";
 
     public final static String DROPBOX_APP_KEY = BuildConfig.DROPBOX_APP_KEY;
     public final static String DROPBOX_APP_SECRET = BuildConfig.DROPBOX_APP_SECRET;

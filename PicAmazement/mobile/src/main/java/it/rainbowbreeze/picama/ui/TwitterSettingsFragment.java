@@ -1,24 +1,21 @@
 package it.rainbowbreeze.picama.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.jsoup.helper.StringUtil;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,26 +23,23 @@ import java.util.TreeSet;
 import javax.inject.Inject;
 
 import it.rainbowbreeze.picama.R;
-import it.rainbowbreeze.picama.common.ILogFacility;
-import it.rainbowbreeze.picama.common.MyApp;
-import it.rainbowbreeze.picama.logic.PictureScraperManager;
-import it.rainbowbreeze.picama.logic.twitter.TwitterScraperConfig;
+import it.rainbowbreeze.picama.logic.scraper.twitter.TwitterScraperConfig;
 
 /**
 * Created by alfredomorresi on 05/12/14.
 */
-public class TwitterSettingsFragment extends Fragment {
+public class TwitterSettingsFragment extends InjectableFragment {
     private static final String LOG_TAG = TwitterSettingsFragment.class.getSimpleName();
     private static final int REQUEST_DELETE_ACCOUNT = 100;
     private static final int REQUEST_ADD_ACCOUNT = 101;
 
-    @Inject ILogFacility mLogFacility;
-    @Inject TwitterScraperConfig mTwitterScraperConfig;
-    @Inject PictureScraperManager mPictureScraperManager;
+    @Inject TwitterScraperConfig mScraperConfig;
     private ArrayAdapter<String> mItemsAdapter;
     List<String> mUserNames;
     private ListView mList;
-    private Context mAppContext;
+    private Button mBtnRemoveAccont;
+    private Button mBtnAddAccount;
+    private CheckBox mChkEnabled;
 
     public TwitterSettingsFragment() {
     }
@@ -55,23 +49,30 @@ public class TwitterSettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fra_twitter_settings, container, false);
 
-        mUserNames = new ArrayList<>(mTwitterScraperConfig.getUserNames());
+        mUserNames = new ArrayList<>(mScraperConfig.getUserNames());
         mItemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, mUserNames);
         mList = (ListView) rootView.findViewById(R.id.twittersettings_lstAccounts);
         mList.setAdapter(mItemsAdapter);
         mList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        Button button;
-        button = (Button) rootView.findViewById(R.id.twittersettings_btnAddAccount);
-        button.setOnClickListener(new View.OnClickListener() {
+        mBtnAddAccount = (Button) rootView.findViewById(R.id.twittersettings_btnAddAccount);
+        mBtnAddAccount.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 askAndAddNewAccount(mItemsAdapter);
             }
         });
-        button = (Button) rootView.findViewById(R.id.twittersettings_btnRemoveAccount);
-        button.setOnClickListener(new View.OnClickListener() {
+        mBtnRemoveAccont = (Button) rootView.findViewById(R.id.twittersettings_btnRemoveAccount);
+        mBtnRemoveAccont.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 askToRemoveUserName();
+            }
+        });
+
+        mChkEnabled = (CheckBox) rootView.findViewById(R.id.twittersettings_chkEnable);
+        mChkEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setViewsStatus(isChecked);
             }
         });
 
@@ -85,15 +86,14 @@ public class TwitterSettingsFragment extends Fragment {
         for(String userName : mUserNames) {
             userNames.add(userName);
         }
-        mTwitterScraperConfig.setUserNames(userNames);
-        mPictureScraperManager.updatePictureScraperConfig(mTwitterScraperConfig);
+        mScraperConfig.setUserNames(userNames);
+        mScraperConfig.setEnabled(mChkEnabled.isChecked());
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mAppContext = activity.getApplicationContext();
-        ((MyApp) mAppContext).inject(this);
+    public void onResume() {
+        super.onResume();
+        mChkEnabled.setChecked(mScraperConfig.isEnabled());
     }
 
     @Override
@@ -172,6 +172,12 @@ public class TwitterSettingsFragment extends Fragment {
         DialogFragment newFragment = AskForConfirmationDialog.newInstance();
         newFragment.setTargetFragment(this, REQUEST_DELETE_ACCOUNT);
         newFragment.show(getFragmentManager(), "DeleteAccount");
+    }
+
+    private void setViewsStatus(boolean enabled) {
+        mList.setEnabled(enabled);
+        mBtnAddAccount.setEnabled(enabled);
+        mBtnRemoveAccont.setEnabled(enabled);
     }
 
 }

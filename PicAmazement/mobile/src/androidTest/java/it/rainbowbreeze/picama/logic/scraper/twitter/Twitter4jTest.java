@@ -1,4 +1,4 @@
-package it.rainbowbreeze.picama.logic.twitter;
+package it.rainbowbreeze.picama.logic.scraper.twitter;
 
 import android.test.AndroidTestCase;
 

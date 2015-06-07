@@ -38,7 +38,7 @@
             android:label="@string/settings_actTitle" >
         </activity>
         <activity
-            android:name=".ui.GenericSettingsActivity"
+            android:name=".ui.PlugSettingsActivity"
             android:label="@string/debugsettings_actTitle" >
             <intent-filter>
                 <action android:name="action_StartDebugSettings" />
@@ -47,12 +47,14 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="action_StartTwitterSettings" />
-
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="action_StartOneBigPictureSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="action_StartDropboxSettings" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
