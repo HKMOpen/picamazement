@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.graphics.Palette;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -223,7 +224,11 @@ public class FullscreenPictureActivity extends Activity {
                 });
 
         TextView lblDesc = (TextView) findViewById(R.id.fullscreen_lblDesc);
-        lblDesc.setText(picture.getDesc());
+        lblDesc.setText(
+                TextUtils.isEmpty(picture.getDesc())
+                        ? picture.getTitle()
+                        : picture.getDesc()
+        );
 
         this.setTitle(picture.getSource() + " - " + picture.getTitle());
     }
