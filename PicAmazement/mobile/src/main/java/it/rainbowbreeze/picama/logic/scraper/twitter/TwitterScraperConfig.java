@@ -41,11 +41,10 @@ public class TwitterScraperConfig extends BasePictureScraperConfig<TwitterScrape
         protected void setDefaultValuesInternal() {
             Set<String> userNames = new TreeSet<>();
             userNames.add("EarthBeauties");
-            //userNames.add("_Paisajes_");
+            userNames.add("FotoFavolose");
+            userNames.add("LuoghiDalMondo");
             userNames.add("HighFromAbove");
             userNames.add("HistoryInPics");
-            userNames.add("LuoghiDalMondo");
-            userNames.add("FotoFavolose");
             userNames.add("Globe_Pics");
             userNames.add("MeredithFrost");
             userNames.add("planetepics");

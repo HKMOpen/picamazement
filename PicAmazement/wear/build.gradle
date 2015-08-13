@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "it.rainbowbreeze.picama"
         minSdkVersion 21
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.android.support:wearable:+'
-    compile 'com.google.android.gms:play-services-wearable:6.5.+'
+    compile 'com.google.android.gms:play-services-wearable:7.5.+'
     compile project(':library')
 
     compile 'com.squareup.dagger:dagger:1.2.+'
