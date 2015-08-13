@@ -47,6 +47,8 @@ public class TwitterScraperConfig extends BasePictureScraperConfig<TwitterScrape
             userNames.add("LuoghiDalMondo");
             userNames.add("FotoFavolose");
             userNames.add("Globe_Pics");
+            userNames.add("MeredithFrost");
+            userNames.add("planetepics");
             setTwitterUserNames(userNames);
             setEnabled(true);
         }
