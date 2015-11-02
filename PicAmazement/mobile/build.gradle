@@ -42,7 +42,7 @@ dependencies {
     compile project(':ext-libraries:rainbowlibs')
     compile project(':ext-libraries:dropbox_sdk')
 
-    compile 'com.google.android.gms:play-services-wearable:7.5.+'
+    compile 'com.google.android.gms:play-services-wearable:8.1.+'
     compile 'com.android.support:support-v13:22.+'
     compile 'com.android.support:appcompat-v7:22.+'
     compile 'com.android.support:cardview-v7:22.+'
