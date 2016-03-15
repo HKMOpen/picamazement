@@ -1,5 +1,6 @@
 package it.rainbowbreeze.picama.ui;
 
+import it.rainbowbreeze.libs.logic.ClipboardManagerCompat;
 import it.rainbowbreeze.picama.common.Bag;
 import it.rainbowbreeze.picama.common.ILogFacility;
 import it.rainbowbreeze.picama.common.MyApp;
@@ -71,6 +72,7 @@ public class FullscreenPictureActivity extends Activity {
 
     public static final String LOG_TAG = FullscreenPictureActivity.class.getSimpleName();
     @Inject ILogFacility mLogFacility;
+    @Inject ClipboardManagerCompat mClipboardManagerCompat;
     @Inject ActionsManager mActionsManager;
     @Inject CloudStorageManager mCloudStorageManager;
     @Inject AmazingPictureDao mAmazingPictureDao;
@@ -195,6 +197,9 @@ public class FullscreenPictureActivity extends Activity {
             @Override
             public void onClick(View v) {
                 AmazingPicture picture = mAmazingPictureDao.getById(pictureId);
+                // Copies the text in the clipboard
+                mClipboardManagerCompat.copyToClipboard(FullscreenPictureActivity.this, picture.getDesc());
+                // And shares the image
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(picture.getUrl()));
                 startActivity(intent);
             }

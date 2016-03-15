@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import it.rainbowbreeze.libs.logic.ClipboardManagerCompat;
 import it.rainbowbreeze.picama.data.AmazingPictureDao;
 import it.rainbowbreeze.picama.data.AppPrefsManager;
 import it.rainbowbreeze.picama.logic.BootCompletedReceiver;
@@ -105,6 +106,11 @@ public class AndroidModule {
             @ForApplication Context appContext,
             ILogFacility logFacility) {
         return new WearManager(appContext, logFacility);
+    }
+
+    @Provides @Singleton ClipboardManagerCompat ClipboardManagerCompat(
+            ILogFacility logFacility) {
+        return new ClipboardManagerCompat(logFacility, Bag.APP_NAME_LOG);
     }
 
     /**
