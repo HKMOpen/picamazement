@@ -59,5 +59,6 @@
     <string name="title_activity_main_container">MainContainerActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="fullscreen_btnShare">Share</string>
 
 </resources>

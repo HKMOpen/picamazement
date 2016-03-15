@@ -11,8 +11,10 @@ import it.rainbowbreeze.picama.ui.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -186,6 +188,19 @@ public class FullscreenPictureActivity extends Activity {
                         .execute();
             }
         });
+
+        Button btnShare = (Button) findViewById(R.id.fullscreen_btnShare);
+        btnShare.setOnTouchListener(mDelayHideTouchListener);
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AmazingPicture picture = mAmazingPictureDao.getById(pictureId);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(picture.getUrl()));
+                startActivity(intent);
+            }
+        });
+
+
         mLayBackground = findViewById(R.id.fullscreen_layBackground);
 
         AmazingPicture picture = mAmazingPictureDao.getById(pictureId);
